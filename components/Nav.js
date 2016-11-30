@@ -30,17 +30,18 @@ class Nav extends React.Component {
                                 </div>
                             </div>;
             }else{
-                userMenu = <div className="ui right item"> <a className="ui mini circular teal button" href="/login">Sign-in</a> &nbsp;  <a href="/register" className="ui mini circular yellow button">Register</a> </div>;
                 configMenu = '';
+
+                userMenu = <div className="ui right item"> <a className="ui mini circular teal button" href="/login">Sign-in</a> &nbsp;  <a href="http://datasets.risis.eu/register" className="ui mini circular yellow button">Register</a> </div>;
+
             }
         }
         return (
-            <nav ref="defaultNavbar" className="ui blue menu inverted navbar page grid">
+            <nav ref="defaultNavbar" className="ui grey menu inverted navbar page grid">
                     <NavLink routeName="home" className="brand item" href='/'>
                         {this.props.loading ? <img src="/assets/img/loader.gif" alt="loading..." style={{height: 30, width: 30}} /> : <img style={{height: 22, width: 22}} className="ui mini image" src="/assets/img/ld-reactor.gif" alt="ld-reactor" />}
                     </NavLink>
-                    <NavLink routeName="about" className="item">About {appShortTitle} </NavLink>
-                    <NavLink routeName="datasets" className="item" href="/datasets"> Datasets</NavLink>
+                                      <NavLink routeName="datasets" className="item" href="/datasets"> Datasets</NavLink>
                     <div className="right menu">
                         <div className="item link" onClick={this.showHelpModal}>
                                 <i className="small help circle icon"></i>
