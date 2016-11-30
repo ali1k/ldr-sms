@@ -5,7 +5,7 @@ import BasicAggregateView from './BasicAggregateView';
 import DBpediaGMapStore from '../../../../stores/DBpediaGMapStore';
 import getCoordinates from '../../../../actions/getCoordinates';
 
-class DBpediaGoogleMapView extends React.Component {
+class DBpediaMapView extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -31,7 +31,7 @@ class DBpediaGoogleMapView extends React.Component {
     }
     render () {
         return (
-            <div ref="DBpediaGoogleMapView">
+            <div ref="DBpediaMapView">
                     {this.props.DBpediaGMapStore.coordinates.length? <LeafletMapView key={this.props.DBpediaGMapStore.coordinates.length} markers={this.props.DBpediaGMapStore.coordinates} zoomLevel={3} center={{lat: 48.2000, lng: 16.3500}}/> :''}
                    <BasicAggregateView spec={this.props.spec} config={this.props.config} />
             </div>
@@ -40,12 +40,12 @@ class DBpediaGoogleMapView extends React.Component {
 
 
 }
-DBpediaGoogleMapView.contextTypes = {
+DBpediaMapView.contextTypes = {
     executeAction: React.PropTypes.func.isRequired
 };
-DBpediaGoogleMapView = connectToStores(DBpediaGoogleMapView, [DBpediaGMapStore], function (context, props) {
+DBpediaMapView = connectToStores(DBpediaMapView, [DBpediaGMapStore], function (context, props) {
     return {
         DBpediaGMapStore: context.getStore(DBpediaGMapStore).getState()
     };
 });
-export default DBpediaGoogleMapView;
+export default DBpediaMapView;
