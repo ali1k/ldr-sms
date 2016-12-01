@@ -86,14 +86,14 @@ class LeafletMapView extends React.Component {
                 })
                 polygonsDIV = polygons.map((polygon, index)=>{
                     return (
-                        <Polygon color={polygon.style.color} key={index} positions={self.reversePolygonCoords(polygon.coords)}>
+                        <Polygon color={polygon.style.color} fill={polygon.style.fill} fillOpacity={polygon.style.fillOpacity} weight={polygon.style.weight} fillColor={polygon.style.fillColor} key={index} positions={self.reversePolygonCoords(polygon.coords)}>
                             {polygon.hint ? <Popup><span dangerouslySetInnerHTML={{__html: polygon.hint}} /></Popup>: ''}
                         </Polygon>
                     );
                 })
                 multipolygonsDIV = multipolygons.map((mpolygon, index)=>{
                     return (
-                        <Polygon color={mpolygon.style.color} key={index} positions={self.reverseMultiPolygonCoords(mpolygon.coords)}>
+                        <Polygon color={mpolygon.style.color} fill={mpolygon.style.fill} fillOpacity={mpolygon.style.fillOpacity} weight={mpolygon.style.weight} fillColor={mpolygon.style.fillColor} key={index} positions={self.reverseMultiPolygonCoords(mpolygon.coords)}>
                             {mpolygon.hint ? <Popup><span dangerouslySetInnerHTML={{__html: mpolygon.hint}} /></Popup>: ''}
                         </Polygon>
                     );

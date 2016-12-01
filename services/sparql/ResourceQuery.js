@@ -11,6 +11,7 @@ class ResourceQuery{
         PREFIX dcterms: <http://purl.org/dc/terms/>
         PREFIX void: <http://rdfs.org/ns/void#>
         PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+        PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
         `;
         this.query='';
@@ -192,6 +193,18 @@ class ResourceQuery{
             self.query = self.query + self.addTriple(endpointParameters, graphName, newObjectValue, propURI, detailData[propURI].value, detailData[propURI].valueType, detailData[propURI].dataType)+ ' ; ';
         }
 
+        return this.query;
+    }
+    getBoundaries (instances, source) {
+        let tmp, output = [];
+        instances.forEach(function(v) {
+            output.push('<' + v.value + '>');
+        });
+        this.query=`
+        SELECT DISTINCT ?s ?geometry WHERE {
+            ?s geo:geometry ?geometry .
+            FILTER (?s IN (${output.join(',')}) )
+        }`;
         return this.query;
     }
 

@@ -97,6 +97,7 @@ module.exports = {
         {title: 'ToggleView'},
         {title: 'TwoLetterCountryView'},
         {title: 'BasicAggregateMapView'},
+        {title: 'GeoBoundaryView'},
         {title: 'DBpediaMapView'},
         {title: 'BasicCalendarInput'},
         {title: 'BasicTextareaInput'},
@@ -108,6 +109,8 @@ module.exports = {
         {title: 'TagListBrowser'},
         {title: 'GeoListBrowser'},
         {title: 'CheckListBrowser'},
+        {title: 'BoundryBrowser'},
+        {title: 'ldr:boundarySource'},
         {title: 'BarChartBrowser'}
     ]
 }

@@ -130,6 +130,65 @@ export default {
                     callback(null, {objectURI: objectURI, objectType: '', properties: []});
                 });
             });
+        } else if(resource === 'resource.boundaries'){
+            let uris = params.uris;
+            let source = params.source ? params.source : 'GADM';
+            let tmp, instances= [];
+            if(source === 'GADM'){
+                datasetURI = 'http://geo.risis.eu/gadm';
+                uris.forEach(function(uri) {
+                    tmp = uri;
+                    if(tmp.value.indexOf('http://') === -1){
+                        tmp.value = 'http://geo.risis.eu/gadm/' + uri.value;
+                    }
+                    instances.push(tmp);
+                });
+            }else if(source === 'OSM'){
+                datasetURI = 'http://geo.risis.eu/osm';
+                uris.forEach(function(uri) {
+                    tmp = uri;
+                    if(tmp.value.indexOf('http://') === -1){
+                        tmp.value  = 'http://geo.risis.eu/gadm/' + uri.value;
+
+                        if(tmp.indexOf('relation_') === -1){
+                            tmp.value  = 'http://geo.risis.eu/osm/relation_' + uri.value;
+                        }else{
+                            tmp.value  = 'http://geo.risis.eu/osm/' + uri.value;
+                        }
+                        instances.push(tmp);
+                    }
+                });
+            }
+            //control access on authentication
+            if(enableAuthentication){
+                if(!req.user){
+                    callback(null, {boundaries: [], property: ''});
+                    return 0;
+                }else{
+                    user = req.user;
+                }
+            }else{
+                user = {accountName: 'open'};
+            }
+            getDynamicEndpointParameters(user, datasetURI, (endpointParameters)=>{
+                graphName = endpointParameters.graphName;
+                query = queryObject.getPrefixes() + queryObject.getBoundaries(instances, source);
+                //build http uri
+                //send request
+                HTTPQueryObject = getHTTPQuery('read', query, endpointParameters, outputFormat);
+                rp.post({uri: HTTPQueryObject.uri, form: HTTPQueryObject.params}).then(function(res){
+                    callback(null, {
+                        boundaries: utilObject.parseBoundaries(instances, res),
+                        property: params.property
+                    });
+                }).catch(function (err) {
+                    console.log(err);
+                    if(enableLogs){
+                        log.error('\n User: ' + user.accountName + '\n Status Code: \n' + err.statusCode + '\n Error Msg: \n' + err.message);
+                    }
+                    callback(null, {boundaries: [], property: ''});
+                });
+            });
         }
 
     },

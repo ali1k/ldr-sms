@@ -26,6 +26,36 @@ class ResourceUtil {
         property = property.charAt(0).toUpperCase() + property.slice(1);
         return property;
     }
+    findOriginB(instances, value){
+        let out = 0;
+        instances.forEach(function(el, key) {
+            if(el.value == value){
+                out = el;
+                return el;
+            }
+        });
+        return out;
+    }
+    parseBoundaries(instances, body) {
+        let self = this;
+        let output=[];
+        let desc='',parsed = JSON.parse(body);
+        if(!parsed){
+            return output;
+        }
+        let tmp;
+        parsed.results.bindings.forEach(function(el, key) {
+            tmp = self.findOriginB(instances, el.s.value);
+            if(tmp){
+                output.push({uri: el.s.value, value: el.geometry.value, weight: tmp.weight ? tmp.weight: 1, total: tmp.total ? tmp.total: 1, hint: tmp.hint ? tmp.hint : self.getPropertyLabel(el.s.value)});
+
+            }else{
+                output.push({uri: el.s.value, value: el.geometry.value, hint: self.getPropertyLabel(el.s.value)});
+            }
+
+        });
+        return output;
+    }
     parseProperties(user, body, datasetURI, resourceURI, category, propertyPath, callback) {
         let configurator = new Configurator();
         let configExceptional = {},
