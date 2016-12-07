@@ -17,6 +17,46 @@ class DatasetUtil {
         }
         return property;
     }
+    parseLinkset(user, body, datasetURI) {
+        let output = [];
+        let parsed = JSON.parse(body);
+        if (parsed.results.bindings.length) {
+            parsed.results.bindings.forEach(function(el) {
+                output.push({
+                    s: el.source.value,
+                    t: el.target.value
+                });
+            });
+        }
+        return output;
+    }
+    parseLinksetDetails(body) {
+        let output = {};
+        let parsed = JSON.parse(body);
+        if (parsed.results.bindings.length) {
+            parsed.results.bindings.forEach(function(el) {
+                if(el.s && el.s.value){
+                    if(!output[el.s.value]){
+                        output[el.s.value] = {};
+                    }
+                    if(!output[el.s.value][el.sprop.value]){
+                        output[el.s.value][el.sprop.value] = [];
+                    }
+                    output[el.s.value][el.sprop.value].push(el.sobj.value);
+                }
+                if(el.t && el.t.value){
+                    if(!output[el.t.value]){
+                        output[el.t.value] = {};
+                    }
+                    if(!output[el.t.value][el.tprop.value]){
+                        output[el.t.value][el.tprop.value] = [];
+                    }
+                    output[el.t.value][el.tprop.value].push(el.tobj.value);
+                }
+            });
+        }
+        return output;
+    }
     parseResourcesByType(user, body, datasetURI) {
         let output = [];
         let resources = [];

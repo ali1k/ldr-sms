@@ -1,5 +1,6 @@
 import loadDatasets from '../actions/loadDatasets';
 import loadDataset from '../actions/loadDataset';
+import loadLinkset from '../actions/loadLinkset';
 import loadResource from '../actions/loadResource';
 import loadUsersList from '../actions/loadUsersList';
 import loadFacets from '../actions/loadFacets';
@@ -81,6 +82,24 @@ export default {
                 datasetURI = 0
             }
             context.executeAction(loadDataset, { id: datasetURI, page: page}, done);
+        }
+    },
+    linkset: {
+        //if no id is provided -> will start by defaultDatasetURI in reactor.config
+        path: '/linkset/:page?/:id/source/:source/target/:target',
+        method: 'get',
+        handler: require('../components/dataset/Linkset'),
+        label: 'Linkset',
+        action: (context, payload, done) => {
+            let datasetURI, source, target, page;
+            datasetURI = decodeURIComponent(payload.params.id);
+            source = decodeURIComponent(payload.params.source);
+            target = decodeURIComponent(payload.params.target);
+            page = payload.params.page;
+            if (!page) {
+                page = 1;
+            }
+            context.executeAction(loadLinkset, { id: datasetURI, source: source, target: target, page: page}, done);
         }
     },
     resource: {

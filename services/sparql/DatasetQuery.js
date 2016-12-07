@@ -7,6 +7,7 @@ class DatasetQuery{
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
         PREFIX dcterms: <http://purl.org/dc/terms/>
         PREFIX void: <http://rdfs.org/ns/void#>
         PREFIX foaf: <http://xmlns.com/foaf/0.1/>
@@ -44,6 +45,62 @@ class DatasetQuery{
             ${gStart}
                 ${st}
             ${gEnd}
+        }
+        `;
+        return this.prefixes + this.query;
+    }
+    countLinks(endpointParameters, graphName) {
+        let {gStart, gEnd} = this.prepareGraphName(graphName);
+        this.query = `
+        SELECT (count(?source) AS ?total) WHERE {
+            ${gStart}
+                ?source owl:sameAs ?target .
+            ${gEnd}
+        }
+        `;
+        return this.prefixes + this.query;
+    }
+    getLinkset(endpointParameters, graphName, source, target, rconfig, limit, offset) {
+        let {gStart, gEnd} = this.prepareGraphName(graphName);
+        this.query = `
+        SELECT DISTINCT ?source ?target  WHERE {
+            ${gStart}
+                ?source owl:sameAs ?target .
+            ${gEnd}
+        }
+        LIMIT ${limit} OFFSET ${offset}
+        `;
+        return this.prefixes + this.query;
+    }
+    getLinksetDetails(endpointParameters, source, target, entities) {
+        let sourceSt ='';
+        let targetSt ='';
+        let sources = [];
+        let targets = [];
+        entities.forEach((entity, index)=> {
+            sources.push('?s = <' + entity.s + '>');
+            targets.push('?t = <' + entity.t + '>');
+        })
+        sourceSt = 'FILTER ('+ sources.join(' || ') +')';
+        targetSt = 'FILTER ('+ targets.join(' || ') +')';
+        this.query = `
+        SELECT DISTINCT ?s ?sprop ?sobj ?t ?tprop ?tobj WHERE {
+            {
+                GRAPH <${source}> {
+                    ?s ?sprop ?sobj .
+                    FILTER (?sprop != geo:geometry)
+                    ${sourceSt}
+
+                }
+            }
+            UNION
+            {
+                GRAPH <${target}> {
+                    ?t ?tprop ?tobj .
+                    FILTER (?tprop != geo:geometry)
+                    ${targetSt}
+                }
+            }
         }
         `;
         return this.prefixes + this.query;
