@@ -176,6 +176,27 @@ export default {
                 extendedOEditor: ['BasicIndividualDetailEdit'],
                 extendedOViewer: ['BasicIndividualDetailView'],
                 shortenURI: 1
+            },
+            'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#cloneOf': {
+                readOnly: 1,
+                allowPropertyDelete: 0
+            },
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#type': {
+                allowPropertyDelete: 0,
+                objectIViewer: ['PrefixBasedView'],
+                objectIEditor: ['PrefixBasedInput']
+            },
+            'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#createdBy' : {
+                isHidden: 0,
+                allowNewValue: 0,
+                allowPropertyDelete: 0,
+                readOnly: 1,
+            },
+            'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#createdOn' : {
+                isHidden: 0,
+                allowNewValue: 0,
+                allowPropertyDelete: 0,
+                readOnly: 1,
             }
         },
         //property value = object
