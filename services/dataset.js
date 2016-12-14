@@ -45,7 +45,8 @@ export default {
                     }
                     let page = params.page ? params.page : 1;
                     let offset = (page - 1) * maxOnPage;
-                    query = queryObject.getResourcesByType(endpointParameters, graphName, rconfig, maxOnPage, offset);
+                    let searchTerm = params.searchTerm ? params.searchTerm : '';
+                    query = queryObject.getResourcesByType(endpointParameters, graphName, searchTerm,rconfig, maxOnPage, offset);
                     //build http uri
                     //send request
                     rp.get({uri: getHTTPGetURL(getHTTPQuery('read', query, endpointParameters, outputFormat)), headers: headers}).then(function(res){
@@ -53,12 +54,12 @@ export default {
                             datasetURI: datasetURI,
                             graphName: graphName,
                             resources: utilObject.parseResourcesByType(user, res, datasetURI),
-                            page: params.page,
+                            page: page,
                             config: rconfig
                         });
                     }).catch(function (err) {
                         console.log(err);
-                        callback(null, {datasetURI: datasetURI, graphName: graphName, resources: [], page: params.page, config: rconfig});
+                        callback(null, {datasetURI: datasetURI, graphName: graphName, resources: [], page: page, config: rconfig});
                     });
                 });
             });
@@ -171,6 +172,7 @@ export default {
 
                 });
             });
+
         } else if (resource === 'dataset.countResourcesByType') {
             datasetURI = (params.id ? decodeURIComponent(params.id) : 0);
             //control access on authentication
