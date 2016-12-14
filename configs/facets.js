@@ -2,7 +2,7 @@ export default {
     facets: {
         'generic': {
             list: [
-                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+
             ],
             config: {
 
@@ -200,8 +200,6 @@ export default {
         },
         'http://risis.eu/cordisH2020': {
             list: [
-                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-                'http://risis.eu/cordisH2020/vocab/projectParticipant',
                 'http://risis.eu/cordisH2020/vocab/fundingScheme',
                 'http://risis.eu/cordisH2020/vocab/topic',
                 'http://risis.eu/cordisH2020/vocab/totalCost',
