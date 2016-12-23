@@ -12,6 +12,7 @@ class DatasetQuery{
         PREFIX void: <http://rdfs.org/ns/void#>
         PREFIX foaf: <http://xmlns.com/foaf/0.1/>
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+        PREFIX ldr: <https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#>
         `;
         this.query='';
     }
@@ -197,6 +198,7 @@ class DatasetQuery{
         `;
         return this.prefixes + this.query;
     }
+    //only gives us unannotated ones
     getResourcePropForAnnotation(endpointParameters, graphName, type, propertyURI, limit, offset) {
         let self = this;
         let {gStart, gEnd} = this.prepareGraphName(graphName);
@@ -218,9 +220,97 @@ class DatasetQuery{
             ${gStart}
                 ${st}
                 ?resource <${propertyURI}> ?objectValue .
+                filter not exists {
+                    ?objectValue ldr:annotations ?annotation .
+                    ?annotation ldr:property <${propertyURI}> .
+                }
             ${gEnd}
         }
         LIMIT ${limit} OFFSET ${offset}
+        `;
+        return this.prefixes + this.query;
+    }
+    /* just for the record: to get both stats at the same time
+    this.query = `
+    SELECT DISTINCT ?atotal ?total WHERE {
+        {
+            SELECT (count(DISTINCT ?resource) AS ?atotal) WHERE {
+                ${gStart}
+                    ${st}
+                    ?resource ldr:annotations ?annotation .
+                    ?annotation ldr:property <${propertyURI}> .
+                ${gEnd}
+            }
+        }
+        {
+            SELECT (count(DISTINCT ?resource) AS ?total) WHERE {
+                ${gStart}
+                    ${st}
+                    ?resource <${propertyURI}> ?objectValue .
+                ${gEnd}
+            }
+        }
+    }
+    `;
+    */
+    countTotalResourcesWithProp(endpointParameters, graphName, type, propertyURI, inNewDataset) {
+        let self = this;
+        let {gStart, gEnd} = this.prepareGraphName(graphName);
+        let st = '?resource a <'+ type + '> .';
+        //will get all the types
+        if(!type.length || (type.length && !type[0]) ){
+            st = '?resource a ?type .';
+        }
+        //if we have multiple type, get all of them
+        let typeURIs = [];
+        if(type.length > 1){
+            type.forEach(function(uri) {
+                typeURIs.push('<' + uri + '>');
+            });
+            st = '?resource a ?type . FILTER (?type IN (' + typeURIs.join(',') + '))';
+        }
+        //in case of storing a new dataset, ignore the type
+        if(inNewDataset){
+            st = '';
+        }
+        this.query = `
+        SELECT (count(DISTINCT ?resource) AS ?total) WHERE {
+            ${gStart}
+                ${st}
+                ?resource <${propertyURI}> ?objectValue .
+            ${gEnd}
+        }
+        `;
+        return this.prefixes + this.query;
+    }
+    countAnnotatedResourcesWithProp(endpointParameters, graphName, type, propertyURI, inNewDataset) {
+        let self = this;
+        let {gStart, gEnd} = this.prepareGraphName(graphName);
+        let st = '?resource a <'+ type + '> .';
+        //will get all the types
+        if(!type.length || (type.length && !type[0]) ){
+            st = '?resource a ?type .';
+        }
+        //if we have multiple type, get all of them
+        let typeURIs = [];
+        if(type.length > 1){
+            type.forEach(function(uri) {
+                typeURIs.push('<' + uri + '>');
+            });
+            st = '?resource a ?type . FILTER (?type IN (' + typeURIs.join(',') + '))';
+        }
+        //in case of storing a new dataset, ignore the type
+        if(inNewDataset){
+            st = '';
+        }
+        this.query = `
+        SELECT (count(DISTINCT ?resource) AS ?atotal) WHERE {
+            ${gStart}
+                ${st}
+                ?resource ldr:annotations ?annotation .
+                ?annotation ldr:property <${propertyURI}> .
+            ${gEnd}
+        }
         `;
         return this.prefixes + this.query;
     }

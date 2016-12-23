@@ -108,5 +108,21 @@ class DatasetUtil {
         }
         return total;
     }
+    parseCountTotalResourcesWithProp(body) {
+        let total = 0;
+        let parsed = JSON.parse(body);
+        if (parsed.results.bindings.length) {
+            total = parsed.results.bindings[0].total.value;
+        }
+        return total;
+    }
+    parseCountAnnotatedResourcesWithProp(body) {
+        let annotated = 0;
+        let parsed = JSON.parse(body);
+        if (parsed.results.bindings.length) {
+            annotated = parsed.results.bindings[0].atotal.value;
+        }
+        return annotated;
+    }
 }
 export default DatasetUtil;
