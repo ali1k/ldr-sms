@@ -199,7 +199,7 @@ class DatasetQuery{
         return this.prefixes + this.query;
     }
     //only gives us unannotated ones
-    getResourcePropForAnnotation(endpointParameters, graphName, type, propertyURI, limit, offset) {
+    getResourcePropForAnnotation(endpointParameters, graphName, type, propertyURI, limit, offset, inNewDataset) {
         let self = this;
         let {gStart, gEnd} = this.prepareGraphName(graphName);
         let st = '?resource a <'+ type + '> .';
@@ -215,19 +215,44 @@ class DatasetQuery{
             });
             st = '?resource a ?type . FILTER (?type IN (' + typeURIs.join(',') + '))';
         }
-        this.query = `
-        SELECT DISTINCT ?resource ?objectValue WHERE {
-            ${gStart}
-                ${st}
-                ?resource <${propertyURI}> ?objectValue .
-                filter not exists {
-                    ?resource ldr:annotatedBy ?annotationD .
-                    ?annotationD ldr:property <${propertyURI}> .
+        //do not care about already annotated ones if annotations are stored in a new dataset
+        if(inNewDataset){
+            this.query = `
+            SELECT DISTINCT ?resource ?objectValue WHERE {
+                {
+                    GRAPH <${inNewDataset}> {
+                        {
+                            SELECT DISTINCT ?resource ?objectValue WHERE {
+                                    ${gStart}
+                                        ${st}
+                                        ?resource ${self.filterPropertyPath(propertyURI)} ?objectValue .
+                                    ${gEnd}
+                            } LIMIT ${limit} OFFSET ${offset}
+                        }
+                        filter not exists {
+                            ?resource ldr:annotatedBy ?annotationD .
+                            ?annotationD ldr:property "${propertyURI}" .
+                        }
+                    }
                 }
-            ${gEnd}
+            }
+            `;
+        }else{
+            this.query = `
+            SELECT DISTINCT ?resource ?objectValue WHERE {
+                ${gStart}
+                    ${st}
+                    ?resource ${self.filterPropertyPath(propertyURI)} ?objectValue .
+                    filter not exists {
+                        ?resource ldr:annotatedBy ?annotationD .
+                        ?annotationD ldr:property "${propertyURI}" .
+                    }
+                ${gEnd}
+            }
+            LIMIT ${limit} OFFSET ${offset}
+            `;
         }
-        LIMIT ${limit} OFFSET ${offset}
-        `;
+        //console.log(this.prefixes + this.query);
         return this.prefixes + this.query;
     }
     /* just for the record: to get both stats at the same time
@@ -277,7 +302,7 @@ class DatasetQuery{
         SELECT (count(DISTINCT ?resource) AS ?total) WHERE {
             ${gStart}
                 ${st}
-                ?resource <${propertyURI}> ?objectValue .
+                ?resource ${self.filterPropertyPath(propertyURI)} ?objectValue .
             ${gEnd}
         }
         `;
@@ -308,7 +333,7 @@ class DatasetQuery{
             ${gStart}
                 ${st}
                 ?resource ldr:annotatedBy ?annotationD .
-                ?annotationD ldr:property <${propertyURI}> .
+                ?annotationD ldr:property "${propertyURI}" .
             ${gEnd}
         }
         `;
