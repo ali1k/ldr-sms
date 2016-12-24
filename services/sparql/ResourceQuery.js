@@ -99,7 +99,7 @@ class ResourceQuery{
         `;
         return this.query;
     }
-    annotateResource(endpointParameters, user, datasetURI, graphName, resourceURI, propertyURI, annotations) {
+    annotateResource(endpointParameters, user, datasetURI, graphName, resourceURI, propertyURI, annotations, inNewDataset) {
         //todo: consider different value types
         let self = this;
         let {gStart, gEnd} = this.prepareGraphName(graphName);
@@ -116,6 +116,12 @@ class ResourceQuery{
         if(propertyURI){
             propSTR = `ldr:property <${propertyURI}> ;`;
         }
+        let newDSt = '';
+        //add more data if it is stored in a different dataset than the original one
+        if(inNewDataset){
+            newDSt = `<${resourceURI}> a  ldr:AnnotatedResource .`;
+        }
+        let annotatedByURI = self.createDynamicURI(datasetURI, 'dbspotlight'+'_'+Math.floor((Math.random() * 1000) + 1)+'_');
         annotations.forEach((annotation, index)=>{
             eresource = '<'+self.createDynamicURI(datasetURI, 'annotation_'+index+'_'+Math.floor((Math.random() * 1000) + 1)+'_')+'>';
             aresources.push(eresource);
@@ -134,8 +140,7 @@ class ResourceQuery{
             }
             annotationsSTR = annotationsSTR + `
                 ${eresource} a ldr:Annotation;
-                             ${userSt}
-                             ldr:createdOn "${currentDate}"^^xsd:dateTime;
+                             ldr:annotationDetail <${annotatedByURI}> ;
                              ${propSTR}
                              ldr:surfaceForm """${annotation.surfaceForm}""";
                              ldr:offset "${annotation.offset}"^^xsd:integer;
@@ -146,17 +151,24 @@ class ResourceQuery{
                              ${atypeSt}
              `;
         });
+        let mainAnnSt = '';
+        if(aresources.length){
+            mainAnnSt = `<${resourceURI}> ldr:annotations ${aresources.join(',')} .`;
+        }
         this.query = `
         INSERT {
             ${gStart}
-                <${resourceURI}> ldr:annotations ${aresources.join(',')} .
+                <${resourceURI}> ldr:annotatedBy  <${annotatedByURI}> .
+                ${newDSt}
+                <${annotatedByURI}> ${userSt} ldr:createdOn "${currentDate}"^^xsd:dateTime ; ldr:property <${propertyURI}> ; ldr:API "DBpedia Spotlight" .
+                ${mainAnnSt}
                 ${annotationsSTR}
             ${gEnd}
         } WHERE {
             ${gStart}
                 filter not exists {
-                    <${resourceURI}> ldr:annotations ?annotation .
-                    ?annotation ldr:property <${propertyURI}> .
+                    <${resourceURI}> ldr:annotatedBy ?annotationInfo .
+                    ?annotationInfo ldr:property <${propertyURI}> .
                 }
             ${gEnd}
         }

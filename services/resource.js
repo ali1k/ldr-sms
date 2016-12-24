@@ -433,7 +433,6 @@ export default {
             datasetURI = params.dataset;
             resourceURI = params.resource;
             propertyURI = params.property;
-            let annotations = params.annotations; //array returned from dbpedia.annotate service
             //control access on authentication
             if(enableAuthentication){
                 if(!req.user){
@@ -448,7 +447,7 @@ export default {
             }
             getDynamicEndpointParameters(user, datasetURI, (endpointParameters)=>{
                 graphName = endpointParameters.graphName;
-                query = queryObject.getPrefixes() + queryObject.annotateResource(endpointParameters, user, datasetURI, graphName, resourceURI, propertyURI, annotations);
+                query = queryObject.getPrefixes() + queryObject.annotateResource(endpointParameters, user, datasetURI, graphName, params.resource, propertyURI, params.annotations, params.inNewDataset);
                 //console.log(query);
                 //build http uri
                 //send request
@@ -457,19 +456,19 @@ export default {
                     if(enableLogs){
                         log.info('\n User: ' + user.accountName + ' \n Query: \n' + query);
                     }
-                    callback(null, {datasetURI: datasetURI, resourceURI: resourceURI, annotations: annotations});
+                    callback(null, {datasetURI: datasetURI, resourceURI: params.resource, annotations: params.annotations});
                 }).catch(function (err) {
                     console.log(err);
                     if(enableLogs){
                         log.error('\n User: ' + user.accountName + '\n Status Code: \n' + err.statusCode + '\n Error Msg: \n' + err.message);
                     }
-                    callback(null, {datasetURI: datasetURI, resourceURI: resourceURI, annotations: annotations});
+                    callback(null, {datasetURI: datasetURI, resourceURI: params.resource, annotations: params.annotations});
                 });
             });
 
         } else if (resource === 'resource.newReactorConfig') {
             datasetURI = params.dataset;
-            createASampleReactorConfig(req.user, params.scope, datasetURI, params.resourceURI, params.I, params.options, (res)=>{
+            createASampleReactorConfig(req.user, params.scope, datasetURI, params.resourceURI, params.propertyURI, params.options, (res)=>{
                 callback(null, {datasetURI: configDatasetURI[0], resourceURI: res, redirect: params.redirect});
             });
         }else if (resource === 'resource.newServerConfig') {
