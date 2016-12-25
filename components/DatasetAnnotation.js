@@ -118,7 +118,7 @@ class DatasetAnnotation extends React.Component {
             return <option key={index} value={(option.d)}> {(option.d && option.features.datasetLabel) ? option.features.datasetLabel : option.d} </option>;
         });
         let tagsDIV = self.generateTagArray(this.props.DatasetAnnotationStore.tags).map((node, index)=>{
-            return (<div className='item' key={index}><a href={node.uri} target="_blank">{node.text}</a> ({node.count})</div>);
+            return (<div className='ui basic label' key={index}><a href={node.uri} target="_blank">{node.text}</a> ({node.count})</div>);
         });
         if(!errorDIV){
             formDIV =
@@ -149,7 +149,7 @@ class DatasetAnnotation extends React.Component {
             formDIV = '';
             progressDIV = <div>
                 <div className='ui list'>
-                    <div className='item'>Dataset: <b><a href={'/dataset/1/'+encodeURIComponent(this.state.datasetURI)}>{this.state.datasetURI}</a></b> {!this.state.storingDataset ? '' : <span>-><a href={'/dataset/1/'+encodeURIComponent(this.state.storingDataset)}>{this.state.storingDataset}</a></span>} </div>
+                    <div className='item'>Dataset: <b><a href={'/dataset/1/'+encodeURIComponent(this.state.datasetURI)} target="_blank">{this.state.datasetURI}</a></b> {!this.state.storingDataset ? '' : <span> -> <b><a href={'/dataset/1/'+encodeURIComponent(this.state.storingDataset)} target="_blank">{this.state.storingDataset}</a></b></span>} </div>
                     {!this.state.resourceType ? '' : <div className='item'>Resource Type: <b>{this.state.resourceType}</b></div>}
                     <div className='item'>Property used: <b>{this.state.propertyURI}</b></div>
                 </div>
@@ -162,12 +162,17 @@ class DatasetAnnotation extends React.Component {
                         <Progress percent={this.props.DatasetAnnotationStore.stats.annotated ? Math.floor((this.props.DatasetAnnotationStore.stats.annotated / this.props.DatasetAnnotationStore.stats.total) * 100) : 0} progress active color='blue'>
                             Enriched {this.props.DatasetAnnotationStore.stats.annotated} out of {this.props.DatasetAnnotationStore.stats.total} items <a className="ui button mini circular" onClick={this.handleAnnotateDataset.bind(this)}><i className="ui icon blue refresh"></i> refresh</a>
                         </Progress>
-                        <div className='ui segment'>
-                            {this.props.DatasetAnnotationStore.currentText}
+                        <div className="ui raised stacked segments">
+                          <div className="ui secondary compact segment">
+                            <a href={'/dataset/' + encodeURIComponent(this.state.datasetURI) + '/resource/'+encodeURIComponent(this.props.DatasetAnnotationStore.currentID)} target="_blank">{this.props.DatasetAnnotationStore.currentID}</a>
+                          </div>
+                          <div className="ui compact segment">
+                            <div dangerouslySetInnerHTML={{__html: this.props.DatasetAnnotationStore.annotatedText}} />
+                          </div>
                         </div>
                     </div>
                 }
-                <div className='ui list'>
+                <div className='ui segment'>
                     {tagsDIV}
                 </div>
             </div>
