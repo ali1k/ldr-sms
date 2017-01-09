@@ -36,6 +36,7 @@ class DefaultHTMLLayout extends React.Component {
                 <script src="/semantic-ui/components/checkbox.min.js"></script>
                 <script src="/semantic-ui/components/dimmer.min.js"></script>
                 <script src="/semantic-ui/components/modal.min.js"></script>
+                <script src="/jsplumb/jsplumb.min.js"></script>
                 {/* All external vendors bundle*/
                     this.props.addAssets ? <script src={'/public/js/vendor.bundle.js'}></script> : ''}
                 {/* Main app bundle */}

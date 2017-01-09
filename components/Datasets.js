@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import classNames from 'classnames/bind';
 import {navigateAction} from 'fluxible-router';
 import {connectToStores} from 'fluxible-addons-react';
 import {enableAuthentication, defaultDatasetURI, enableAddingNewDatasets, enableDatasetAnnotation} from '../configs/general';
@@ -7,8 +8,100 @@ import DatasetsStore from '../stores/DatasetsStore';
 import URIUtil from './utils/URIUtil';
 
 class Datasets extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {mouseOverList: [], selectedList: []};
+    }
     componentDidMount() {
+        const canvasDIV = this.refs['linker_canvas'];
+        let instance = jsPlumb.getInstance({
+            DragOptions: { cursor: 'pointer', zIndex: 2000 },
+            Container: canvasDIV,
+            EndpointHoverStyle: { fill: 'orange' },
+            HoverPaintStyle: { stroke: 'orange' }
+        });
+        let commonPropLink = {
+            connector: 'Straight',
+            anchor:['AutoDefault'],
+            overlays:[
+                [ 'Label', { label:' ', id:'prop1' } ]
+            ],
+            endpoint:'Dot'
+        }
+        let commonPropLink2 = {
+            anchor:['AutoDefault'],
+            overlays:[
+                [ 'Label', { label:' ', id:'prop1' } ]
+            ],
+            endpoint:'Dot'
+        }
+        jsPlumb.ready(()=> {
+            const containerOrgs = this.refs.containerOrgs;
+            const containerProjects = this.refs.containerProjects;
+            const containerPersons = this.refs.containerPersons;
+            const containerPatents = this.refs.containerPatents;
+            const containerPublications = this.refs.containerPublications;
+            const containerFundingProgram = this.refs.containerFundingProgram;
+            const containerOrgRanking = this.refs.containerOrgRanking;
+            const containerGeoBoundaries = this.refs.containerGeoBoundaries;
+            const containerGeoStats = this.refs.containerGeoStats;
+            const containerGeoLocations = this.refs.containerGeoLocations;
 
+            instance.draggable(containerOrgs);
+            instance.draggable(containerProjects);
+            instance.draggable(containerPersons);
+            instance.draggable(containerPatents);
+            instance.draggable(containerPublications);
+            instance.draggable(containerFundingProgram);
+            instance.draggable(containerOrgRanking);
+            instance.draggable(containerGeoBoundaries);
+            instance.draggable(containerGeoStats);
+            instance.draggable(containerGeoLocations);
+            instance.connect({
+                source: containerGeoLocations,
+                target: containerGeoBoundaries,
+            }, commonPropLink);
+            instance.connect({
+                source: containerGeoBoundaries,
+                target: containerGeoStats,
+            }, commonPropLink);
+            instance.connect({
+                source: containerOrgs,
+                target: containerProjects,
+            }, commonPropLink);
+            instance.connect({
+                source: containerOrgs,
+                target: containerPersons
+            }, commonPropLink);
+            instance.connect({
+                source: containerProjects,
+                target: containerPersons
+            }, commonPropLink);
+            instance.connect({
+                source: containerProjects,
+                target: containerFundingProgram
+            }, commonPropLink);
+            instance.connect({
+                source: containerOrgs,
+                target: containerOrgRanking
+            }, commonPropLink);
+            instance.connect({
+                source: containerOrgs,
+                target: containerPublications
+            }, commonPropLink);
+            instance.connect({
+                source: containerOrgs,
+                target: containerPatents
+            }, commonPropLink);
+            instance.connect({
+                source: containerPersons,
+                target: containerPublications
+            }, commonPropLink);
+            instance.connect({
+                source: containerPersons,
+                target: containerPatents
+            }, commonPropLink);
+        });
     }
     prepareFocusList(list) {
         let out = [];
@@ -48,6 +141,25 @@ class Datasets extends React.Component {
         }
         return 0;
     }
+    handleMouseOver(category){
+        let current = this.state.mouseOverList;
+        current.push(category);
+        this.setState({mouseOverList: current});
+    }
+    handleMouseOut(category){
+        let current = this.state.mouseOverList;
+        current.splice(current.indexOf(category), 1);
+        this.setState({mouseOverList: current});
+    }
+    handleMouseClick(category){
+        let current = this.state.selectedList;
+        if(current.indexOf(category) === -1){
+            current.push(category);
+        }else{
+            current.splice(current.indexOf(category), 1);
+        }
+        this.setState({selectedList: current});
+    }
     render() {
         let self = this;
         let optionsList, output ='', outputDSS;
@@ -56,9 +168,7 @@ class Datasets extends React.Component {
         let createDatasetDIV = '';
         let annotateDatasetDIV = '';
         let datasetActionsDIV = '';
-        let info = <div className="ui blue message">
-                        The list contains only the datasets for which at least one <b>config scope</b> is found!
-                   </div>;
+        let info = '';
         let dss = this.props.DatasetsStore.datasetsList;
         //sort by position
         dss.sort(self.compareProps);
@@ -115,11 +225,152 @@ class Datasets extends React.Component {
             }
 
         }
+        const containerOrgsClass = classNames({
+            'ui inverted grey circular segment': true,
+            'secondary': self.state.selectedList.indexOf('orgs') === -1,
+            'raised': self.state.selectedList.indexOf('orgs') !== -1,
+            'tertiary': self.state.mouseOverList.indexOf('orgs') === -1 && self.state.selectedList.indexOf('orgs') === -1
+        });
+        const containerOrgRankingClass = classNames({
+            'ui inverted brown circular segment': true,
+            'secondary': self.state.selectedList.indexOf('orgRanking') === -1,
+            'raised': self.state.selectedList.indexOf('orgRanking') !== -1,
+            'tertiary': self.state.mouseOverList.indexOf('orgRanking') === -1 && self.state.selectedList.indexOf('orgRanking') === -1
+        });
         return (
             <div className="ui page grid" ref="datasets">
                 <div className="ui column">
-                    {dss.length ? <div>{info}</div> : ''}
-                    <div className="ui segment">
+                    <div className="ui segment" ref="linker_canvas">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div className={containerOrgRankingClass} ref="containerOrgRanking" onMouseOver={this.handleMouseOver.bind(this, 'orgRanking')} onMouseOut={this.handleMouseOut.bind(this, 'orgRanking')} onClick={this.handleMouseClick.bind(this, 'orgRanking')}>Organization Ranking</div>
+                                    </td>
+                                    <td>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                    <td>
+                                        <div className="ui inverted secondary teal circular segment" ref="containerFundingProgram">Funding Programs</div>
+                                    </td>
+                                    <td>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                    <td>
+                                        <div className="ui inverted secondary circular segment" ref="containerGeoLocations">Geo Locations</div>
+                                    </td>
+                                    <td>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                            <tr>
+                                <td colSpan="7">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div className={containerOrgsClass} ref="containerOrgs" onMouseOver={this.handleMouseOver.bind(this, 'orgs')} onMouseOut={this.handleMouseOut.bind(this, 'orgs')} onClick={this.handleMouseClick.bind(this, 'orgs')}>Organizations
+                                        <br/>
+                                        <div className="ui inverted disabled black small circular label">Geo</div></div>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    <div className="ui inverted secondary blue circular segment" ref="containerProjects">Projects
+                                        <br/>
+                                        <div className="ui inverted disabled black small circular label">Geo</div></div>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    <div className="ui inverted secondary yellow circular segment" ref="containerGeoBoundaries">Geo Boundaries</div>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    <div className="ui inverted secondary red circular segment" ref="containerOthers">Other Datasets </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colSpan="7">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div className="ui inverted secondary green circular segment" ref="containerPersons">Persons
+                                        <br/>
+                                        <div className="ui inverted disabled black small circular label">Geo</div></div>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    <div className="ui inverted secondary violet circular segment" ref="containerPublications">Publications</div>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    <div className="ui inverted secondary pink circular segment" ref="containerGeoStats">Geo Statistical Data</div>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colSpan="7">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    <div className="ui inverted secondary purple circular segment" ref="containerPatents">Patents</div>
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                                <td>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+
+
                         <h2><span className="ui big black circular label">{dss.length}</span> Datasets</h2>
                         <div className="ui big divided list">
                             {output}{outputDSS}

@@ -82,6 +82,8 @@ server.use('/jquery', express.static(path.join(__dirname, '/node_modules/jquery'
 server.use('/animate.css', express.static(path.join(__dirname, '/node_modules/animate.css')));
 server.use('/leaflet', express.static(path.join(__dirname, '/node_modules/leaflet')));
 
+server.use('/jsplumb', express.static(path.join(__dirname, '/node_modules/jsplumb')));
+
 server.use('/assets', express.static(path.join(__dirname, '/assets')));
 // Get access to the fetchr plugin instance
 let fetchrPlugin = app.getPlugin('FetchrPlugin');
