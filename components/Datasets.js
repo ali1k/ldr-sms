@@ -46,6 +46,7 @@ class Datasets extends React.Component {
             const containerGeoBoundaries = this.refs.containerGeoBoundaries;
             const containerGeoStats = this.refs.containerGeoStats;
             const containerGeoLocations = this.refs.containerGeoLocations;
+            const containerOthers = this.refs.containerOthers;
 
             instance.draggable(containerOrgs);
             instance.draggable(containerProjects);
@@ -57,6 +58,7 @@ class Datasets extends React.Component {
             instance.draggable(containerGeoBoundaries);
             instance.draggable(containerGeoStats);
             instance.draggable(containerGeoLocations);
+            //instance.draggable(containerOthers);
             instance.connect({
                 source: containerGeoLocations,
                 target: containerGeoBoundaries,
@@ -226,7 +228,7 @@ class Datasets extends React.Component {
 
         }
         const containerOrgsClass = classNames({
-            'ui inverted grey circular segment': true,
+            'ui inverted orange circular segment': true,
             'secondary': self.state.selectedList.indexOf('orgs') === -1,
             'raised': self.state.selectedList.indexOf('orgs') !== -1,
             'tertiary': self.state.mouseOverList.indexOf('orgs') === -1 && self.state.selectedList.indexOf('orgs') === -1
@@ -236,6 +238,60 @@ class Datasets extends React.Component {
             'secondary': self.state.selectedList.indexOf('orgRanking') === -1,
             'raised': self.state.selectedList.indexOf('orgRanking') !== -1,
             'tertiary': self.state.mouseOverList.indexOf('orgRanking') === -1 && self.state.selectedList.indexOf('orgRanking') === -1
+        });
+        const containerPersonsClass = classNames({
+            'ui inverted blue circular segment': true,
+            'secondary': self.state.selectedList.indexOf('persons') === -1,
+            'raised': self.state.selectedList.indexOf('persons') !== -1,
+            'tertiary': self.state.mouseOverList.indexOf('persons') === -1 && self.state.selectedList.indexOf('persons') === -1
+        });
+        const containerFundingProgramClass = classNames({
+            'ui inverted teal circular segment': true,
+            'secondary': self.state.selectedList.indexOf('fundingPrograms') === -1,
+            'raised': self.state.selectedList.indexOf('fundingPrograms') !== -1,
+            'tertiary': self.state.mouseOverList.indexOf('fundingPrograms') === -1 && self.state.selectedList.indexOf('fundingPrograms') === -1
+        });
+        const containerGeoLocationslass = classNames({
+            'ui inverted circular segment': true,
+            'secondary': self.state.selectedList.indexOf('geoLocations') === -1,
+            'raised': self.state.selectedList.indexOf('geoLocations') !== -1,
+            'tertiary': self.state.mouseOverList.indexOf('geoLocations') === -1 && self.state.selectedList.indexOf('geoLocations') === -1
+        });
+        const containerProjectslass = classNames({
+            'ui inverted green circular segment': true,
+            'secondary': self.state.selectedList.indexOf('projects') === -1,
+            'raised': self.state.selectedList.indexOf('projects') !== -1,
+            'tertiary': self.state.mouseOverList.indexOf('projects') === -1 && self.state.selectedList.indexOf('projects') === -1
+        });
+        const containerGeoBoundariesClass = classNames({
+            'ui inverted yellow circular segment': true,
+            'secondary': self.state.selectedList.indexOf('geoBoundaries') === -1,
+            'raised': self.state.selectedList.indexOf('geoBoundaries') !== -1,
+            'tertiary': self.state.mouseOverList.indexOf('geoBoundaries') === -1 && self.state.selectedList.indexOf('geoBoundaries') === -1
+        });
+        const containerOthersClass = classNames({
+            'ui inverted red circular segment': true,
+            'secondary': self.state.selectedList.indexOf('others') === -1,
+            'raised': self.state.selectedList.indexOf('others') !== -1,
+            'tertiary': self.state.mouseOverList.indexOf('others') === -1 && self.state.selectedList.indexOf('others') === -1
+        });
+        const containerPublicationsClass = classNames({
+            'ui inverted violet circular segment': true,
+            'secondary': self.state.selectedList.indexOf('publications') === -1,
+            'raised': self.state.selectedList.indexOf('publications') !== -1,
+            'tertiary': self.state.mouseOverList.indexOf('publications') === -1 && self.state.selectedList.indexOf('publications') === -1
+        });
+        const containerGeoStatsClass = classNames({
+            'ui inverted pink circular segment': true,
+            'secondary': self.state.selectedList.indexOf('geoStats') === -1,
+            'raised': self.state.selectedList.indexOf('geoStats') !== -1,
+            'tertiary': self.state.mouseOverList.indexOf('geoStats') === -1 && self.state.selectedList.indexOf('geoStats') === -1
+        });
+        const containerPatentsClass = classNames({
+            'ui inverted purple circular segment': true,
+            'secondary': self.state.selectedList.indexOf('patents') === -1,
+            'raised': self.state.selectedList.indexOf('patents') !== -1,
+            'tertiary': self.state.mouseOverList.indexOf('patents') === -1 && self.state.selectedList.indexOf('patents') === -1
         });
         return (
             <div className="ui page grid" ref="datasets">
@@ -251,13 +307,13 @@ class Datasets extends React.Component {
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     </td>
                                     <td>
-                                        <div className="ui inverted secondary teal circular segment" ref="containerFundingProgram">Funding Programs</div>
+                                        <div className={containerFundingProgramClass} ref="containerFundingProgram" onMouseOver={this.handleMouseOver.bind(this, 'fundingPrograms')} onMouseOut={this.handleMouseOut.bind(this, 'fundingPrograms')} onClick={this.handleMouseClick.bind(this, 'fundingPrograms')}>Funding Programs</div>
                                     </td>
                                     <td>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     </td>
                                     <td>
-                                        <div className="ui inverted secondary circular segment" ref="containerGeoLocations">Geo Locations</div>
+                                        <div className={containerGeoLocationslass} ref="containerGeoLocations" onMouseOver={this.handleMouseOver.bind(this, 'geoLocations')} onMouseOut={this.handleMouseOut.bind(this, 'geoLocations')} onClick={this.handleMouseClick.bind(this, 'geoLocations')}>Geo Locations</div>
                                     </td>
                                     <td>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -284,7 +340,7 @@ class Datasets extends React.Component {
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td>
-                                    <div className="ui inverted secondary blue circular segment" ref="containerProjects">Projects
+                                    <div className={containerProjectslass} ref="containerProjects" onMouseOver={this.handleMouseOver.bind(this, 'projects')} onMouseOut={this.handleMouseOut.bind(this, 'projects')} onClick={this.handleMouseClick.bind(this, 'projects')}>Projects
                                         <br/>
                                         <div className="ui inverted disabled black small circular label">Geo</div></div>
                                 </td>
@@ -292,13 +348,13 @@ class Datasets extends React.Component {
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td>
-                                    <div className="ui inverted secondary yellow circular segment" ref="containerGeoBoundaries">Geo Boundaries</div>
+                                    <div className={containerGeoBoundariesClass} ref="containerGeoBoundaries" onMouseOver={this.handleMouseOver.bind(this, 'geoBoundaries')} onMouseOut={this.handleMouseOut.bind(this, 'geoBoundaries')} onClick={this.handleMouseClick.bind(this, 'geoBoundaries')}>Geo Boundaries</div>
                                 </td>
                                 <td>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td>
-                                    <div className="ui inverted secondary red circular segment" ref="containerOthers">Other Datasets </div>
+                                    <div className={containerOthersClass} ref="containerOthers" onMouseOver={this.handleMouseOver.bind(this, 'others')} onMouseOut={this.handleMouseOut.bind(this, 'others')} onClick={this.handleMouseClick.bind(this, 'others')}>Other Datasets </div>
                                 </td>
                             </tr>
                             <tr>
@@ -312,7 +368,7 @@ class Datasets extends React.Component {
                             </tr>
                             <tr>
                                 <td>
-                                    <div className="ui inverted secondary green circular segment" ref="containerPersons">Persons
+                                    <div className={containerPersonsClass} ref="containerPersons" onMouseOver={this.handleMouseOver.bind(this, 'persons')} onMouseOut={this.handleMouseOut.bind(this, 'persons')} onClick={this.handleMouseClick.bind(this, 'persons')}>Persons
                                         <br/>
                                         <div className="ui inverted disabled black small circular label">Geo</div></div>
                                 </td>
@@ -320,13 +376,13 @@ class Datasets extends React.Component {
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td>
-                                    <div className="ui inverted secondary violet circular segment" ref="containerPublications">Publications</div>
+                                    <div className={containerPublicationsClass} ref="containerPublications" onMouseOver={this.handleMouseOver.bind(this, 'publications')} onMouseOut={this.handleMouseOut.bind(this, 'publications')} onClick={this.handleMouseClick.bind(this, 'publications')}>Publications</div>
                                 </td>
                                 <td>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td>
-                                    <div className="ui inverted secondary pink circular segment" ref="containerGeoStats">Geo Statistical Data</div>
+                                    <div className={containerGeoStatsClass} ref="containerGeoStats" onMouseOver={this.handleMouseOver.bind(this, 'geoStats')} onMouseOut={this.handleMouseOut.bind(this, 'geoStats')} onClick={this.handleMouseClick.bind(this, 'geoStats')}>Geo Statistical Data</div>
                                 </td>
                                 <td>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -352,7 +408,7 @@ class Datasets extends React.Component {
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td>
-                                    <div className="ui inverted secondary purple circular segment" ref="containerPatents">Patents</div>
+                                    <div className={containerPatentsClass} ref="containerPatents" onMouseOver={this.handleMouseOver.bind(this, 'patents')} onMouseOut={this.handleMouseOut.bind(this, 'patents')} onClick={this.handleMouseClick.bind(this, 'patents')}>Patents</div>
                                 </td>
                                 <td>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
