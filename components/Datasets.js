@@ -477,7 +477,7 @@ class Datasets extends React.Component {
                         </table>
 
 
-                        <h2><span className="ui big black circular label">{dss.length}</span> Datasets</h2>
+                        <h2><span className="ui big black circular label">{dss.length}</span> Datasets {self.state.selectedList.length ? <span className="ui tag label">{self.state.selectedList.join(', ')}</span> : ''}</h2>
                         <div className="ui big divided list">
                             {output}{outputDSS}
                         </div>
