@@ -171,11 +171,10 @@ class Datasets extends React.Component {
         let annotateDatasetDIV = '';
         let datasetActionsDIV = '';
         let info = '';
-        let dsCategoryObj = {orgRanking: [], orgs: [], persons: [], fundingPrograms: [], projects: [], publications: [], patents: [], geoLocations: [], geoBoundaries: [], geoStats: [], others: [[]]};
+        let dsCategoryObj = {orgRanking: [], orgs: [], persons: [], fundingPrograms: [], projects: [], publications: [], patents: [], geoLocations: [], geoBoundaries: [], geoStats: [], others: []};
         let dss = this.props.DatasetsStore.datasetsList;
         //sort by position
         dss.sort(self.compareProps);
-        console.log(dss);
         dss.forEach((item)=>{
             if(item.features.datasetCategory){
                 dsCategoryObj[item.features.datasetCategory[0]].push(item);
