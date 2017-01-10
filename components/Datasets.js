@@ -391,7 +391,7 @@ class Datasets extends React.Component {
                                 <td>
                                     <div className={containerOthersClass} ref="containerOthers" onMouseOver={this.handleMouseOver.bind(this, 'others')} onMouseOut={this.handleMouseOut.bind(this, 'others')} onClick={this.handleMouseClick.bind(this, 'others')}>
                                         <div className="ui top left attached small label">{dsCategoryObj.others.length}</div>
-                                        &nbsp;&nbsp; Other Datasets &nbsp;&nbsp;
+                                        &nbsp;&nbsp; Other Entity Types &nbsp;&nbsp;
                                     </div>
                                 </td>
                             </tr>
