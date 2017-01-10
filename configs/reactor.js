@@ -87,7 +87,7 @@ export default {
                 readOnly: 1,
                 resourceFocusType: ['http://risis.eu/leidenRanking/ontology/class/Organisation'],
                 datasetLabel: ['[RISIS] CWTS Leiden Ranking Dataset'],
-                datasetCategory: ['orgs'],
+                datasetCategory: ['orgRanking'],
                 resourceLabelProperty: ['http://risis.eu/leidenRanking/ontology/predicate/University'],
                 position: 7
             },
