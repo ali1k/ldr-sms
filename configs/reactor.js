@@ -106,6 +106,14 @@ export default {
                 resourceLabelProperty: ['http://purl.org/dc/terms/title'],
                 position: 9
             },
+            'http://risis.eu/cordisH20202': {
+                resourceFocusType: ['http://risis.eu/cordisH2020/vocab/FundingScheme'],
+                readOnly: 1,
+                datasetLabel: ['Cordis H2020 Funding Schemes Dataset'],
+                datasetCategory: ['fundingPrograms'],
+                resourceLabelProperty: ['http://purl.org/dc/terms/description'],
+                position: 24
+            },
             'http://risis.eu/dataset/eupro': {
                 //resourceFocusType: ['http://risis.eu/eupro/ontology/class/Projects'],
                 readOnly: 1,
