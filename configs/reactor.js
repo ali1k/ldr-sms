@@ -30,6 +30,7 @@ export default {
                 readOnly: 1,
                 resourceFocusType: ['http://risis.eu/orgref/ontology/class/Organisation'],
                 datasetLabel: ['OrgRef Dataset'],
+                datasetCategory: ['orgs'],
                 //specifies what property should be used as display label of the resource
                 resourceLabelProperty : ['http://risis.eu/orgref/ontology/predicate/Name'],
                 position: 1
@@ -38,6 +39,7 @@ export default {
                 readOnly: 1,
                 resourceFocusType: ['http://xmlns.com/foaf/0.1/Organization'],
                 datasetLabel: ['GRID (Global Research Identifier Database) Dataset'],
+                datasetCategory: ['orgs'],
                 resourceLabelProperty: ['http://www.w3.org/2000/01/rdf-schema#label'],
                 position: 2
             },
@@ -45,27 +47,39 @@ export default {
                 readOnly: 1,
                 resourceFocusType: ['http://risis.eu/nano/ontology/class/Organisation'],
                 datasetLabel: ['[RISIS] Nano Organizations Dataset'],
+                datasetCategory: ['orgs'],
                 resourceLabelProperty : ['http://risis.eu/nano/ontology/predicate/org_name_std'],
                 position: 3
+            },
+            'http://risis.eu/dataset/nano2': {
+                readOnly: 1,
+                resourceFocusType: ['http://risis.eu/nano/ontology/class/Document'],
+                datasetLabel: ['[RISIS] Nano Patents Dataset'],
+                datasetCategory: ['patents'],
+                resourceLabelProperty : ['http://risis.eu/nano/ontology/predicate/appln_title'],
+                position: 23
             },
             'http://more2Orgs.risis.eu': {
                 readOnly: 1,
                 resourceFocusType: ['http://risis.eu/More2/ontology/class/Organisation'],
                 datasetLabel: ['[RISIS] Amadeus Sample Organizations Dataset'],
+                datasetCategory: ['orgs'],
                 resourceLabelProperty: ['http://risis.eu/More2/ontology/predicate/Companyname'],
                 position: 4
             },
             'http://dx.doi.org/10.13039/fundref_registry': {
                 readOnly: 1,
                 resourceFocusType: ['http://www.w3.org/2004/02/skos/core#Concept'],
-                datasetLabel: ['Open Funder Dataset'],
+                datasetLabel: ['Open Funder Organizations Dataset'],
+                datasetCategory: ['orgs'],
                 resourceLabelProperty: ['http://www.w3.org/2000/01/rdf-schema#label'],
                 position: 5
             },
             'http://risis.eu/dataset/Eter': {
                 readOnly: 1,
                 resourceFocusType: ['http://risis.eu/Eter/ontology/class/University'],
-                datasetLabel: ['[RISIS] ETER Dataset'],
+                datasetLabel: ['[RISIS] ETER Organizations Dataset'],
+                datasetCategory: ['orgs'],
                 resourceLabelProperty: ['http://risis.eu/Eter/ontology/predicate/institution_Name'],
                 position: 6
             },
@@ -73,6 +87,7 @@ export default {
                 readOnly: 1,
                 resourceFocusType: ['http://risis.eu/leidenRanking/ontology/class/Organisation'],
                 datasetLabel: ['[RISIS] CWTS Leiden Ranking Dataset'],
+                datasetCategory: ['orgs'],
                 resourceLabelProperty: ['http://risis.eu/leidenRanking/ontology/predicate/University'],
                 position: 7
             },
@@ -80,12 +95,14 @@ export default {
                 resourceFocusType: ['http://dbpedia.org/ontology/EducationalInstitution'],
                 readOnly: 1,
                 datasetLabel: ['DBpedia Educational Institutes Dataset'],
+                datasetCategory: ['orgs'],
                 position: 8
             },
             'http://risis.eu/cordisH2020': {
                 resourceFocusType: ['http://risis.eu/cordisH2020/vocab/SignedGrantAgreement'],
                 readOnly: 1,
                 datasetLabel: ['Cordis H2020 Projects Dataset'],
+                datasetCategory: ['projects'],
                 resourceLabelProperty: ['http://purl.org/dc/terms/title'],
                 position: 9
             },
@@ -93,12 +110,14 @@ export default {
                 //resourceFocusType: ['http://risis.eu/eupro/ontology/class/Projects'],
                 readOnly: 1,
                 datasetLabel: ['[RISIS] EUPRO Projects Dataset'],
+                datasetCategory: ['projects'],
                 position: 10
             },
             'http://www.freme-project.eu/datasets/cordis': {
                 resourceFocusType: ['http://dbpedia.org/ontology/ResearchProject'],
                 readOnly: 1,
                 datasetLabel: ['Cordis FP7 Projects Dataset'],
+                datasetCategory: ['projects'],
                 resourceLabelProperty: ['http://purl.org/dc/elements/1.1/title'],
                 position: 11
             },
@@ -106,6 +125,7 @@ export default {
                 resourceFocusType: ['http://geo.risis.eu/vocabulary/rvo-nl/Project'],
                 readOnly: 1,
                 datasetLabel: ['NL-RVO Projects Dataset'],
+                datasetCategory: ['projects'],
                 resourceLabelProperty: ['http://purl.org/dc/terms/title'],
                 position: 12
             },
@@ -120,6 +140,7 @@ export default {
                 resourceFocusType: ['http://geo.risis.eu/vocabulary/oecd/Municipality'],
                 readOnly: 1,
                 datasetLabel: ['OECD FUA Dataset'],
+                datasetCategory: ['geoBoundaries'],
                 resourceLabelProperty: ['http://purl.org/dc/terms/title'],
                 position: 13
             },
@@ -127,50 +148,59 @@ export default {
                 resourceFocusType: ['http://geo.risis.eu/vocabulary/cbs-nl/AdministrativeArea'],
                 readOnly: 1,
                 datasetLabel: ['NL-CBS Statistics Dataset'],
+                datasetCategory: ['geoStats'],
                 resourceLabelProperty: ['http://purl.org/dc/terms/title'],
                 position: 14
             },
             'http://risis.eu/wos': {
                 readOnly: 1,
                 datasetLabel: ['WoS Dataset'],
+                datasetCategory: ['publications'],
                 position: 15
             },
             'http://risis.eu/genderc/applicants': {
                 resourceFocusType: ['http://risis.eu/genderc/vocab/Applicant'],
                 readOnly: 1,
+                datasetCategory: ['persons'],
                 datasetLabel: ['ERC Applicants Dataset'],
                 position: 16
             },
             'http://risis.eu/genderc/grants': {
                 resourceFocusType: ['http://risis.eu/genderc/vocab/Grant'],
                 readOnly: 1,
+                datasetCategory: ['others'],
                 datasetLabel: ['ERC Grants Dataset'],
                 position: 17
             },
             'http://risis.eu/genderc/evaluations': {
                 resourceFocusType: ['http://risis.eu/genderc/vocab/Evaluation'],
                 readOnly: 1,
+                datasetCategory: ['others'],
                 datasetLabel: ['ERC Evaluations Dataset'],
                 position: 18
             },
             'http://risis.eu/genderc/applications': {
                 resourceFocusType: ['http://risis.eu/genderc/vocab/Application'],
                 readOnly: 1,
+                datasetCategory: ['others'],
                 datasetLabel: ['ERC Grant Applications Dataset'],
                 position: 19
             },
             'http://risis.eu/genderc/rankings': {
                 readOnly: 1,
+                datasetCategory: ['orgRanking'],
                 datasetLabel: ['Basic University Rankings Dataset for gendERC'],
                 position: 20
             },
             'https://ec.europa.eu/jrc/en/language-technologies/jrc-names': {
                 readOnly: 1,
                 datasetLabel: ['JRC-Names Dataset'],
+                datasetCategory: ['others'],
                 position: 21
             },
             'http://classifications.risis.eu/countries': {
                 readOnly: 1,
+                datasetCategory: ['geoLocations'],
                 datasetLabel: ['Classifications: Countries Dataset'],
                 resourceFocusType: ['http://risis.eu/CountriesGeoData/ontology/class/Country'],
                 resourceLabelProperty: ['http://risis.eu/CountriesGeoData/ontology/predicate/name'],
