@@ -79,7 +79,7 @@ export default {
             rp.get({headers: {'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded'}, accept: 'application/json', uri: 'http://sms.risis.eu/api/v1.0/geo.googleGeocode;addr=' + query + ';apiKey=' + googleMapsGeocodingAPIKey[0]}).then(function(res){
                 let enrichment = utilObject.parseGoogleGeocoding(res);
                 if(!enrichment){
-                    callback(null, {enrichment: {location: 0} , id: params.id, query: params.query});
+                    callback(null, {enrichment: {location: 0, boundarySource: params.boundarySource, boundaries: []} , id: params.id, query: params.query});
                     return 0;
                 }
                 //todo: by default it uses map it, change it later on
@@ -95,13 +95,13 @@ export default {
                         }
                     });
                 }).catch(function (err2) {
-                    console.log('\n sms boundaries \n Status Code: \n' + err.statusCode + '\n Error Msg: \n' + err.message);
-                    callback(null, {enrichment: {location: 0} , id: params.id, query: params.query});
+                    console.log('\n sms boundaries \n Status Code: \n' + err2.statusCode + '\n Error Msg: \n' + err2.message);
+                    callback(null, {enrichment: {location: 0, boundarySource: params.boundarySource, boundaries: []} , id: params.id, query: params.query});
                 });
 
             }).catch(function (err) {
                 console.log('\n googleGeocoding \n Status Code: \n' + err.statusCode + '\n Error Msg: \n' + err.message);
-                callback(null, {location: 0 , id: params.id, query: params.query});
+                callback(null, {enrichment: {location: 0, boundarySource: params.boundarySource, boundaries: []} , id: params.id, query: params.query});
             });
         }
     }

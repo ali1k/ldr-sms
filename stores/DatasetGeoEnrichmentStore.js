@@ -39,6 +39,9 @@ class DatasetGeoEnrichmentStore extends BaseStore {
                     this.tags[tag.id]={count: 1, text: tag.title+', ' + tag.country, level: tag.level, uri: preURI+tag.id};
                 }
             });
+        }else{
+            this.formattedText = '';
+            this.geometry = '';
         }
         this.emitChange();
     }

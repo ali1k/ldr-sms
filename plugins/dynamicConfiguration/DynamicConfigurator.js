@@ -947,6 +947,11 @@ class DynamicConfigurator {
                 <http://ld-r.org/fpcs${rnc}> a ldr:FacetsPropertyConfig ; ldr:label "Tags" ; rdfs:label "Tags Config" ; ldr:objectBrowser "TagListBrowser" ; ldr:property "https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#annotations->https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#surfaceForm" . ${graphEnd}
                 `;
             }
+            if(options && options.geoEnrichmentFacets){
+                annotationSt = ` ${graph} <${configURI}> ldr:list "https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#geoEnrichments->https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#country" , "https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#geoEnrichments->https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#boundaryLevel2" .
+                 ${graphEnd}
+                `;
+            }
             const query = `
             INSERT DATA {
             ${graph}
