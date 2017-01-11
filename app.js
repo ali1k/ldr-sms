@@ -15,6 +15,7 @@ import DatasetsStore from './stores/DatasetsStore';
 import BoundaryMapStore from './stores/BoundaryMapStore';
 import LinksetStore from './stores/LinksetStore';
 import DatasetAnnotationStore from './stores/DatasetAnnotationStore';
+import DatasetGeoEnrichmentStore from './stores/DatasetGeoEnrichmentStore';
 
 let app = new Fluxible({
     component: Application,
@@ -31,7 +32,8 @@ let app = new Fluxible({
         FacetedBrowserStore,
         BoundaryMapStore,
         LinksetStore,
-        DatasetAnnotationStore
+        DatasetAnnotationStore,
+        DatasetGeoEnrichmentStore
     ]
 });
 

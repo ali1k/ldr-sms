@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames/bind';
 import {navigateAction} from 'fluxible-router';
 import {connectToStores} from 'fluxible-addons-react';
-import {enableAuthentication, defaultDatasetURI, enableAddingNewDatasets, enableDatasetAnnotation} from '../configs/general';
+import {enableAuthentication, defaultDatasetURI, enableAddingNewDatasets, enableDatasetAnnotation, enableDatasetGeoEnrichment} from '../configs/general';
 import DatasetsStore from '../stores/DatasetsStore';
 import URIUtil from './utils/URIUtil';
 
@@ -169,6 +169,7 @@ class Datasets extends React.Component {
         let user = this.context.getUser();
         let createDatasetDIV = '';
         let annotateDatasetDIV = '';
+        let geoEnrichDatasetDIV = '';
         let datasetActionsDIV = '';
         let info = '';
         let dsCategoryObj = {orgRanking: [], orgs: [], persons: [], fundingPrograms: [], projects: [], publications: [], patents: [], geoLocations: [], geoBoundaries: [], geoStats: [], others: []};
@@ -197,8 +198,15 @@ class Datasets extends React.Component {
                         </a>
                 </div>;
             }
+            if(enableDatasetGeoEnrichment){
+                geoEnrichDatasetDIV = <div className="item">
+                        <a  className="medium ui basic icon labeled button" href="/geoEnrichDataset">
+                            <i className="cubes square large blue icon "></i> <i className="marker black icon"></i>Geo-enrich a Dataset
+                        </a>
+                </div>;
+            }
             datasetActionsDIV = <div className="ui horizontal divided list">
-                {createDatasetDIV} {annotateDatasetDIV}
+                {createDatasetDIV} {annotateDatasetDIV} {geoEnrichDatasetDIV}
                 <br/>
             </div>;
             if(!dss.length){

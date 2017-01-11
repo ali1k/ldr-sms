@@ -46,6 +46,15 @@ export default {
             context.executeAction(loadDatasets, {pageTitle: 'Annotate a dataset'}, done);
         }
     },
+    geoEnrichDataset: {
+        path: '/geoEnrichDataset',
+        method: 'get',
+        handler: require('../components/DatasetGeoEnrichment'),
+        label: 'DatasetGeoEnrichment',
+        action: (context, payload, done) => {
+            context.executeAction(loadDatasets, {pageTitle: 'Geo-enrich a dataset'}, done);
+        }
+    },
     facets: {
         path: '/browse/:id?',
         method: 'get',

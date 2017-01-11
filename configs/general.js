@@ -38,6 +38,8 @@ export default {
     enableAddingNewDatasets: 1,
     //allows users to annotate datasets using NLP APIs
     enableDatasetAnnotation: 1,
+    //allows users to geocode datasets
+    enableDatasetGeoEnrichment: 1,
     //graph that stores your configurations
     configDatasetURI: ['http://ld-r.org/configurations'],
     //will enable/disable auto config

@@ -199,7 +199,7 @@ class DatasetQuery{
         return this.prefixes + this.query;
     }
     //only gives us unannotated ones
-    getResourcePropForAnnotation(endpointParameters, graphName, type, propertyURI, limit, offset, inNewDataset) {
+    getResourcePropForAnnotation(endpointParameters, graphName, type, propertyURI, limit, offset, inNewDataset, boundarySource) {
         let self = this;
         let {gStart, gEnd} = this.prepareGraphName(graphName);
         let st = '?resource a <'+ type + '> .';
@@ -214,6 +214,16 @@ class DatasetQuery{
                 typeURIs.push('<' + uri + '>');
             });
             st = '?resource a ?type . FILTER (?type IN (' + typeURIs.join(',') + '))';
+        }
+        let notExistFilterSt= `
+            ?resource ldr:annotatedBy ?annotationD .
+            ?annotationD ldr:property "${propertyURI}" .
+        `;
+        if(boundarySource){
+            notExistFilterSt= `
+                ?resource ldr:geoEnrichedBy ?annotationD .
+                ?annotationD ldr:boundarySource "${boundarySource}" ; ldr:property "${propertyURI}" .
+            `;
         }
         //do not care about already annotated ones if annotations are stored in a new dataset
         if(inNewDataset){
@@ -230,8 +240,7 @@ class DatasetQuery{
                             } LIMIT ${limit} OFFSET ${offset}
                         }
                         filter not exists {
-                            ?resource ldr:annotatedBy ?annotationD .
-                            ?annotationD ldr:property "${propertyURI}" .
+                            ${notExistFilterSt}
                         }
                     }
                 }
@@ -244,8 +253,7 @@ class DatasetQuery{
                     ${st}
                     ?resource ${self.filterPropertyPath(propertyURI)} ?objectValue .
                     filter not exists {
-                        ?resource ldr:annotatedBy ?annotationD .
-                        ?annotationD ldr:property "${propertyURI}" .
+                        ${notExistFilterSt}
                     }
                 ${gEnd}
             }
@@ -334,6 +342,37 @@ class DatasetQuery{
                 ${st}
                 ?resource ldr:annotatedBy ?annotationD .
                 ?annotationD ldr:property "${propertyURI}" .
+            ${gEnd}
+        }
+        `;
+        return this.prefixes + this.query;
+    }
+    countGeoEnrichedResourcesWithProp(endpointParameters, graphName, type, propertyURI, inNewDataset, boundarySource) {
+        let self = this;
+        let {gStart, gEnd} = this.prepareGraphName(graphName);
+        let st = '?resource a <'+ type + '> .';
+        //will get all the types
+        if(!type.length || (type.length && !type[0]) ){
+            st = '?resource a ?type .';
+        }
+        //if we have multiple type, get all of them
+        let typeURIs = [];
+        if(type.length > 1){
+            type.forEach(function(uri) {
+                typeURIs.push('<' + uri + '>');
+            });
+            st = '?resource a ?type . FILTER (?type IN (' + typeURIs.join(',') + '))';
+        }
+        //in case of storing a new dataset, ignore the type
+        if(inNewDataset){
+            st = '';
+        }
+        this.query = `
+        SELECT (count(DISTINCT ?resource) AS ?atotal) WHERE {
+            ${gStart}
+                ${st}
+                ?resource ldr:geoEnrichedBy ?annotationD .
+                ?annotationD ldr:boundarySource "${boundarySource}" ; ldr:property "${propertyURI}" .
             ${gEnd}
         }
         `;
