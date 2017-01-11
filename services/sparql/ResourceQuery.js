@@ -15,7 +15,6 @@ class ResourceQuery{
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
         PREFIX DBpedia: <http://dbpedia.org/ontology/>
         PREFIX Schema: <http://schema.org/>
-        PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
         `;
         this.query='';
     }
