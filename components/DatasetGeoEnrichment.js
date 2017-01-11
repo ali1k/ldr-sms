@@ -158,6 +158,9 @@ class DatasetGeoEnrichment extends React.Component {
         if(!errorDIV){
             formDIV =
             <Form size='big'>
+                <div className="ui info message">
+                    This feature helps you to geocode address you have in your dataset and also to find their container boundaries.
+                </div>
                 <b>* Dataset</b>
                 <select ref="datasetURI" className="ui search dropdown" onChange={this.handleChange.bind(this, 'datasetURI')}>
                     <option value={''}> Select a Dataset </option>
@@ -165,10 +168,10 @@ class DatasetGeoEnrichment extends React.Component {
                 </select>
                 <Divider hidden />
                 <b>URI of the resource types</b>
-                <PrefixBasedInput includeOnly={['ldrClasses', 'classes']} noFocus={true} spec={{value:''}} onDataEdit={this.handleResourceURIChange.bind(this)} placeholder="URI of the resource types to be annotated / leave empty for all resources" allowActionByKey={false}/>
+                <PrefixBasedInput includeOnly={['ldrClasses', 'classes']} noFocus={true} spec={{value:''}} onDataEdit={this.handleResourceURIChange.bind(this)} placeholder="URI of the resource types to be geo-enrichment / leave empty for all resources" allowActionByKey={false}/>
                 <Divider hidden />
-                <b>* URI of the property used for annotation</b>
-                <PrefixBasedInput includeOnly={['ldrProperties', 'properties']} noFocus={true} spec={{value:''}} onDataEdit={this.handlePropertyURIChange.bind(this)} placeholder="URI of the property for which the values are annotated" allowActionByKey={false}/>
+                <b>* URI of the property used for geo-enrichment</b>
+                <PrefixBasedInput includeOnly={['ldrProperties', 'properties']} noFocus={true} spec={{value:''}} onDataEdit={this.handlePropertyURIChange.bind(this)} placeholder="URI of the property for which the values are geo-enrichment" allowActionByKey={false}/>
                 <Form.Group>
                     <label>Source of Boundaries for Geo-enrichment</label>
                     <Form.Radio label='GADM' name='gadmB' value='GADM' checked={this.state.boundarySource== 'GADM'} onChange={this.handleEnrichmentTypeCheckBox.bind(this)} />
