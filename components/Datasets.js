@@ -160,7 +160,11 @@ class Datasets extends React.Component {
         let dss = this.props.DatasetsStore.datasetsList;
         dss.forEach((item)=>{
             if(item.features.datasetCategory){
-                dsCategoryObj[item.features.datasetCategory[0]].push(item);
+                if (!dsCategoryObj[item.features.datasetCategory[0]]){
+                    dsCategoryObj.others.push(item);
+                }else{
+                    dsCategoryObj[item.features.datasetCategory[0]].push(item);
+                }
             }
         });
         if(enableAuthentication && !user){
