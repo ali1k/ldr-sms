@@ -217,7 +217,7 @@ class DatasetGeoEnrichment extends React.Component {
             formDIV = '';
             progressDIV = <div>
                 <div className='ui list'>
-                    <div className='item'>Dataset: <b><a href={'/dataset/1/'+encodeURIComponent(this.state.datasetURI)} target="_blank">{this.findDatasetLabel(this.state.datasetURI)}</a></b> {!this.state.storingDataset ? '' : <span> -> <b><a href={'/browse/'+encodeURIComponent(this.state.storingDataset)} target="_blank">[Annotated] {this.findDatasetLabel(this.state.datasetURI)}</a></b></span>} </div>
+                    <div className='item'>Dataset: <b><a href={'/dataset/1/'+encodeURIComponent(this.state.datasetURI)} target="_blank">{this.findDatasetLabel(this.state.datasetURI)}</a></b> {!this.state.storingDataset ? '' : <span> -> <b><a href={'/browse/'+encodeURIComponent(this.state.storingDataset)} target="_blank">[Geo-enriched] {this.findDatasetLabel(this.state.datasetURI)}</a></b></span>} </div>
                     {!this.state.resourceType ? '' : <div className='item'>Resource Type: <b>{this.state.resourceType}</b></div>}
                     <div className='item'>Property used: <b>{this.state.propertyURI}</b></div>
                 </div>
