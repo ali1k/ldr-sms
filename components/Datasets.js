@@ -145,6 +145,10 @@ class Datasets extends React.Component {
             current.splice(current.indexOf(category), 1);
         }
         this.setState({selectedList: current});
+        //scroll to datasets list
+        let body = $('html, body');
+        body.stop().animate({scrollTop:$('#datasetsList').offset().top}, '500', 'swing', function() {
+        });
     }
     render() {
         let self = this;
@@ -472,7 +476,7 @@ class Datasets extends React.Component {
 
 
                         <h2><span className="ui big black circular label">{dss.length}</span> Datasets {self.state.selectedList.length ? <span className="ui tag label">{self.state.selectedList.join(', ')}</span> : ''}</h2>
-                        <div className="ui big divided list">
+                        <div className="ui big divided list" id="datasetsList">
                             {output}{outputDSS}
                         </div>
                     </div>
