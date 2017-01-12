@@ -43,6 +43,14 @@ export default {
                 resourceLabelProperty: ['http://www.w3.org/2000/01/rdf-schema#label'],
                 position: 2
             },
+            'http://orgreg.risis.eu': {
+                readOnly: 1,
+                resourceFocusType: ['http://risis.eu/orgreg/ontology/class/Organisation'],
+                datasetLabel: ['[RISIS] Orgreg (Organization Register) Dataset'],
+                datasetCategory: ['orgs'],
+                resourceLabelProperty: ['http://www.w3.org/2000/01/rdf-schema#label'],
+                position: 2.1
+            },
             'http://risis.eu/dataset/nano': {
                 readOnly: 1,
                 resourceFocusType: ['http://risis.eu/nano/ontology/class/Organisation'],
