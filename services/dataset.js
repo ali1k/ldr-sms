@@ -234,7 +234,7 @@ export default {
                     maxOnPage = params.maxOnPage ? parseInt(params.maxOnPage) : maxOnPage;
                     let page = params.page ? params.page : 1;
                     let offset = (page - 1) * maxOnPage;
-                    query = queryObject.getResourcePropForAnnotation(endpointParameters, graphName, resourceType ? [resourceType] : rconfig.resourceFocusType, propertyURI, maxOnPage, offset, params.inNewDataset, params.boundarySource);
+                    query = queryObject.getResourcePropForAnnotation(endpointParameters, graphName, resourceType ? [resourceType] : rconfig.resourceFocusType, propertyURI, maxOnPage, offset, params.inNewDataset, params.boundarySource, params.longPropertyURI, params.latPropertyURI, params.countryPropertyURI);
                     //console.log(query);
                     //build http uri
                     //send request

@@ -9,12 +9,15 @@ import createNewReactorConfig from './createNewReactorConfig';
 import createASampleFacetsConfig from './createASampleFacetsConfig';
 
 let processData = (page, maxPerPage, totalPages, payload, done)=> {
-    ////console.log('processing', page, maxPerPage, totalPages, payload);
+    //console.log('processing', page, maxPerPage, totalPages, payload);
     context.executeAction(getDatasetResourcePropValues, {
         id: payload.id,
         resourceType: payload.resourceType,
         propertyURI: payload.propertyURI,
         boundarySource: payload.boundarySource,
+        longPropertyURI: payload.longPropertyURI,
+        latPropertyURI: payload.latPropertyURI,
+        countryPropertyURI: payload.countryPropertyURI,
         maxOnPage: maxPerPage,
         page: page,
         inNewDataset: payload.storingDataset ? payload.storingDataset : 0
@@ -31,6 +34,7 @@ let processData = (page, maxPerPage, totalPages, payload, done)=> {
                     context.executeAction(findGeoBoundaries, {
                         query: resource.ov,
                         id: resource.r,
+                        enrichment: resource.enrichment,
                         boundarySource: payload.boundarySource
                     }, (err3, res3)=>{
                         //console.log('enriched', res3);

@@ -948,7 +948,7 @@ class DynamicConfigurator {
                 `;
             }
             if(options && options.geoEnrichmentFacets){
-                annotationSt = ` ${graph} <${configURI}> ldr:list "https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#geoEnrichments->https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#country" , "https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#geoEnrichments->https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#boundaryLevel2" .
+                annotationSt = ` ${graph} <${configURI}> ldr:list "https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#geoEnrichments->https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#country" .
                  ${graphEnd}
                 `;
             }

@@ -15,7 +15,7 @@ import countGeoEnrichedResourcesWithProp from '../actions/countGeoEnrichedResour
 class DatasetGeoEnrichment extends React.Component {
     constructor(props){
         super(props);
-        this.state = {storingDataset: '', datasetURI: '', resourceType: '', propertyURI: '', annotationMode: 0, storeInNewDataset : false, boundarySource: 'GADM'};
+        this.state = {storingDataset: '', datasetURI: '', resourceType: '', propertyURI: '', longPropertyURI: '', latPropertyURI: '', countryPropertyURI: '', annotationMode: 0, storeInNewDataset : false, boundarySource: 'GADM', hasCoords: false};
     }
     componentDidMount() {
     }
@@ -76,6 +76,15 @@ class DatasetGeoEnrichment extends React.Component {
     handlePropertyURIChange(val){
         this.setState({propertyURI: val.trim()});
     }
+    handleLongPropertyChange(val){
+        this.setState({longPropertyURI: val.trim()});
+    }
+    handleLatPropertyChange(val){
+        this.setState({latPropertyURI: val.trim()});
+    }
+    handleCountryPropertyChange(val){
+        this.setState({countryPropertyURI: val.trim()});
+    }
     handleStoringCheckBox(e, t){
         if(t.value === '1'){
             //create a new random dataset URI
@@ -87,6 +96,13 @@ class DatasetGeoEnrichment extends React.Component {
             this.setState({storeInNewDataset: true, storingDataset: newDatasetURI});
         }else{
             this.setState({storeInNewDataset: false, storingDataset: ''});
+        }
+    }
+    handleIsGeocodedCheckBox(e, t){
+        if(t.value === '1'){
+            this.setState({hasCoords: true});
+        }else{
+            this.setState({hasCoords: false});
         }
     }
     handleEnrichmentTypeCheckBox(e, t){
@@ -120,6 +136,9 @@ class DatasetGeoEnrichment extends React.Component {
                 propertyURI: self.state.propertyURI,
                 storingDataset: self.state.storingDataset,
                 boundarySource: self.state.boundarySource,
+                latPropertyURI: self.state.latPropertyURI,
+                longPropertyURI: self.state.longPropertyURI,
+                countryPropertyURI: self.state.countryPropertyURI,
                 datasetLabel: self.findDatasetLabel(self.state.datasetURI)
             });
         }
@@ -159,7 +178,7 @@ class DatasetGeoEnrichment extends React.Component {
             formDIV =
             <Form size='big'>
                 <div className="ui info message">
-                    This feature helps you to geocode address you have in your dataset and also to find their container boundaries.
+                    This feature helps you to geocode addresses you have in your dataset and also to find their container boundaries.
                 </div>
                 <b>* Dataset</b>
                 <select ref="datasetURI" className="ui search dropdown" onChange={this.handleChange.bind(this, 'datasetURI')}>
@@ -172,16 +191,39 @@ class DatasetGeoEnrichment extends React.Component {
                 <Divider hidden />
                 <b>* URI of the property used for geo-enrichment</b>
                 <PrefixBasedInput includeOnly={['ldrProperties', 'properties']} noFocus={true} spec={{value:''}} onDataEdit={this.handlePropertyURIChange.bind(this)} placeholder="URI of the property for which the values are geo-enrichment" allowActionByKey={false}/>
-                <Form.Group>
-                    <label>Source of Boundaries for Geo-enrichment</label>
-                    <Form.Radio label='GADM' name='gadmB' value='GADM' checked={this.state.boundarySource== 'GADM'} onChange={this.handleEnrichmentTypeCheckBox.bind(this)} />
-                    <Form.Radio label='OpenStreetMap' name='osmB' value='OSM' checked={this.state.boundarySource== 'OSM'} onChange={this.handleEnrichmentTypeCheckBox.bind(this)} />
-                </Form.Group>
-                <Form.Group>
-                    <label>Store geo-enrichments in a new dataset?</label>
-                    <Form.Radio label='No, just enrich the original dataset' name='storeAnn' value='0' checked={!this.state.storeInNewDataset} onChange={this.handleStoringCheckBox.bind(this)} />
-                    <Form.Radio label='Yes, create a new dataset for geo-enrichments' name='storeAnn' value='1' checked={this.state.storeInNewDataset} onChange={this.handleStoringCheckBox.bind(this)} />
-                </Form.Group>
+                <div className="ui secondary segment">
+                    <Form.Group>
+                        <label>Is your dataset already geocoded? (i.e. already has geo coordinates.)</label>
+                        <Form.Radio label='No, it needs geocoding too.' name='idGeocoded' value='0' checked={!this.state.hasCoords} onChange={this.handleIsGeocodedCheckBox.bind(this)} />
+                        <Form.Radio label='Yes, there is no need for geocoding it again!' name='idGeocoded' value='1' checked={this.state.hasCoords} onChange={this.handleIsGeocodedCheckBox.bind(this)} />
+                    </Form.Group>
+                    {!this.state.hasCoords ? '' :
+                        <div>
+                            <b>* URI of the "longitude" property</b>
+                            <PrefixBasedInput includeOnly={['ldrProperties', 'properties']} noFocus={true} spec={{value:''}} onDataEdit={this.handleLongPropertyChange.bind(this)} placeholder="URI of the property which has longitude value" allowActionByKey={false}/>
+                            <Divider hidden />
+                            <b>* URI of the "latitude" property</b>
+                            <PrefixBasedInput includeOnly={['ldrProperties', 'properties']} noFocus={true} spec={{value:''}} onDataEdit={this.handleLatPropertyChange.bind(this)} placeholder="URI of the property which has latitude value" allowActionByKey={false}/>
+                            <Divider hidden />
+                            <b>URI of the "country" property (will result in faster boundary recognition if provided)</b>
+                            <PrefixBasedInput includeOnly={['ldrProperties', 'properties']} noFocus={true} spec={{value:''}} onDataEdit={this.handleCountryPropertyChange.bind(this)} placeholder="URI of the property which has country ISO code / leave it empty if there is not such a property " allowActionByKey={false}/>
+                        </div>
+                    }
+                </div>
+                <div className="ui segment">
+                    <Form.Group>
+                        <label>Source of Boundaries for Geo-enrichment</label>
+                        <Form.Radio label='GADM' name='gadmB' value='GADM' checked={this.state.boundarySource== 'GADM'} onChange={this.handleEnrichmentTypeCheckBox.bind(this)} />
+                        <Form.Radio label='OpenStreetMap' name='osmB' value='OSM' checked={this.state.boundarySource== 'OSM'} onChange={this.handleEnrichmentTypeCheckBox.bind(this)} />
+                    </Form.Group>
+                </div>
+                <div className="ui tertiary segment">
+                    <Form.Group>
+                        <label>Store geo-enrichments in a new dataset?</label>
+                        <Form.Radio label='No, just enrich the original dataset' name='storeAnn' value='0' checked={!this.state.storeInNewDataset} onChange={this.handleStoringCheckBox.bind(this)} />
+                        <Form.Radio label='Yes, create a new dataset for geo-enrichments' name='storeAnn' value='1' checked={this.state.storeInNewDataset} onChange={this.handleStoringCheckBox.bind(this)} />
+                    </Form.Group>
+                </div>
                 <Divider hidden />
                 <div className='ui big blue button' onClick={this.handleAnnotateDataset.bind(this)}>Geo-enrich  Dataset</div>
                 <Divider hidden />

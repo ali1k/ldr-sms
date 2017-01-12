@@ -199,7 +199,7 @@ class DatasetQuery{
         return this.prefixes + this.query;
     }
     //only gives us unannotated ones
-    getResourcePropForAnnotation(endpointParameters, graphName, type, propertyURI, limit, offset, inNewDataset, boundarySource) {
+    getResourcePropForAnnotation(endpointParameters, graphName, type, propertyURI, limit, offset, inNewDataset, boundarySource, longPropertyURI, latPropertyURI, countryPropertyURI) {
         let self = this;
         let {gStart, gEnd} = this.prepareGraphName(graphName);
         let st = '?resource a <'+ type + '> .';
@@ -215,6 +215,24 @@ class DatasetQuery{
             });
             st = '?resource a ?type . FILTER (?type IN (' + typeURIs.join(',') + '))';
         }
+        let existingCoordsStQ = '';
+        let existingCoordsStS = '';
+        if(longPropertyURI && latPropertyURI){
+            let countrySt = '';
+            if(countryPropertyURI){
+                countrySt = `
+                    ?resource ${self.filterPropertyPath(countryPropertyURI)} ?country .
+                `;
+                existingCoordsStS = ' ?longitude ?latitude ?country ';
+            }else{
+                existingCoordsStS = ' ?longitude ?latitude ';
+            }
+            existingCoordsStQ = `
+                ?resource ${self.filterPropertyPath(longPropertyURI)} ?longitude .
+                ?resource ${self.filterPropertyPath(latPropertyURI)} ?latitude .
+                ${countrySt}
+            `;
+        }
         let notExistFilterSt= `
             ?resource ldr:annotatedBy ?annotationD .
             ?annotationD ldr:property "${propertyURI}" .
@@ -228,14 +246,15 @@ class DatasetQuery{
         //do not care about already annotated ones if annotations are stored in a new dataset
         if(inNewDataset){
             this.query = `
-            SELECT DISTINCT ?resource ?objectValue WHERE {
+            SELECT DISTINCT ?resource ?objectValue ${existingCoordsStS} WHERE {
                 {
                     GRAPH <${inNewDataset}> {
                         {
-                            SELECT DISTINCT ?resource ?objectValue WHERE {
+                            SELECT DISTINCT ?resource ?objectValue ${existingCoordsStS} WHERE {
                                     ${gStart}
                                         ${st}
                                         ?resource ${self.filterPropertyPath(propertyURI)} ?objectValue .
+                                        ${existingCoordsStQ}
                                     ${gEnd}
                             } LIMIT ${limit} OFFSET ${offset}
                         }
@@ -248,10 +267,11 @@ class DatasetQuery{
             `;
         }else{
             this.query = `
-            SELECT DISTINCT ?resource ?objectValue WHERE {
+            SELECT DISTINCT ?resource ?objectValue ${existingCoordsStS} WHERE {
                 ${gStart}
                     ${st}
                     ?resource ${self.filterPropertyPath(propertyURI)} ?objectValue .
+                    ${existingCoordsStQ}
                     filter not exists {
                         ${notExistFilterSt}
                     }

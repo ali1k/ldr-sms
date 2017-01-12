@@ -89,12 +89,29 @@ class DatasetUtil {
     }
     parseResourcePropForAnnotation(body) {
         let output = [];
+        let enrichment = {};
         let parsed = JSON.parse(body);
         if (parsed.results.bindings.length) {
             parsed.results.bindings.forEach(function(el) {
+                enrichment = {formattedAddress: '----'};
+                if(el.longitude){
+                    if(el.longitude.value){
+                        enrichment.longitude = el.longitude.value;
+                    }else{
+                        //to handle resources which do not have this value
+                        enrichment.longitude = 'missing';
+                    }
+                }
+                if(el.latitude && el.latitude.value){
+                    enrichment.latitude = el.latitude.value;
+                }
+                if(el.country && el.country.value){
+                    enrichment.country = el.country.value;
+                }
                 output.push({
                     r: el.resource.value,
                     ov: el.objectValue ? el.objectValue.value : '',
+                    enrichment: enrichment
                 });
             });
         }

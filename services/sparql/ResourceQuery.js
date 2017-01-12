@@ -196,16 +196,20 @@ class ResourceQuery{
             let boundariesSt = '';
             if(enrichment.boundaries.length){
                 let preURI = '';
+                let preVocab = '';
                 if(enrichment.boundarySource.toLowerCase() === 'gadm'){
                     preURI = 'http://geo.risis.eu/gadm/';
+                    preVocab = 'http://risis.eu/gadm/ontology/predicate/level_';
                 }else if(enrichment.boundarySource.toLowerCase() === 'osm'){
                     preURI = 'http://geo.risis.eu/osm/';
+                    preVocab = 'http://risis.eu/osm/ontology/predicate/level_';
                 }else if(enrichment.boundarySource.toLowerCase() === 'flickr'){
                     preURI = 'http://geo.risis.eu/flickr/';
+                    preVocab = 'http://risis.eu/flickr/ontology/predicate/level_';
                 }
 
                 enrichment.boundaries.forEach((b)=>{
-                    boundariesSt = boundariesSt + ' ldr:boundaryLevel'+ b.level + ' <'+preURI + '' + b.id +'> ; ' ;
+                    boundariesSt = boundariesSt + '<' +preVocab +''+ b.level + '> <'+preURI + '' + b.id +'> ; ' ;
                     exboundariesSt = exboundariesSt + ' <'+preURI + '' + b.id +'> a ldr:GeoBoundary ; rdfs:label """' + b.title + '""" . '
                 });
             }
