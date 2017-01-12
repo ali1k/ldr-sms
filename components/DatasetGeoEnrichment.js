@@ -29,22 +29,6 @@ class DatasetGeoEnrichment extends React.Component {
             return -1;
         return 0;
     }
-    compareProps(a,b) {
-        if(a.features && b.features){
-            if (parseFloat(a.features.position) < parseFloat(b.features.position))
-                return -1;
-            if (parseFloat(a.features.position) > parseFloat(b.features.position))
-                return 1;
-            //sort by alphabets
-            if(a.features.datasetLabel < b.features.datasetLabel){
-                return -1;
-            }
-            if(a.features.datasetLabel > b.features.datasetLabel){
-                return 1;
-            }
-        }
-        return 0;
-    }
     generateTagArray(obj){
         let tags = [];
         for(let prop in obj){
@@ -88,10 +72,10 @@ class DatasetGeoEnrichment extends React.Component {
     handleStoringCheckBox(e, t){
         if(t.value === '1'){
             //create a new random dataset URI
-            let newDatasetURI = baseResourceDomain[0] + '/astore' + Math.round(+new Date() / 1000);
+            let newDatasetURI = baseResourceDomain[0] + '/gestore' + Math.round(+new Date() / 1000);
             //do not add two slashes
             if(baseResourceDomain[0].slice(-1) === '/'){
-                newDatasetURI = baseResourceDomain[0] + 'astore' + Math.round(+new Date() / 1000);
+                newDatasetURI = baseResourceDomain[0] + 'gestore' + Math.round(+new Date() / 1000);
             }
             this.setState({storeInNewDataset: true, storingDataset: newDatasetURI});
         }else{
@@ -156,7 +140,6 @@ class DatasetGeoEnrichment extends React.Component {
     }
     render() {
         let optionsList, dss = this.props.DatasetsStore.datasetsList;
-        dss.sort(this.compareProps);
         let self = this, errorDIV='', formDIV='';
         let user = this.context.getUser();
         if(enableAuthentication && !user){
@@ -187,7 +170,7 @@ class DatasetGeoEnrichment extends React.Component {
                 </select>
                 <Divider hidden />
                 <b>URI of the resource types</b>
-                <PrefixBasedInput includeOnly={['ldrClasses', 'classes']} noFocus={true} spec={{value:''}} onDataEdit={this.handleResourceURIChange.bind(this)} placeholder="URI of the resource types to be geo-enrichment / leave empty for all resources" allowActionByKey={false}/>
+                <PrefixBasedInput includeOnly={['ldrClasses', 'classes']} noFocus={true} spec={{value:''}} onDataEdit={this.handleResourceURIChange.bind(this)} placeholder="URI of the resource types to be geo-enrichment / leave empty for all focused types" allowActionByKey={false}/>
                 <Divider hidden />
                 <b>* URI of the property used for geo-enrichment</b>
                 <PrefixBasedInput includeOnly={['ldrProperties', 'properties']} noFocus={true} spec={{value:''}} onDataEdit={this.handlePropertyURIChange.bind(this)} placeholder="URI of the property for which the values are geo-enrichment" allowActionByKey={false}/>
