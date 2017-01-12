@@ -86,6 +86,7 @@ class DatasetsStore extends BaseStore {
                 out.push({d: ds, features: tmp[ds]});
             }
         }
+        //sort by position and labels
         out.sort(this.compareProps);
         return out;
     }
