@@ -127,22 +127,6 @@ class Datasets extends React.Component {
             });
         }
     }
-    compareProps(a,b) {
-        if(a.features && b.features){
-            if (parseFloat(a.features.position) < parseFloat(b.features.position))
-                return -1;
-            if (parseFloat(a.features.position) > parseFloat(b.features.position))
-                return 1;
-            //sort by alphabets
-            if(a.features.datasetLabel < b.features.datasetLabel){
-                return -1;
-            }
-            if(a.features.datasetLabel > b.features.datasetLabel){
-                return 1;
-            }
-        }
-        return 0;
-    }
     handleMouseOver(category){
         let current = this.state.mouseOverList;
         current.push(category);
@@ -174,8 +158,6 @@ class Datasets extends React.Component {
         let info = '';
         let dsCategoryObj = {orgRanking: [], orgs: [], persons: [], fundingPrograms: [], projects: [], publications: [], patents: [], geoLocations: [], geoBoundaries: [], geoStats: [], others: []};
         let dss = this.props.DatasetsStore.datasetsList;
-        //sort by position
-        dss.sort(self.compareProps);
         dss.forEach((item)=>{
             if(item.features.datasetCategory){
                 dsCategoryObj[item.features.datasetCategory[0]].push(item);
