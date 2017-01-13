@@ -132,9 +132,19 @@ export default {
             });
         } else if(resource === 'resource.boundaries'){
             let uris = params.uris;
-            let source = params.source ? params.source : 'GADM';
+            let tmpS, source = 'GADM';
+            if(params.source){
+                tmpS = params.source;
+            }
+            if(tmpS){
+                if(Array.isArray(tmpS)){
+                    source = tmpS[0];
+                }else{
+                    source = tmpS;
+                }
+            }
             let tmp, instances= [];
-            if(source === 'GADM'){
+            if(source.toLowerCase() === 'gadm'){
                 datasetURI = 'http://geo.risis.eu/gadm';
                 uris.forEach(function(uri) {
                     tmp = uri;
@@ -143,7 +153,7 @@ export default {
                     }
                     instances.push(tmp);
                 });
-            }else if(source === 'OSM'){
+            }else if(source.toLowerCase() === 'osm'){
                 datasetURI = 'http://geo.risis.eu/osm';
                 uris.forEach(function(uri) {
                     tmp = uri;
