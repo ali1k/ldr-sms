@@ -78,7 +78,8 @@ module.exports = {
             {title: 'ldr:allowUserDefinedValue'},
             {title: 'ldr:calendarFormat'},
             {title: 'ldr:containerDatasetURI'},
-            {title: 'ldr:hasLinkedValue'}
+            {title: 'ldr:hasLinkedValue'},
+            {title: 'ldr:boundarySource'}
         ],
         ldrLiterals: [
             {title: 'OrgResource'},
@@ -107,7 +108,8 @@ module.exports = {
             {title: 'GeoListBrowser'},
             {title: 'CheckListBrowser'},
             {title: 'TaxonomyBrowser'},
-            {title: 'BarChartBrowser'}
+            {title: 'BarChartBrowser'},
+            {title: 'BoundryBrowser'}
         ],
         classes: [
             {title: 'skos:Concept'},
