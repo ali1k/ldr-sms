@@ -32,7 +32,9 @@ class GeoBoundaryView extends React.Component {
         return (
             <div>
                 {this.props.BoundaryMapStore.boundaries[this.props.property] && this.props.BoundaryMapStore.boundaries[this.props.property].length? <BasicAggregateMapView spec={{instances: this.props.BoundaryMapStore.boundaries[this.props.property]}} config={this.props.config}/> :''}
-                <BasicAggregateView spec={this.props.spec} config={this.props.config} />
+                {this.props.onlyShowMap ? '' :
+                    <BasicAggregateView spec={this.props.spec} config={this.props.config} />
+                }
             </div>
     	);
     }
