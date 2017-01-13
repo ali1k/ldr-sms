@@ -148,7 +148,7 @@ export default {
                 uris.forEach(function(uri) {
                     tmp = uri;
                     if(tmp.value.indexOf('http://') === -1){
-                        tmp.value  = 'http://geo.risis.eu/gadm/' + uri.value;
+                        tmp.value  = 'http://geo.risis.eu/osm/' + uri.value;
 
                         if(tmp.indexOf('relation_') === -1){
                             tmp.value  = 'http://geo.risis.eu/osm/relation_' + uri.value;
