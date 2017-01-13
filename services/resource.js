@@ -160,13 +160,13 @@ export default {
                     if(tmp.value.indexOf('http://') === -1){
                         tmp.value  = 'http://geo.risis.eu/osm/' + uri.value;
 
-                        if(tmp.indexOf('relation_') === -1){
+                        if(tmp.value.indexOf('relation_') === -1){
                             tmp.value  = 'http://geo.risis.eu/osm/relation_' + uri.value;
                         }else{
                             tmp.value  = 'http://geo.risis.eu/osm/' + uri.value;
                         }
-                        instances.push(tmp);
                     }
+                    instances.push(tmp);
                 });
             }
             //control access on authentication
@@ -182,7 +182,7 @@ export default {
             }
             getDynamicEndpointParameters(user, datasetURI, (endpointParameters)=>{
                 graphName = endpointParameters.graphName;
-                query = queryObject.getPrefixes() + queryObject.getBoundaries(instances, source);
+                query = queryObject.getPrefixes() + queryObject.getBoundaries(instances, datasetURI);
                 //build http uri
                 //send request
                 HTTPQueryObject = getHTTPQuery('read', query, endpointParameters, outputFormat);

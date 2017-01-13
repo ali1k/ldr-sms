@@ -24,7 +24,6 @@ class FacetedBrowserStore extends BaseStore {
         this.emitChange();
     }
     prepareFacetConfigs(datasetURI, dynamicConfig, staticConfig, dynamicDatasetConfig, staticDatasetConfig) {
-
         this.datasetConfig = staticDatasetConfig.dataset.generic;
         if(staticDatasetConfig.dataset[datasetURI]){
             for(let p in staticDatasetConfig.dataset[datasetURI]){
@@ -36,7 +35,6 @@ class FacetedBrowserStore extends BaseStore {
                 this.datasetConfig[p] = dynamicDatasetConfig.dataset[datasetURI][p];
             }
         }
-
         this.config = staticConfig.facets.generic;
         if(staticConfig.facets[datasetURI]){
             for(let p in staticConfig.facets[datasetURI]){

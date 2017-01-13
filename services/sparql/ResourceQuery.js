@@ -353,15 +353,17 @@ class ResourceQuery{
 
         return this.query;
     }
-    getBoundaries (instances, source) {
+    getBoundaries (instances, datasetURI) {
         let tmp, output = [];
         instances.forEach(function(v) {
             output.push('<' + v.value + '>');
         });
         this.query=`
         SELECT DISTINCT ?s ?geometry WHERE {
-            ?s geo:geometry ?geometry .
-            FILTER (?s IN (${output.join(',')}) )
+            GRAPH <${datasetURI}> {
+                ?s geo:geometry ?geometry .
+                FILTER (?s IN (${output.join(',')}) )
+            }
         }`;
         return this.query;
     }
