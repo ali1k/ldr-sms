@@ -40,7 +40,7 @@ let processData = (page, maxPerPage, totalPages, payload, done)=> {
                         //console.log('enriched', res3);
                         //create a queue for enrichment
                         asyncEnrichmentTasks [page].push((ecallback)=>{
-                            if(res3 && res3.id){
+                            if(res3 && res3.id && !res3.error){
                                 context.executeAction(createResourceGeoEnrichment, {
                                     //it can store annotations in a different dataset if set
                                     dataset: payload.storingDataset ? payload.storingDataset : res2.datasetURI,

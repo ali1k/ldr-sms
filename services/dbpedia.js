@@ -57,7 +57,7 @@ export default {
                 });
             }).catch(function (err) {
                 console.log('\n dbpedia.spotlight \n Status Code: \n' + err.statusCode + '\n Error Msg: \n' + err.message);
-                callback(null, {tags: [], id: params.id, query: params.query});
+                callback(null, {tags: [], id: params.id, query: params.query, error: 'spotlight service'});
             });
         } else if (resource === 'dbpedia.address2boundary') {
             let boundarySource = 'GADM';
@@ -78,7 +78,7 @@ export default {
             if(params.enrichment && params.enrichment.longitude){
                 //it is when there is no need for geocoding
                 if(params.enrichment.longitude === 'missing'){
-                    callback(null, {enrichment: {location: 0, boundarySource: params.boundarySource, boundaries: []} , id: params.id, query: params.query});
+                    callback(null, {enrichment: {location: 0, boundarySource: params.boundarySource, boundaries: []} , id: params.id, query: params.query, error: 'missing'});
                     return 0;
                 }else{
                     let countryQs='';
@@ -99,7 +99,7 @@ export default {
                         });
                     }).catch(function (err2) {
                         console.log('\n sms boundaries \n Status Code: \n' + err2.statusCode + '\n Error Msg: \n' + err2.message);
-                        callback(null, {enrichment: {location: 0, boundarySource: params.boundarySource, boundaries: []} , id: params.id, query: params.query});
+                        callback(null, {enrichment: {location: 0, boundarySource: params.boundarySource, boundaries: []} , id: params.id, query: params.query, error: 'sms service'});
                     });
                 }
             }else{
@@ -129,12 +129,12 @@ export default {
                         });
                     }).catch(function (err2) {
                         console.log('\n sms boundaries \n Status Code: \n' + err2.statusCode + '\n Error Msg: \n' + err2.message);
-                        callback(null, {enrichment: {location: 0, boundarySource: params.boundarySource, boundaries: []} , id: params.id, query: params.query});
+                        callback(null, {enrichment: {location: 0, boundarySource: params.boundarySource, boundaries: []} , id: params.id, query: params.query, error: 'sms service'});
                     });
 
                 }).catch(function (err) {
                     console.log('\n googleGeocoding \n Status Code: \n' + err.statusCode + '\n Error Msg: \n' + err.message);
-                    callback(null, {enrichment: {location: 0, boundarySource: params.boundarySource, boundaries: []} , id: params.id, query: params.query});
+                    callback(null, {enrichment: {location: 0, boundarySource: params.boundarySource, boundaries: []} , id: params.id, query: params.query, error: 'google service'});
                 });
             }
 
