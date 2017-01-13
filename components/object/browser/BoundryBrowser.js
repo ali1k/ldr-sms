@@ -53,7 +53,7 @@ class BoundryBrowser extends React.Component {
         this.props.instances.forEach((instance, i)=>{
             tmp = parseInt(instance.total)/totalVals;
             instances[i].weight = tmp;
-            instances[i].hint = 'value: ' + instance.total + '</br> percentage: ' + (tmp*100);
+            instances[i].hint = instance.value + '<br/>No. of resources: ' + instance.total + '<br/> percentage: ' + (tmp*100);
         })
         let mapWidth = 180;
         let mapHeight = 180;
