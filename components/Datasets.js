@@ -316,7 +316,7 @@ class Datasets extends React.Component {
                             <tbody>
                                 <tr>
                                     <td>
-                                        <div style={{cursor: 'pointer'}} className={containerOrgRankingClass} ref="containerOrgRanking" onMouseOver={this.handleMouseOver.bind(this, 'orgRanking')} onMouseOut={this.handleMouseOut.bind(this, 'orgRanking')} onClick={this.handleMouseClick.bind(this, 'orgRanking')}>
+                                        <div style={{cursor: 'pointer', minHeight: 200, minWidth: 160}} className={containerOrgRankingClass} ref="containerOrgRanking" onMouseOver={this.handleMouseOver.bind(this, 'orgRanking')} onMouseOut={this.handleMouseOut.bind(this, 'orgRanking')} onClick={this.handleMouseClick.bind(this, 'orgRanking')}>
                                             <div className="ui top left attached small label">{dsCategoryObj.orgRanking.length}</div>
                                             Organization Ranking
                                         </div>
@@ -325,18 +325,18 @@ class Datasets extends React.Component {
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     </td>
                                     <td>
-                                        <div style={{cursor: 'pointer'}} className={containerFundingProgramClass} ref="containerFundingProgram" onMouseOver={this.handleMouseOver.bind(this, 'fundingPrograms')} onMouseOut={this.handleMouseOut.bind(this, 'fundingPrograms')} onClick={this.handleMouseClick.bind(this, 'fundingPrograms')}>
+                                        <div style={{cursor: 'pointer', minHeight: 200, minWidth: 160}} className={containerFundingProgramClass} ref="containerFundingProgram" onMouseOver={this.handleMouseOver.bind(this, 'fundingPrograms')} onMouseOut={this.handleMouseOut.bind(this, 'fundingPrograms')} onClick={this.handleMouseClick.bind(this, 'fundingPrograms')}>
                                             <div className="ui top left attached small label">{dsCategoryObj.fundingPrograms.length}</div>
-                                            &nbsp;&nbsp; Funding Programs &nbsp;&nbsp;
+                                            Funding Programs
                                         </div>
                                     </td>
                                     <td>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     </td>
                                     <td>
-                                        <div style={{cursor: 'pointer'}} className={containerGeoLocationslass} ref="containerGeoLocations" onMouseOver={this.handleMouseOver.bind(this, 'geoLocations')} onMouseOut={this.handleMouseOut.bind(this, 'geoLocations')} onClick={this.handleMouseClick.bind(this, 'geoLocations')}>
+                                        <div style={{cursor: 'pointer', minHeight: 200, minWidth: 160}} className={containerGeoLocationslass} ref="containerGeoLocations" onMouseOver={this.handleMouseOver.bind(this, 'geoLocations')} onMouseOut={this.handleMouseOut.bind(this, 'geoLocations')} onClick={this.handleMouseClick.bind(this, 'geoLocations')}>
                                             <div className="ui top left attached small label">{dsCategoryObj.geoLocations.length}</div>
-                                            &nbsp;&nbsp;&nbsp; Geo Locations &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span style={{color: '#000'}}>Geo Locations</span>
                                         </div>
                                     </td>
                                     <td>
@@ -356,9 +356,9 @@ class Datasets extends React.Component {
                             </tr>
                             <tr>
                                 <td>
-                                    <div style={{cursor: 'pointer'}} className={containerOrgsClass} ref="containerOrgs" onMouseOver={this.handleMouseOver.bind(this, 'orgs')} onMouseOut={this.handleMouseOut.bind(this, 'orgs')} onClick={this.handleMouseClick.bind(this, 'orgs')}>
+                                    <div style={{cursor: 'pointer', minHeight: 200, minWidth: 160}} className={containerOrgsClass} ref="containerOrgs" onMouseOver={this.handleMouseOver.bind(this, 'orgs')} onMouseOut={this.handleMouseOut.bind(this, 'orgs')} onClick={this.handleMouseClick.bind(this, 'orgs')}>
                                         <div className="ui top left attached small label">{dsCategoryObj.orgs.length}</div>
-                                        &nbsp;&nbsp;&nbsp; Organizations &nbsp;&nbsp;&nbsp;&nbsp;
+                                        Organizations
                                         <br/>
                                         <div className="ui inverted disabled black small circular label">Geo</div>
                                         </div>
@@ -367,9 +367,9 @@ class Datasets extends React.Component {
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td>
-                                    <div style={{cursor: 'pointer'}} className={containerProjectslass} ref="containerProjects" onMouseOver={this.handleMouseOver.bind(this, 'projects')} onMouseOut={this.handleMouseOut.bind(this, 'projects')} onClick={this.handleMouseClick.bind(this, 'projects')}>
+                                    <div style={{cursor: 'pointer', minHeight: 200, minWidth: 160}} className={containerProjectslass} ref="containerProjects" onMouseOver={this.handleMouseOver.bind(this, 'projects')} onMouseOut={this.handleMouseOut.bind(this, 'projects')} onClick={this.handleMouseClick.bind(this, 'projects')}>
                                         <div className="ui top left attached small label">{dsCategoryObj.projects.length}</div>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Projects &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Projects
                                         <br/>
                                         <div className="ui inverted disabled black small circular label">Geo</div>
                                         </div>
@@ -378,9 +378,9 @@ class Datasets extends React.Component {
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td>
-                                    <div style={{cursor: 'pointer'}} className={containerGeoBoundariesClass} ref="containerGeoBoundaries" onMouseOver={this.handleMouseOver.bind(this, 'geoBoundaries')} onMouseOut={this.handleMouseOut.bind(this, 'geoBoundaries')} onClick={this.handleMouseClick.bind(this, 'geoBoundaries')}>
+                                    <div style={{cursor: 'pointer', minHeight: 200, minWidth: 160}} className={containerGeoBoundariesClass} ref="containerGeoBoundaries" onMouseOver={this.handleMouseOver.bind(this, 'geoBoundaries')} onMouseOut={this.handleMouseOut.bind(this, 'geoBoundaries')} onClick={this.handleMouseClick.bind(this, 'geoBoundaries')}>
                                         <div className="ui top left attached small label">{dsCategoryObj.geoBoundaries.length}</div>
-                                        &nbsp;&nbsp;&nbsp; Geo Boundaries &nbsp;&nbsp;&nbsp;
+                                        <span style={{color: '#000'}}>Geo Boundaries</span>
                                     </div>
                                 </td>
                                 <td>
@@ -389,7 +389,7 @@ class Datasets extends React.Component {
                                 <td>
                                     <div style={{cursor: 'pointer'}} className={containerOthersClass} ref="containerOthers" onMouseOver={this.handleMouseOver.bind(this, 'others')} onMouseOut={this.handleMouseOut.bind(this, 'others')} onClick={this.handleMouseClick.bind(this, 'others')}>
                                         <div className="ui top left attached small label">{dsCategoryObj.others.length}</div>
-                                        &nbsp;&nbsp; Other Entity Types &nbsp;&nbsp;
+                                        Other Entity Types
                                     </div>
                                 </td>
                             </tr>
@@ -404,9 +404,9 @@ class Datasets extends React.Component {
                             </tr>
                             <tr>
                                 <td>
-                                    <div style={{cursor: 'pointer'}} className={containerPersonsClass} ref="containerPersons" onMouseOver={this.handleMouseOver.bind(this, 'persons')} onMouseOut={this.handleMouseOut.bind(this, 'persons')} onClick={this.handleMouseClick.bind(this, 'persons')}>
+                                    <div style={{cursor: 'pointer', minHeight: 200, minWidth: 160}} className={containerPersonsClass} ref="containerPersons" onMouseOver={this.handleMouseOver.bind(this, 'persons')} onMouseOut={this.handleMouseOut.bind(this, 'persons')} onClick={this.handleMouseClick.bind(this, 'persons')}>
                                         <div className="ui top left attached small label">{dsCategoryObj.persons.length}</div>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Persons &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Persons
                                         <br/>
                                         <div className="ui inverted disabled black small circular label">Geo</div>
                                         </div>
@@ -415,18 +415,18 @@ class Datasets extends React.Component {
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td>
-                                    <div style={{cursor: 'pointer'}} className={containerPublicationsClass} ref="containerPublications" onMouseOver={this.handleMouseOver.bind(this, 'publications')} onMouseOut={this.handleMouseOut.bind(this, 'publications')} onClick={this.handleMouseClick.bind(this, 'publications')}>
+                                    <div style={{cursor: 'pointer', minHeight: 200, minWidth: 160}} className={containerPublicationsClass} ref="containerPublications" onMouseOver={this.handleMouseOver.bind(this, 'publications')} onMouseOut={this.handleMouseOut.bind(this, 'publications')} onClick={this.handleMouseClick.bind(this, 'publications')}>
                                         <div className="ui top left attached small label">{dsCategoryObj.publications.length}</div>
-                                        &nbsp;&nbsp;&nbsp;&nbsp; Publications &nbsp;&nbsp;&nbsp;&nbsp;
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Publications&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     </div>
                                 </td>
                                 <td>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td>
-                                    <div style={{cursor: 'pointer'}} className={containerGeoStatsClass} ref="containerGeoStats" onMouseOver={this.handleMouseOver.bind(this, 'geoStats')} onMouseOut={this.handleMouseOut.bind(this, 'geoStats')} onClick={this.handleMouseClick.bind(this, 'geoStats')}>
+                                    <div style={{cursor: 'pointer', minHeight: 200, minWidth: 160}} className={containerGeoStatsClass} ref="containerGeoStats" onMouseOver={this.handleMouseOver.bind(this, 'geoStats')} onMouseOut={this.handleMouseOut.bind(this, 'geoStats')} onClick={this.handleMouseClick.bind(this, 'geoStats')}>
                                         <div className="ui top left attached small label">{dsCategoryObj.geoStats.length}</div>
-                                        Geo Statistical Data
+                                        <span style={{color: '#000'}}>Geo Statistical Data</span>
                                     </div>
                                 </td>
                                 <td>
@@ -453,9 +453,9 @@ class Datasets extends React.Component {
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td>
-                                    <div style={{cursor: 'pointer'}} className={containerPatentsClass} ref="containerPatents" onMouseOver={this.handleMouseOver.bind(this, 'patents')} onMouseOut={this.handleMouseOut.bind(this, 'patents')} onClick={this.handleMouseClick.bind(this, 'patents')}>
+                                    <div style={{cursor: 'pointer', minHeight: 200, minWidth: 160}} className={containerPatentsClass} ref="containerPatents" onMouseOver={this.handleMouseOver.bind(this, 'patents')} onMouseOut={this.handleMouseOut.bind(this, 'patents')} onClick={this.handleMouseClick.bind(this, 'patents')}>
                                         <div className="ui top left attached small label">{dsCategoryObj.patents.length}</div>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Patents &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Patents
                                     </div>
                                 </td>
                                 <td>
