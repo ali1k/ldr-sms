@@ -3,14 +3,20 @@ import URIUtil from '../utils/URIUtil';
 import {connectToStores} from 'fluxible-addons-react';
 import LinksetStore from '../../stores/LinksetStore';
 import getLinksetDetails from '../../actions/getLinksetDetails';
-import { Accordion } from 'semantic-ui-react'
+import { Accordion, Dropdown } from 'semantic-ui-react'
 
 class Linkset extends React.Component {
     constructor(props) {
         super(props);
+        this.state ={relations: {}}
     }
     componentDidMount() {
         this.context.executeAction(getLinksetDetails, {source: this.props.LinksetStore.dataset.source, target: this.props.LinksetStore.dataset.target, entities: this.props.LinksetStore.dataset.resources});
+    }
+    handleRel(index, val){
+        let tmp = this.state.relations;
+        tmp[index] = val;
+        this.setState({relations: tmp});
     }
     addCommas(n){
         let rx = /(\d+)(\d{3})/;
@@ -58,8 +64,16 @@ class Linkset extends React.Component {
                     <div className="column" >
                         <Accordion panels={spanels} styled />
                     </div>
-                    <div className="column" >
-                        <a className="ui fluid button">similar to</a>
+                    <div className="column">
+                            <Dropdown className="ui button" fluid search text={self.state.relations[index] ? self.state.relations[index] : 'Same As'}>
+                              <Dropdown.Menu>
+                                <Dropdown.Item text='Same As' onClick={self.handleRel.bind(self, index,'Same As')}/>
+                                <Dropdown.Item text='->Broader than' onClick={self.handleRel.bind(self, index,'->Broader than')}/>
+                                <Dropdown.Item text='Broader than<-' onClick={self.handleRel.bind(self, index,'Broader than<-')}/>
+                                <Dropdown.Item text='Narrower than<-' onClick={self.handleRel.bind(self, index,'Narrower than<-')}/>
+                                <Dropdown.Item text='->Narrower than' onClick={self.handleRel.bind(self, index,'->Narrower than')}/>
+                              </Dropdown.Menu>
+                            </Dropdown>
                     </div>
                     <div className="column" >
                         <Accordion panels={tpanels} styled />
@@ -75,7 +89,7 @@ class Linkset extends React.Component {
                             <a className="ui blue fluid button">{this.props.LinksetStore.dataset.source}</a>
                         </div>
                         <div className="column" >
-                            <a className="ui fluid black button">similar to</a>
+                            <a className="ui fluid black button">relation</a>
                         </div>
                         <div className="column" >
                             <a className="ui green fluid button">{this.props.LinksetStore.dataset.target}</a>
