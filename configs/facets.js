@@ -66,74 +66,6 @@ export default {
                 }
             }
         },
-        'http://risis.eu/genderc/applicants': {
-            list: [
-                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-                'http://xmlns.com/foaf/0.1/gender',
-                'http://xmlns.com/foaf/0.1/title',
-                'http://risis.eu/genderc/vocab/nationality',
-                'http://risis.eu/genderc/vocab/countryOfResidence',
-                'http://risis.eu/genderc/vocab/affiliation',
-                'http://risis.eu/genderc/vocab/isMedicalDoctor',
-                'http://risis.eu/genderc/vocab/relatedTo',
-                'http://xmlns.com/foaf/0.1/birthday'
-            ],
-            config: {
-                'http://risis.eu/genderc/vocab/countryOfResidence': {
-                    objectIViewer: ['TwoLetterCountryView'],
-                    label: ['Country of Residence']
-                },
-                'http://risis.eu/genderc/vocab/isMedicalDoctor': {
-                    label: ['Is Medical Dr?']
-                }
-            }
-        },
-        'http://risis.eu/genderc/grants': {
-            list: [
-                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-                'http://risis.eu/genderc/vocab/panel',
-                'http://risis.eu/genderc/vocab/field'
-            ],
-            config: {
-                'http://risis.eu/genderc/vocab/panel': {
-                    hasLinkedValue: 1
-                }
-            }
-        },
-        'http://risis.eu/genderc/rankings': {
-            list: [
-                'http://risis.eu/genderc/vocab/ranking'
-            ],
-            config: {
-
-            }
-        },
-        'http://risis.eu/genderc/evaluations': {
-            list: [
-                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-                'http://risis.eu/genderc/vocab/granted',
-                'http://risis.eu/genderc/vocab/finalScore',
-                'http://risis.eu/genderc/vocab/percentageGroup',
-                'http://risis.eu/genderc/vocab/numberOfReviewers'
-
-            ],
-            config: {
-                'http://risis.eu/genderc/vocab/percentageGroup': {
-                    label: ['Percentage Group']
-                },
-                'http://risis.eu/genderc/vocab/numberOfReviewers': {
-                    label: ['No. of Reviewers']
-                }
-            }
-        },
-        'http://risis.eu/genderc/applications': {
-            list: [
-                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
-            ],
-            config: {
-
-            }
-        },
         'http://risis.eu/wos': {
             list: [
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
@@ -231,14 +163,6 @@ export default {
                 'http://www.freme-project.eu/datasets/cordis/activityType': {
                     label: ['Activity Type']
                 }
-            }
-        },
-        'http://grid.ac': {
-            list: [
-                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'http://www.grid.ac/ontology/establishedYear'
-            ],
-            config: {
-
             }
         },
         'http://www.leidenranking.com': {
