@@ -389,23 +389,6 @@ export default {
                     ]
                 }
             },
-            'http://risis.eu/genderc/applications': {
-                'http://risis.eu/genderc/vocab/applicant': {
-                    label: ['Applicant'],
-                    objectIViewer: ['BasicLinkedIndividualView'],
-                    linkedGraph: ['http://risis.eu/genderc/applicants']
-                },
-                'http://risis.eu/genderc/vocab/evaluation': {
-                    label: ['Evaluation'],
-                    objectIViewer: ['BasicLinkedIndividualView'],
-                    linkedGraph: ['http://risis.eu/genderc/evaluations']
-                },
-                'http://risis.eu/genderc/vocab/grant': {
-                    label: ['Grant'],
-                    objectIViewer: ['BasicLinkedIndividualView'],
-                    linkedGraph: ['http://risis.eu/genderc/grants']
-                }
-            },
             'http://risis.eu/wos': {
                   'http://risis.eu/wos/vocab/FN': { label: 'File type' },
                   'http://risis.eu/wos/vocab/VR': { label: 'File format version number' },
