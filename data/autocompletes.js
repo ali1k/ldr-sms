@@ -89,6 +89,7 @@ module.exports = {
             {title: 'BasicDBpediaView'},
             {title: 'BasicDateTimeView'},
             {title: 'BasicImageView'},
+            {title: 'YASQEViewer'},
             {title: 'BasicLinkedIndividualView'},
             {title: 'BasicMapView'},
             {title: 'LanguageView'},
