@@ -33,12 +33,78 @@ let prepareStaticDGFunc = (datasetURI)=>{
     return {d: d, g: g};
 }
 
-let includesProperty = (list, resource, property)=> {
+let includesDataset= (rights, dataset)=> {
     let out = false;
-    list.forEach(function(el) {
-        if (el.r === resource && el.p === property) {
-            out = true;
-            return out;
+    rights.forEach(function(el) {
+        if (el.scope === 'D') {
+            if(el.dataset === dataset){
+                out = true;
+                return out;
+            }
+        }
+    });
+    return out;
+}
+let includesResource= (rights, dataset, resource, resourceType)=> {
+    let out = false;
+    rights.forEach(function(el) {
+        if (el.scope === 'DR') {
+            if(el.dataset === dataset && el.resource === resource){
+                out = true;
+                return out;
+            }else{
+                if(el.treatAsResourceType && el.dataset === dataset &&  resourceType.indexOf(el.resource)!==-1){
+                    out = true;
+                    return out;
+                }
+            }
+        }else if (el.scope === 'R') {
+            if(el.resource === resource){
+                out = true;
+                return out;
+            }else{
+                if(el.treatAsResourceType &&  resourceType.indexOf(el.resource)!==-1){
+                    out = true;
+                    return out;
+                }
+            }
+        }
+    });
+    return out;
+}
+let includesProperty= (rights, dataset, resource, resourceType, property)=> {
+    let out = false;
+    rights.forEach(function(el) {
+        if (el.scope  && el.scope === 'DP') {
+            if(el.dataset === dataset && el.property === property){
+                out = true;
+                return out;
+            }
+        }else if (el.scope  && el.scope === 'RP') {
+            if(el.resource === resource && el.property === property){
+                out = true;
+                return out;
+            }else{
+                if(el.treatAsResourceType && el.resource === resourceType && el.property === property){
+                    out = true;
+                    return out;
+                }
+            }
+        }else if (el.scope  && el.scope === 'DRP') {
+            if(el.dataset === dataset && el.resource === resource && el.property === property){
+                out = true;
+                return out;
+            }else{
+                if(el.treatAsResourceType && el.dataset === dataset && el.resource === resourceType && el.property === property){
+                    out = true;
+                    return out;
+                }
+            }
+        }else if (el.scope  && el.scope === 'P') {
+            if(el.property === property){
+                out = true;
+                return out;
+            }
         }
     });
     return out;
@@ -73,46 +139,46 @@ export default {
         }
 
         switch (endpointParameters.type.toLowerCase()) {
-        case 'virtuoso':
+            case 'virtuoso':
 
-            outputObject.uri = 'http://' + endpointParameters.httpOptions.host + ':' + endpointParameters.httpOptions.port + endpointParameters.httpOptions.path;
-            outputObject.params['query'] = query;
-            outputObject.params['format'] = outputFormat;
-
-            break;
-        case 'stardog':
-            outputObject.uri = 'http://' + endpointParameters.httpOptions.host + ':' + endpointParameters.httpOptions.port + endpointParameters.httpOptions.path;
-            outputObject.params['query'] = query;
-            outputObject.params['Accept'] = outputFormat;
-
-            break;
-        case 'cliopatria':
-            if(mode === 'update'){
-                outputObject.uri = 'http://' + endpointParameters.httpOptions.host + ':' + endpointParameters.httpOptions.port + endpointParameters.httpOptions.path + 'update';
-                outputObject.params['update'] = query;
-            }else{
-                outputObject.params['query'] = query;
                 outputObject.uri = 'http://' + endpointParameters.httpOptions.host + ':' + endpointParameters.httpOptions.port + endpointParameters.httpOptions.path;
+                outputObject.params['query'] = query;
                 outputObject.params['format'] = outputFormat;
-            }
 
-            break;
-        //todo: check the differences for other triple stores
-        case 'sesame':
-            if(mode === 'update'){
-                outputObject.uri = 'http://' + endpointParameters.httpOptions.host + ':' + endpointParameters.httpOptions.port + endpointParameters.httpOptions.path + '/statements';
-                outputObject.params['update'] = query;
-            }else{
-                outputObject.params['query'] = query;
+                break;
+            case 'stardog':
                 outputObject.uri = 'http://' + endpointParameters.httpOptions.host + ':' + endpointParameters.httpOptions.port + endpointParameters.httpOptions.path;
+                outputObject.params['query'] = query;
                 outputObject.params['Accept'] = outputFormat;
-            }
 
-            break;
-        default:
-            outputObject.uri = 'http://' + endpointParameters.httpOptions.host + ':' + endpointParameters.httpOptions.port + endpointParameters.httpOptions.path;
-            outputObject.params['query'] = query;
-            outputObject.params['format'] = outputFormat;
+                break;
+            case 'cliopatria':
+                if(mode === 'update'){
+                    outputObject.uri = 'http://' + endpointParameters.httpOptions.host + ':' + endpointParameters.httpOptions.port + endpointParameters.httpOptions.path + 'update';
+                    outputObject.params['update'] = query;
+                }else{
+                    outputObject.params['query'] = query;
+                    outputObject.uri = 'http://' + endpointParameters.httpOptions.host + ':' + endpointParameters.httpOptions.port + endpointParameters.httpOptions.path;
+                    outputObject.params['format'] = outputFormat;
+                }
+
+                break;
+        //todo: check the differences for other triple stores
+            case 'sesame':
+                if(mode === 'update'){
+                    outputObject.uri = 'http://' + endpointParameters.httpOptions.host + ':' + endpointParameters.httpOptions.port + endpointParameters.httpOptions.path + '/statements';
+                    outputObject.params['update'] = query;
+                }else{
+                    outputObject.params['query'] = query;
+                    outputObject.uri = 'http://' + endpointParameters.httpOptions.host + ':' + endpointParameters.httpOptions.port + endpointParameters.httpOptions.path;
+                    outputObject.params['Accept'] = outputFormat;
+                }
+
+                break;
+            default:
+                outputObject.uri = 'http://' + endpointParameters.httpOptions.host + ':' + endpointParameters.httpOptions.port + endpointParameters.httpOptions.path;
+                outputObject.params['query'] = query;
+                outputObject.params['format'] = outputFormat;
         }
         return outputObject;
     },
@@ -130,7 +196,9 @@ export default {
         }
         return {gStart: gStart, gEnd: gEnd}
     },
-    checkAccess(user, graph, resource, property) {
+
+    checkAccess(user, dataset, resource, resourceType, property) {
+        //console.log(user.editorOf, dataset, resource, resourceType, property);
         if(!enableAuthentication){
             return {
                 access: true,
@@ -143,19 +211,19 @@ export default {
                 type: 'full'
             };
         } else {
-            if (graph && user.editorOfDataset && user.editorOfDataset.indexOf(graph) !== -1) {
+            if (dataset && user.editorOf && includesDataset(user.editorOf, dataset)) {
                 return {
                     access: true,
                     type: 'full'
                 };
             } else {
-                if (resource && user.editorOfResource && user.editorOfResource.indexOf(resource) !== -1) {
+                if (resource && user.editorOf && includesResource(user.editorOf, dataset, resource, resourceType)) {
                     return {
                         access: true,
                         type: 'full'
                     };
                 } else {
-                    if (property && user.editorOfProperty && includesProperty(user.editorOfProperty, resource, property)) {
+                    if (property && user.editorOf && includesProperty(user.editorOf, dataset, resource, resourceType, property)) {
                         return {
                             access: true,
                             type: 'partial'
@@ -172,58 +240,58 @@ export default {
     getQueryDataTypeValue(valueType, dataType, objectValue) {
         let newValue, dtype;
         switch (valueType) {
-        case 'uri':
-        case 'bnode':
-        case 'literal':
-            // automatically detect uris even in literal values
-            if(validUrl.is_web_uri(objectValue.toString())){
-                newValue='<'+objectValue+'>';
-                dtype = 'uri';
-            }else{
-                newValue='"""'+objectValue+'"""';
-                dtype = 'str';
-            }
-            break;
-        case 'typed-literal':
-        //handle typed-literal values
-            switch (dataType) {
-            case 'http://www.w3.org/2001/XMLSchema#integer':
-                dtype = 'xsd:integer';
-                newValue='"'+objectValue+'"^^' + dtype;
+            case 'uri':
+            case 'bnode':
+            case 'literal':
+                // automatically detect uris even in literal values
+                if(validUrl.is_web_uri(objectValue.toString())){
+                    newValue='<'+objectValue+'>';
+                    dtype = 'uri';
+                }else{
+                    newValue='"""'+objectValue+'"""';
+                    dtype = 'str';
+                }
                 break;
-            case 'http://www.w3.org/2001/XMLSchema#decimal':
-                dtype = 'xsd:decimal';
-                newValue='"'+objectValue+'"^^' + dtype;
-                break;
-            case 'http://www.w3.org/2001/XMLSchema#float':
-                dtype = 'xsd:float';
-                newValue='"'+objectValue+'"^^' + dtype;
-                break;
-            case 'http://www.w3.org/2001/XMLSchema#double':
-                dtype = 'xsd:double';
-                newValue='"'+objectValue+'"^^' + dtype;
-                break;
-            case 'http://www.w3.org/2001/XMLSchema#dateTime':
-                dtype = 'xsd:dateTime';
-                newValue='"'+objectValue+'"^^' + dtype;
-                break;
-            case 'http://www.w3.org/2001/XMLSchema#date':
-                dtype = 'xsd:date';
-                newValue='"'+objectValue+'"^^' + dtype;
-                break;
-            case 'http://www.w3.org/2001/XMLSchema#boolean':
-                dtype = 'xsd:boolean';
-                newValue='"'+objectValue+'"^^' + dtype;
+            case 'typed-literal':
+            //handle typed-literal values
+                switch (dataType) {
+                    case 'http://www.w3.org/2001/XMLSchema#integer':
+                        dtype = 'xsd:integer';
+                        newValue='"'+objectValue+'"^^' + dtype;
+                        break;
+                    case 'http://www.w3.org/2001/XMLSchema#decimal':
+                        dtype = 'xsd:decimal';
+                        newValue='"'+objectValue+'"^^' + dtype;
+                        break;
+                    case 'http://www.w3.org/2001/XMLSchema#float':
+                        dtype = 'xsd:float';
+                        newValue='"'+objectValue+'"^^' + dtype;
+                        break;
+                    case 'http://www.w3.org/2001/XMLSchema#double':
+                        dtype = 'xsd:double';
+                        newValue='"'+objectValue+'"^^' + dtype;
+                        break;
+                    case 'http://www.w3.org/2001/XMLSchema#dateTime':
+                        dtype = 'xsd:dateTime';
+                        newValue='"'+objectValue+'"^^' + dtype;
+                        break;
+                    case 'http://www.w3.org/2001/XMLSchema#date':
+                        dtype = 'xsd:date';
+                        newValue='"'+objectValue+'"^^' + dtype;
+                        break;
+                    case 'http://www.w3.org/2001/XMLSchema#boolean':
+                        dtype = 'xsd:boolean';
+                        newValue='"'+objectValue+'"^^' + dtype;
+                        break;
+                    default:
+                        newValue='"""'+objectValue+'"""';
+                        dtype = 'str';
+                }
                 break;
             default:
+                // default: handle as string
                 newValue='"""'+objectValue+'"""';
                 dtype = 'str';
-            }
-            break;
-        default:
-            // default: handle as string
-            newValue='"""'+objectValue+'"""';
-            dtype = 'str';
         }
         //fix in virtuoso
         if(dtype === 'uri'){
