@@ -4,9 +4,7 @@ export default {
             list: [
 
             ],
-            config: {
-
-            }
+            config: {}
         },
         //Configuration Manager: change the graph name if you use another name in your general.js config
         'http://ld-r.org/configurations': {
@@ -90,7 +88,7 @@ export default {
                 'http://risis.eu/Eter/ontology/predicate/foundation_year',
                 'http://risis.eu/Eter/ontology/predicate/university_hospital',
                 'http://risis.eu/Eter/ontology/predicate/multisite_institution'
-        ],
+            ],
             config: {
                 'http://www.geonames.org/ontology#countryCode': {
                     label: ['Country'],
@@ -220,10 +218,10 @@ export default {
         },
         'http://classifications.risis.eu/countries': {
             list: [
-            'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-            'http://risis.eu/gadm/ontology/predicate/developing',
-            'http://risis.eu/gadm/ontology/predicate/iso2',
-            'http://risis.eu/gadm/ontology/predicate/iso3'
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+                'http://risis.eu/gadm/ontology/predicate/developing',
+                'http://risis.eu/gadm/ontology/predicate/iso2',
+                'http://risis.eu/gadm/ontology/predicate/iso3'
             ],
             config: {
             }

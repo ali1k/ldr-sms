@@ -51,10 +51,10 @@ module.exports = {
                                 message: 'User is not activated!'
                             });
                         }
-if(user.member!=='http://rdf.risis.eu/user/SMSTeam'){
-   console.log('Sorry! This website is only available for SMS Team!');
- return done(null, false, {message: 'Sorry! This website is only available for SMS Team!'});
-}
+                        if(user.member!=='http://rdf.risis.eu/user/SMSTeam'){
+                            console.log('Sorry! This website is only available for SMS Team!');
+                            return done(null, false, {message: 'Sorry! This website is only available for SMS Team!'});
+                        }
                         //empty password when passed to client
                         user.password = '';
                         //success login
