@@ -196,47 +196,6 @@ export default {
         }
         return {gStart: gStart, gEnd: gEnd}
     },
-
-    checkAccess(user, dataset, resource, resourceType, property) {
-        //console.log(user.editorOf, dataset, resource, resourceType, property);
-        if(!enableAuthentication){
-            return {
-                access: true,
-                type: 'full'
-            };
-        }
-        if (parseInt(user.isSuperUser)) {
-            return {
-                access: true,
-                type: 'full'
-            };
-        } else {
-            if (dataset && user.editorOf && includesDataset(user.editorOf, dataset)) {
-                return {
-                    access: true,
-                    type: 'full'
-                };
-            } else {
-                if (resource && user.editorOf && includesResource(user.editorOf, dataset, resource, resourceType)) {
-                    return {
-                        access: true,
-                        type: 'full'
-                    };
-                } else {
-                    if (property && user.editorOf && includesProperty(user.editorOf, dataset, resource, resourceType, property)) {
-                        return {
-                            access: true,
-                            type: 'partial'
-                        };
-                    } else {
-                        return {
-                            access: false
-                        };
-                    }
-                }
-            }
-        }
-    },
     getQueryDataTypeValue(valueType, dataType, objectValue) {
         let newValue, dtype;
         switch (valueType) {

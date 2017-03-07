@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import {navigateAction} from 'fluxible-router';
 import {connectToStores} from 'fluxible-addons-react';
 import {enableAuthentication, defaultDatasetURI, enableAddingNewDatasets, enableDatasetAnnotation, enableDatasetGeoEnrichment} from '../configs/general';
+import {checkViewAccess, checkEditAccess} from '../services/utils/accessManagement';
 import DatasetsStore from '../stores/DatasetsStore';
 import URIUtil from './utils/URIUtil';
 
@@ -218,10 +219,47 @@ class Datasets extends React.Component {
                     });
                     dss = filterdDSS;
                 }
+                let tmpOption = '';
                 optionsList = dss.map(function(option, index) {
-                    return <option key={index} value={(option.d)}> {(option.d && option.features.datasetLabel) ? option.features.datasetLabel : option.d} </option>;
+                    tmpOption = <option key={index} value={(option.d)}> {(option.d && option.features.datasetLabel) ? option.features.datasetLabel : option.d} </option>;
+                    //filter out datasets if no access is provided
+                    if(enableAuthentication && option.features.hasLimitedAccess && parseInt(option.features.hasLimitedAccess)){
+                        //need to handle access to the dataset
+                        //if user is the editor by default he already has view access
+                        let editAccess = checkEditAccess(user, option.d, 0, 0, 0);
+                        if(!editAccess.access || editAccess.type === 'partial'){
+                            let viewAccess = checkViewAccess(user, option.d, 0, 0, 0);
+                            if(!viewAccess.access){
+                                tmpOption = '';
+                            }
+                        }
+                    }
+                    if(tmpOption){
+                        return tmpOption;
+                    }
                 });
+                let dsLink = '';
+                let brwsLink = '';
+                let dsIcon = '';
                 outputDSS = dss.map(function(ds, index) {
+                    dsLink = <a href={'/dataset/1/' + encodeURIComponent(ds.d)} title="go to resource list">{ds.features && ds.features.datasetLabel ? ds.features.datasetLabel : ds.d}</a>;
+                    brwsLink = <a className="ui grey label" href={'/browse/' + encodeURIComponent(ds.d)} title="browse"><i className="zoom icon"></i>browse</a>;
+                    dsIcon = ' cubes ';
+                    //remove links if no access is provided
+                    if(enableAuthentication && ds.features.hasLimitedAccess && parseInt(ds.features.hasLimitedAccess)){
+                        //need to handle access to the dataset
+                        //if user is the editor by default he already has view access
+                        let editAccess = checkEditAccess(user, ds.d, 0, 0, 0);
+                        if(!editAccess.access || editAccess.type === 'partial'){
+                            let viewAccess = checkViewAccess(user, ds.d, 0, 0, 0);
+                            if(!viewAccess.access){
+                                dsLink = <span>{ds.features && ds.features.datasetLabel ? ds.features.datasetLabel : ds.d}</span>;
+                                brwsLink = '';
+                                dsIcon = ' lock '
+                            }
+                        }
+                    }
+
                     if(ds.features){
                         if(typeof ds.features.readOnly === 'undefined' ){
                             color = 'black';
@@ -233,8 +271,8 @@ class Datasets extends React.Component {
                             }
                         }
                     }
-                    return <div className="ui item" key={ds.d}> <div className="content"> <i className={'ui icon cubes ' + color}></i> <a href={'/dataset/1/' + encodeURIComponent(ds.d)} title="go to resource list">{ds.features && ds.features.datasetLabel ? ds.features.datasetLabel : ds.d}</a> {ds.features && ds.features.resourceFocusType ? <span className="ui small circular label"> {self.prepareFocusList(ds.features.resourceFocusType)} </span> : ''}
-                    {ds.features && ds.features.isBrowsable ? <a className="ui grey label" href={'/browse/' + encodeURIComponent(ds.d)} title="browse"><i className="zoom icon"></i>browse</a> : ''}
+                    return <div className="ui item" key={ds.d}> <div className="content"> <i className={'ui icon ' + dsIcon + color}></i> {dsLink} {ds.features && ds.features.resourceFocusType ? <span className="ui small circular label"> {self.prepareFocusList(ds.features.resourceFocusType)} </span> : ''}
+                    {ds.features && ds.features.isBrowsable ? brwsLink : ''}
                     {ds.features && ds.features.isStaticDynamic ? <i className="ui brown theme icon" title="loaded from both static and dynamic config"></i> :''}
                     {ds.features && ds.features.isDynamic && !ds.features.isStaticDynamic ? <i className="ui orange theme icon" title="loaded from dynamic config"></i> :''}
                     {ds.features && ds.features.isDefaultDataset ? <i className="ui teal flag icon" title="default dataset"></i> :''}</div> </div>;
