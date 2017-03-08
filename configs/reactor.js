@@ -79,7 +79,12 @@ export default {
         },
         //---------depth 2------------
         dataset_resource: {
-
+            'http://rdf.risis.eu/sms/users.ttl#': {
+                'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#User' :{
+                    treatAsResourceType: 1,
+                    resourceReactor: ['UserResource']
+                }
+            }
         },
         dataset_property: {
             'http://geo.risis.eu/cbs-nl': {
