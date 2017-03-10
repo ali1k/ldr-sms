@@ -179,7 +179,7 @@ class Datasets extends React.Component {
             }
         });
         if(enableAuthentication && !user){
-            output = <div className="ui warning message"><div className="header"> Please <a href="/register">Register</a> or <a href="/login">Login</a> to see the datasets.</div></div>;
+            output = <div className="ui warning message"><div className="header"> Please <a href="http://datasets.risis.eu/register">Register</a> or <a href="/login">Login</a> to see the datasets.</div></div>;
         }else{
             if(enableAddingNewDatasets){
                 createDatasetDIV = <div className="item">

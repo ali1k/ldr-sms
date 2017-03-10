@@ -37,7 +37,7 @@ class Nav extends React.Component {
             }
         }
         return (
-            <nav ref="defaultNavbar" className="ui grey menu inverted navbar page grid">
+            <nav ref="defaultNavbar" className="ui blue menu inverted navbar page grid">
                     <NavLink routeName="home" className="brand item" href='/'>
                         {this.props.loading ? <img src="/assets/img/loader.gif" alt="loading..." style={{height: 30, width: 30}} /> : <img style={{height: 22, width: 35}} className="ui mini image" src="/assets/img/sms_logo_t.png" alt="SMS" />}
                     </NavLink>
@@ -51,9 +51,6 @@ class Nav extends React.Component {
                         {(enableDynamicReactorConfiguration || enableDynamicServerConfiguration || enableDynamicfacetsConfiguration) ?
                             configMenu
                         : ''}
-                        <a href="http://github.com/ali1k/ld-r" className="ui item link">
-                                <i className="github circle icon"></i> Github
-                        </a>
                         {userMenu}
                     </div>
             </nav>
