@@ -15,6 +15,7 @@ import PrefixBasedView from './viewer/individual/PrefixBasedView';
 import ToggleView from './viewer/individual/ToggleView';
 import BasicMapView from './viewer/individual/BasicMapView';
 import YASQEViewer from './viewer/individual/YASQEViewer';
+import FileSizeView from './viewer/individual/FileSizeView';
 
 class ObjectIViewer extends React.Component {
     render() {
@@ -94,6 +95,9 @@ class ObjectIViewer extends React.Component {
             case 'ThreeLetterCountryView':
                 viewer = <ThreeLetterCountryView spec={this.props.spec} config={this.props.config}/>;
                 break;
+            case 'FileSizeView':
+                viewer = <FileSizeView spec={this.props.spec} config={this.props.config}/>;
+                break;                
             default:
                 viewer = <BasicIndividualView spec={this.props.spec} config={this.props.config}/>;
         }

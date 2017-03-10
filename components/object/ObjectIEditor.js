@@ -9,6 +9,8 @@ import LanguageInput from './editor/individual/LanguageInput';
 import BasicCalendarInput from './editor/individual/BasicCalendarInput';
 import PrefixBasedInput from './editor/individual/PrefixBasedInput';
 import ToggleEdit from './editor/individual/ToggleEdit';
+import FileSizeInput from './editor/individual/FileSizeInput';
+import MediaTypeInput from './editor/individual/MediaTypeInput';
 
 class ObjectIEditor extends React.Component {
     handleDataEdit(value){
@@ -69,6 +71,12 @@ class ObjectIEditor extends React.Component {
             case 'PrefixBasedInput':
                 editor = <PrefixBasedInput spec={this.props.spec} config={this.props.config} onDataEdit={this.handleDataEdit.bind(this)} allowActionByKey="1" onEnterPress={this.handleEnterPress.bind(this)}/>;
                 break;
+            case 'MediaTypeInput':
+                editor = <MediaTypeInput spec={this.props.spec} config={this.props.config} onDataEdit={this.handleDataEdit.bind(this)} onEnterPress={this.handleEnterPress.bind(this)}/>;
+                break;
+            case 'FileSizeInput':
+                editor = <FileSizeInput spec={this.props.spec} config={this.props.config} onDataEdit={this.handleDataEdit.bind(this)} onEnterPress={this.handleEnterPress.bind(this)}/>;
+                break;                
             default:
                 editor = <BasicIndividualInput spec={this.props.spec} config={this.props.config} onDataEdit={this.handleDataEdit.bind(this)} allowActionByKey="1" onEnterPress={this.handleEnterPress.bind(this)}/>;
         }

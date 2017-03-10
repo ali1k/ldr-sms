@@ -186,6 +186,16 @@ class Configurator{
                         }
                     }
                 }
+                //exception for metadata
+                if(datasetURI.indexOf('void.ttl') !== -1){
+                    if(config.dataset_property['metadata']){
+                        if(config.dataset_property['metadata'][propertyURI]){
+                            for(let prop in config.dataset_property['metadata'][propertyURI]) {
+                                output[prop] = config.dataset_property['metadata'][propertyURI][prop];
+                            }
+                        }
+                    }
+                }
                 //design decision: dynamic configs can overwrite existing local configs
                 if (dynamicConfig.dataset_property[datasetURI]){
                     if(dynamicConfig.dataset_property[datasetURI][propertyURI]){
