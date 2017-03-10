@@ -79,6 +79,38 @@ export default {
                     });
                 });
             });
+        } else if (resource === 'dataset.metadataList') {
+            datasetURI = 'metadata';
+            //control access on authentication
+            if(enableAuthentication){
+                if(!req.user){
+                    callback(null, {datasetURI: datasetURI, resources: [], page: 1, config: {}});
+                    return 0;
+                }else{
+                    user = req.user;
+                }
+            }else{
+                user = {accountName: 'open'};
+            }
+            getDynamicEndpointParameters(user, datasetURI, (endpointParameters)=>{
+                //SPARQL QUERY
+                query = queryObject.getDatasetsMetadataList();
+                //console.log(query);
+                //send request
+                rp.get({uri: getHTTPGetURL(getHTTPQuery('read', query, endpointParameters, outputFormat))}).then(function(res){
+                    let tmp = utilObject.parseDatasetsMetadataList(user, res, datasetURI);
+                    callback(null, {
+                        resources: tmp.resources,
+                        total: tmp.total,
+                        datasetURI: datasetURI,
+                        page: 1,
+                        config: {datasetReactor: ['DatasetMetadata']}
+                    });
+                }).catch(function (err) {
+                    console.log(err);
+                    callback(null, {datasetURI: datasetURI, resources: [], page: 1, config: {}});
+                });
+            });
         } else if (resource === 'dataset.linkset') {
             datasetURI = (params.id ? decodeURIComponent(params.id) : 0);
             //control access on authentication
@@ -414,6 +446,11 @@ export default {
                     return 0;
                 }else{
                     user = req.user;
+                    //check if user has access to datasets page
+                    if(user.member.indexOf('http://rdf.risis.eu/user/SMSTeam') === -1 && user.member.indexOf('http://rdf.risis.eu/user/SMSVisitors') === -1){
+                        callback(null, {dynamicReactorDS: {datasets: {}}, dynamicFacetsDS: {facets: {}}, staticReactorDS: staticReactorDS, staticFacetsDS: staticFacetsDS, error: 'Sorry! This page is only open to SMS visitors. Please contact us to arrange a visit. The public online access will be available soon after we finish the initial user testing.'});
+                        return 0;
+                    }
                 }
             }else{
                 user = {accountName: 'open'};

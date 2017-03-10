@@ -5,6 +5,39 @@ class DatasetUtil {
     constructor() {
 
     }
+    //to parse metadata which is on different graph names
+    parseDatasetsMetadataList(user, body, datasetURI) {
+        let output = [];
+        let resources = [];
+        let accessLevel = {access: false};
+        let parsed = JSON.parse(body);
+        let counter = 0;
+        if (parsed.results.bindings.length) {
+            parsed.results.bindings.forEach(function(el) {
+                if(resources.indexOf(el.resource.value) === -1){
+                    resources.push(el.resource.value);
+                    if(user){
+                        /*
+                        if(user.id == el.instances[0].value) {
+                            userIsCreator = 1;
+                        }*/
+                        accessLevel=checkEditAccess(user, el.dataset.value, el.resource.value, 0 , 0);
+                    }
+                    counter++;
+                    output.push({
+                        v: el.resource.value,
+                        d: el.dataset.value,
+                        title: el.title ? el.title.value : '',
+                        image: el.image ? el.image.value : '',
+                        geo: el.geo ? el.geo.value : '',
+                        label: el.label ? el.label.value : '',
+                        accessLevel: accessLevel
+                    });
+                }
+            });
+        }
+        return {resources: output, total: counter};
+    }
     getPropertyLabel(uri) {
         let property = '';
         let tmp = uri;

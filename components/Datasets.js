@@ -163,6 +163,12 @@ class Datasets extends React.Component {
         let info = '';
         let dsCategoryObj = {orgRanking: [], orgs: [], persons: [], fundingPrograms: [], projects: [], publications: [], patents: [], geoLocations: [], geoBoundaries: [], geoStats: [], others: []};
         let dss = this.props.DatasetsStore.datasetsList;
+        //check erros first
+        let errorDIV = '';
+        if(this.props.DatasetsStore.error){
+            errorDIV =
+                <div className="ui warning message"><h2>{this.props.DatasetsStore.error} <a className="ui fluid primary button" href="/contact">Contact Us</a></h2></div>;
+        }
         dss.forEach((item)=>{
             if(item.features.datasetCategory){
                 if (!dsCategoryObj[item.features.datasetCategory[0]]){
@@ -513,14 +519,16 @@ class Datasets extends React.Component {
                         </tbody>
                         </table>
 
+                        {errorDIV ? '' :
+                        <h2><span className="ui big black circular label">{dss.length}</span> Datasets { self.state.selectedList.length ? <span className="ui tag label">{self.state.selectedList.join(', ')}</span> : ''}</h2>
+                        }
 
-                        <h2><span className="ui big black circular label">{dss.length}</span> Datasets {self.state.selectedList.length ? <span className="ui tag label">{self.state.selectedList.join(', ')}</span> : ''}</h2>
                         <div className="ui big divided list" id="datasetsList">
-                            {output}{outputDSS}
+                            {errorDIV ? errorDIV : output}{errorDIV ? '' : outputDSS}
                         </div>
                     </div>
                     <div className= "ui bottom attached">
-                        {datasetActionsDIV}
+                        {errorDIV ? '' : datasetActionsDIV}
                     </div>
                     {dss.length ?
                     <div className="ui grey message form">

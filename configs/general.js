@@ -5,7 +5,7 @@ export default {
     appShortTitle: ['SMS Platform'],
 
     //Default Dataset under observation, if not set , will consider all existing graph names
-    defaultDatasetURI: ['http://ld-r.org/default'],
+    defaultDatasetURI: [''],
 
     //will prevent access if not logged in
     enableAuthentication: 1,

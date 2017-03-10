@@ -1,5 +1,6 @@
 import loadDatasets from '../actions/loadDatasets';
 import loadDataset from '../actions/loadDataset';
+import loadDatasetsMetadataList from '../actions/loadDatasetsMetadataList';
 import loadLinkset from '../actions/loadLinkset';
 import loadResource from '../actions/loadResource';
 import loadUsersList from '../actions/loadUsersList';
@@ -77,6 +78,15 @@ export default {
                 datasetURI = 0;
             }
             context.executeAction(loadFacets, {mode: 'init', id: decodeURIComponent(datasetURI), selection: 0, page: 1}, done);
+        }
+    },
+    metadataList: {
+        path: '/metadataList',
+        method: 'get',
+        handler: require('../components/reactors/DatasetReactor'),
+        label: 'Datasets Metadata',
+        action: (context, payload, done) => {
+            context.executeAction(loadDatasetsMetadataList, {}, done);
         }
     },
     datasets: {
