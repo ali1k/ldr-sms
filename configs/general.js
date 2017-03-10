@@ -1,8 +1,8 @@
 export default {
     //full page title
-    appFullTitle: ['RISIS SMS Platform -> Linked Data Reactor'],
+    appFullTitle: ['Semantically Mapping Science (SMS) Platform'],
     //short page title
-    appShortTitle: ['SMS-LDR'],
+    appShortTitle: ['SMS Platform'],
 
     //Default Dataset under observation, if not set , will consider all existing graph names
     defaultDatasetURI: ['http://ld-r.org/default'],
