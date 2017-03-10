@@ -27,6 +27,16 @@ export default {
             done();
         }
     },
+    contact: {
+        path: '/contact',
+        method: 'get',
+        handler: require('../components/Contact'),
+        label: 'Contact Us',
+        action: (context, payload, done) => {
+            context.dispatch('UPDATE_PAGE_TITLE', { pageTitle: appFullTitle + ' | Contact Us'});
+            done();
+        }
+    },
     newDataset: {
         path: '/newDataset',
         method: 'get',

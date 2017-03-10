@@ -34,7 +34,7 @@ import { createElementWithContext } from 'fluxible-addons-react';
 const env = process.env.NODE_ENV;
 const htmlComponent = React.createFactory(HtmlComponent);
 const debug = debugLib('linked-data-reactor');
-const publicRoutes = ['/', '/about'];
+const publicRoutes = ['/', '/about', '/contact'];
 
 const host = process.env.HOST ? process.env.HOST : 'localhost';
 let port = 3000 ;
