@@ -76,7 +76,7 @@ class ObjectIEditor extends React.Component {
                 break;
             case 'FileSizeInput':
                 editor = <FileSizeInput spec={this.props.spec} config={this.props.config} onDataEdit={this.handleDataEdit.bind(this)} onEnterPress={this.handleEnterPress.bind(this)}/>;
-                break;                
+                break;
             default:
                 editor = <BasicIndividualInput spec={this.props.spec} config={this.props.config} onDataEdit={this.handleDataEdit.bind(this)} allowActionByKey="1" onEnterPress={this.handleEnterPress.bind(this)}/>;
         }

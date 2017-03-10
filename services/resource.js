@@ -118,7 +118,6 @@ export default {
             propertyURI = params.propertyURI;
             resourceURI = params.resourceURI;
             datasetURI = params.dataset;
-
             //control access on authentication
             if(enableAuthentication){
                 if(!req.user){

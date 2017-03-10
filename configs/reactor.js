@@ -15,6 +15,9 @@ export default {
             'http://rdf.risis.eu/sms/users.ttl#': {
                 readOnly: 0
             },
+            'metadata': {
+                readOnly: 0
+            },
             'http://ld-r.org/configurations': {
                 readOnly: 0,
                 allowResourceClone: 1,
