@@ -13,7 +13,7 @@ export default {
                 datasetReactor: ['Dataset']
             },
             'http://rdf.risis.eu/sms/users.ttl#': {
-                readOnly: 1
+                readOnly: 0
             },
             'http://ld-r.org/configurations': {
                 readOnly: 0,

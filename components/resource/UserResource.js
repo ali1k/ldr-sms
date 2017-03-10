@@ -46,7 +46,7 @@ class UserResource extends React.Component {
             }
         }
         //create a list of properties
-        let firstNameDIV, lastNameDIV, orgDIV, emailDIV, unameDIV, passDIV, creatorDIV, dateDIV, editorOfDIV, viewerOfDIV;
+        let firstName, firstNameDIV, lastName, lastNameDIV, orgDIV, emailDIV, uname, unameDIV, passDIV, creatorDIV, dateDIV, editorOfDIV, viewerOfDIV;
         let list = this.props.properties.map(function(node, index) {
             //if there was no config at all or it is hidden, do not render the property
             if(!node.config || !node.config.isHidden){
@@ -68,14 +68,17 @@ class UserResource extends React.Component {
                 }else if(node.propertyURI === 'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#createdBy') {
                     creatorDIV = <PropertyReactor key={index} enableAuthentication={self.props.enableAuthentication} spec={node} readOnly={configReadOnly} config={node.config} datasetURI ={self.props.datasetURI } resource={self.props.resource} property={node.propertyURI} propertyPath= {self.props.propertyPath}/>;
                 } else if(node.propertyURI === 'http://xmlns.com/foaf/0.1/firstName'){
+                    firstName = node.instances[0].value;
                     firstNameDIV = <PropertyReactor key={index} enableAuthentication={self.props.enableAuthentication} spec={node} readOnly={configReadOnly} config={node.config} datasetURI ={self.props.datasetURI } resource={self.props.resource} property={node.propertyURI} propertyPath= {self.props.propertyPath}/>;
                 }else if(node.propertyURI === 'http://xmlns.com/foaf/0.1/lastName') {
+                    lastName = node.instances[0].value;
                     lastNameDIV = <PropertyReactor key={index} enableAuthentication={self.props.enableAuthentication} spec={node} readOnly={configReadOnly} config={node.config} datasetURI ={self.props.datasetURI } resource={self.props.resource} property={node.propertyURI} propertyPath= {self.props.propertyPath}/>;
                 }else if(node.propertyURI === 'http://xmlns.com/foaf/0.1/organization') {
                     orgDIV = <PropertyReactor key={index} enableAuthentication={self.props.enableAuthentication} spec={node} readOnly={configReadOnly} config={node.config} datasetURI ={self.props.datasetURI } resource={self.props.resource} property={node.propertyURI} propertyPath= {self.props.propertyPath}/>;
                 }else if(node.propertyURI === 'http://xmlns.com/foaf/0.1/mbox') {
                     emailDIV = <PropertyReactor key={index} enableAuthentication={self.props.enableAuthentication} spec={node} readOnly={configReadOnly} config={node.config} datasetURI ={self.props.datasetURI } resource={self.props.resource} property={node.propertyURI} propertyPath= {self.props.propertyPath}/>;
                 }else if(node.propertyURI === 'http://xmlns.com/foaf/0.1/accountName') {
+                    uname = node.instances[0].value;
                     unameDIV = <PropertyReactor key={index} enableAuthentication={self.props.enableAuthentication} spec={node} readOnly={configReadOnly} config={node.config} datasetURI ={self.props.datasetURI } resource={self.props.resource} property={node.propertyURI} propertyPath= {self.props.propertyPath}/>;
                 }else if(node.propertyURI === 'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#viewerOf') {
                     viewerOfDIV = <PropertyReactor key={index} enableAuthentication={self.props.enableAuthentication} spec={node} readOnly={configReadOnly} config={node.config} datasetURI ={self.props.datasetURI } resource={self.props.resource} property={node.propertyURI} propertyPath= {self.props.propertyPath}/>;
@@ -146,7 +149,7 @@ class UserResource extends React.Component {
                 <div className="ui column">
 
                     <h2>
-                        <a target="_blank" href={'/export/NTriples/' + encodeURIComponent(this.props.datasetURI) + '/' + encodeURIComponent(this.props.resource)}><i className="blue icon user"></i></a> <a href={this.props.resource} target="_blank">{this.props.title}</a>&nbsp;&nbsp;
+                        <a target="_blank" href={'/export/NTriples/' + encodeURIComponent(this.props.datasetURI) + '/' + encodeURIComponent(this.props.resource)}><i className="blue icon user"></i></a> <a href={this.props.resource} target="_blank">{uname} ({firstName} {lastName})</a>&nbsp;&nbsp;
                     </h2>
                     {mainDIV}
                 </div>

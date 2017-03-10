@@ -384,7 +384,7 @@ class ResourceUtil {
         //------ permission check functions---------------
     deleteAdminProperties(list) {
         let out = []
-        const adminProps = ['https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#isSuperUser', 'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#isActive', 'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#editorOf', 'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#viewerOf'];
+        const adminProps = ['https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#isSuperUser', 'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#isActive', 'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#editorOf', 'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#viewerOf', 'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#editorOfGraph','https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#editorOfDataset', 'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#editorOfResource', 'https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#editorOfProperty'];
         list.forEach(function(el) {
             if (adminProps.indexOf(el.propertyURI) === -1) {
                 out.push(el);
