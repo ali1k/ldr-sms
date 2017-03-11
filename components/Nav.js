@@ -14,6 +14,10 @@ class Nav extends React.Component {
     }
     render() {
         let user = this.context.getUser();
+        let showSettings = 0;
+        if(user && (parseInt(user.isSuperUser) || user.member.indexOf('http://rdf.risis.eu/user/SMSTeam') !== -1 )){
+            showSettings = 1;
+        }
         // console.log(user);
         let userMenu;
         let configMenu = <a href={'/browse/' + encodeURIComponent(configDatasetURI)} className="ui item link" title="Configuration Manager">
@@ -48,7 +52,7 @@ class Nav extends React.Component {
                         <div className="item link" onClick={this.showHelpModal}>
                                 <i className="small help circle icon"></i>
                         </div>
-                        {(enableDynamicReactorConfiguration || enableDynamicServerConfiguration || enableDynamicfacetsConfiguration) ?
+                        {(showSettings && (enableDynamicReactorConfiguration || enableDynamicServerConfiguration || enableDynamicfacetsConfiguration)) ?
                             configMenu
                         : ''}
                         {userMenu}
