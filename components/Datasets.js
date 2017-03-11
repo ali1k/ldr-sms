@@ -386,7 +386,7 @@ class Datasets extends React.Component {
                                     <td>
                                         <div style={{cursor: 'pointer', minHeight: 200, minWidth: 160}} className={containerGeoLocationslass} ref="containerGeoLocations" onMouseOver={this.handleMouseOver.bind(this, 'geoLocations')} onMouseOut={this.handleMouseOut.bind(this, 'geoLocations')} onClick={this.handleMouseClick.bind(this, 'geoLocations')}>
                                             <div className="ui top left attached small label">{dsCategoryObj.geoLocations.length}</div>
-                                            <span style={{color: '#000'}}>Geo Locations</span>
+                                            <span style={{color: '#FFF'}}>Geo Locations</span>
                                         </div>
                                     </td>
                                     <td>
