@@ -14,7 +14,25 @@ let helpers = require('../../services/utils/helpers');
 let appShortTitle = generalConfig.appShortTitle;
 let appFullTitle = generalConfig.appFullTitle;
 
-let outputFormat = 'application/sparql-results+json';
+const outputFormat = 'application/sparql-results+json';
+const headers = {'Accept': 'application/sparql-results+json'};
+
+let getPropertyLabel = (uri) => {
+    var property = '';
+    var tmp = uri;
+    var tmp2 = tmp.split('#');
+    if (tmp2.length > 1) {
+        property = tmp2[1];
+    } else {
+        tmp2 = tmp.split('/');
+        property = tmp2[tmp2.length - 1];
+        tmp2 = property.split(':');
+        property = tmp2[tmp2.length - 1];
+    }
+    //make first letter capital case
+    property = property.charAt(0).toUpperCase() + property.slice(1);
+    return property;
+}
 module.exports = function handleAuthentication(server) {
     server.use(passport.initialize());
     server.use(passport.session());
@@ -25,6 +43,116 @@ module.exports = function handleAuthentication(server) {
             return res.redirect('/');
         }
     });
+    //----------------handle OAuth authentication
+    const oauth2 = require('simple-oauth2').create({
+        client: {
+            id: config.OAuth.risis.clientID,
+            secret: config.OAuth.risis.clientSecret,
+        },
+        auth: {
+            tokenHost: config.OAuth.risis.site,
+            tokenPath: config.OAuth.risis.tokenPath,
+            authorizePath: config.OAuth.risis.authorizationPath,
+        },
+    });
+    // Authorization uri definition
+    const authorization_uri = oauth2.authorizationCode.authorizeURL({
+        redirect_uri: config.OAuth.risis.redirectURI,
+        state: '3(#sadsd0/!~',
+    });
+    // Initial page redirecting to RISIS OAuth server
+    server.get('/auth', function (req, res) {
+        res.redirect(authorization_uri);
+    });
+    // Callback service parsing the authorization token and asking for the access token
+    server.get('/callback', function (req, res) {
+        let code = req.query.code;
+        oauth2.authorizationCode.getToken({
+            code: code,
+            redirect_uri: config.OAuth.risis.redirectURI
+        }, saveToken);
+        function saveToken(error, result) {
+            if (error || error !== null) { console.log('Access Token Error', error.message); res.end('Error!')}else{
+            //console.log(error, result);
+            //token = oauth2.accessToken.create(result);
+            //check if user already exist in the system, if not make a new SMS user
+            //first: retrive user data using the token
+                let accessURL = 'https://auth-risis.cortext.net/auth/access?access_token=' + result.access_token;
+                rp.get({uri: accessURL}).then(function(resq){
+                    let parsed = JSON.parse(resq);
+                    let endpoint = helpers.getStaticEndpointParameters(generalConfig.authDatasetURI);
+                    let query = getUserExistsQuery(parsed.username, parsed.email);
+                    let rpPath = helpers.getHTTPGetURL(helpers.getHTTPQuery('read', query, endpoint, outputFormat), {headers: headers});
+                    //send request
+                    console.log('uri', rpPath);
+                    rp.get({uri: rpPath}).then(function(resq2){
+                        let parsed2 = JSON.parse(resq2);
+                        if(parsed2.results.bindings.length){
+                            if(parsed2.results.bindings[0].exists.value ==='0'){
+                                //user needs to be registered in SMS
+                                console.log('user needs to be registered in SMS');
+                                let reqObj = {
+                                    editorofgraph: '0',
+                                    orcidid: '',
+                                    firstname: parsed.name,
+                                    lastname: '-',
+                                    organization: parsed.institution,
+                                    position: 'not added!',
+                                    email: parsed.email,
+                                    username: parsed.username,
+                                    password: 'user' + Math.round(+new Date() / 1000) + '$$risis',
+                                };
+                                addUserQueries(req, res, '');
+                            }else{
+                                console.log('user is already registred in the system');
+                                //user is already registred in the system
+                                //have to retrieve username and password from SMS
+                                query = getUserDataQuery(parsed.email);
+                                //console.log(query);
+                                //send request
+                                let rpPath = helpers.getHTTPGetURL(helpers.getHTTPQuery('read', query, endpoint, outputFormat), {headers: headers});
+                                rp.get({uri: rpPath}).then(function(resqq){
+                                    let parsed = JSON.parse(resqq);
+                                    //console.log(parsed);
+                                    let user={};
+                                    if(parsed.results.bindings.length){
+                                        parsed.results.bindings.forEach(function(el) {
+                                            user[getPropertyLabel(el.p.value)] = el.o.value;
+                                        });
+                                        user.id = parsed.results.bindings[0].s.value;
+                                        //console.log(user);
+                                        if(user.isActive === '0'){
+                                            res.end('Your account is not yet confirmed in the system... Please wait one or two more days until you receive the confirmation email.');
+                                        }else{
+                                            req.logIn(user, function(err2l) {
+                                                if (err2l) { res.end('Error in login to SMS...'); }
+                                                //console.log('auth is OK!');
+                                                return res.redirect('/');
+                                            });
+                                        }
+                                    }else{
+                                        res.end('Error in retrieving user data from SMS...');
+                                    }
+                                }).catch(function (errqq) {
+                                    console.log(errqq);
+                                    res.end('Error in accessing user data from SMS...');
+                                });
+                            }
+                        }
+                    }).catch(function (err3) {
+                        console.log(err3);
+                        res.end('Error in retrieving user data from the SMS platform...');
+                        //return res.redirect('/');
+                    });
+                }).catch(function (err2) {
+                    console.log(err2);
+                    res.end('Error in retrieving your user data from our authentication server...');
+                    //return res.redirect('/');
+                });
+            }
+        }
+    });
+//-----------------------end OAuth----------------------------
     server.post('/login', function(req, res, next) {
         let redirectTo = req.session.redirectTo ? req.session.redirectTo : '/';
         delete req.session.redirectTo;
@@ -126,9 +254,39 @@ let prepareGraphName = (graphName)=> {
     }
     return {gStart: gStart, gEnd: gEnd}
 };
+let getUserExistsQuery = (username, email) => {
+    let query = `
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    SELECT ( COUNT(?s) AS ?exists ) FROM <${generalConfig.authDatasetURI}> WHERE {
+      {
+          ?s a foaf:Person .
+          ?s foaf:accountName ?accountName .
+          ?s foaf:mbox ?mbox .
+          FILTER (?accountName="${username}" || ?mbox=<${email}> || ?mbox=<mailto:${email}>)
+      }
+    }
+    `;
+    return query;
+}
+let getUserDataQuery = (email)=>{
+    var query = `
+    PREFIX ldr: <https://github.com/ali1k/ld-reactor/blob/master/vocabulary/index.ttl#>
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    SELECT ?s ?p ?o FROM <${generalConfig.authDatasetURI}> WHERE {
+      {
+          ?s a foaf:Person .
+          ?s foaf:accountName ?accountName .
+          ?s foaf:mbox ?mbox .
+          ?s ?p ?o .
+          FILTER (?accountName="${email}" || ?mbox=<${email}> || ?mbox=<mailto:${email}>)
+      }
+    }
+    `;
+    return query;
+}
 let addUserQueries = (req, res, recaptchaSiteKey) => {
     //first check if user already exists
-    let endpoint = helpers.getStaticEndpointParameters([generalConfig.authDatasetURI[0]]);
+    let endpoint = helpers.getStaticEndpointParameters(generalConfig.authDatasetURI);
     let {gStart, gEnd} = helpers.prepareGraphName(endpoint.graphName);
     let query = `
     PREFIX foaf: <http://xmlns.com/foaf/0.1/>
