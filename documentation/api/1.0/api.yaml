@@ -1,0 +1,1027 @@
+swagger: '2.0'
+info:
+  title: SMS Linked Data API
+  description: A set of Linked Data powered APIs for Semantically Mapping Science (SMS)
+  version: "1.0"
+# the domain of the service
+host: sms.risis.eu
+# array of all schemes that your API supports
+schemes:
+  - http
+# will be prefixed to all paths
+basePath: /api/v1.0
+produces:
+  - application/json
+paths:
+  /geo.PointToNUTS;lat={latitude};long={longitude};smsKey={smsKey}:
+    get:
+      summary: given a point, returns the NUTS boundaries.
+      description: |
+        Receives Longitude and Latitude of a point and returns its NUTS containers in different levels.
+      parameters:
+        - name: latitude
+          in: path
+          description: Latitude of the given point.
+          required: true
+          type: number
+          format: double
+          default: 45.0804
+        - name: longitude
+          in: path
+          description: Longitude of the given point.
+          required: true
+          type: number
+          format: double
+          default: 4.899431
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding NUTS details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/pointToNUTS'
+  /geo.NUTStoName;code={code};smsKey={smsKey}:
+    get:
+      summary: given a NUTS code, returns the name of the NUTS region.
+      parameters:
+        - name: code
+          in: path
+          description: code for NUTS region
+          required: true
+          type: string
+          default: NL326
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding NUTS names.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/NUTStoName'
+  /geo.NameToNUTS;name={name};smsKey={smsKey}:
+    get:
+      summary: given a NUTS region name, returns the code and details of the NUTS region.
+      parameters:
+        - name: name
+          in: path
+          description: name of NUTS region
+          required: true
+          type: string
+          default: Groot-Amsterdam
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding NUTS details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/NameToNUTS'
+  /geo.NUTStoPolygon;code={code};smsKey={smsKey}:
+    get:
+      summary: given a NUTS code, returns the containing polygon shape and details of the NUTS region.
+      parameters:
+        - name: code
+          in: path
+          description: code for NUTS region
+          required: true
+          type: string
+          default: NL326
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding polygons for the given NUTS.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/NUTStoPolygon'
+  /geo.MunicipalitiesPerCountry;country={country};smsKey={smsKey}:
+    get:
+      summary: given a country name, returns the list of municipalities.
+      parameters:
+        - name: country
+          in: path
+          description: country name, can be ISO 2,3 digit code as well
+          required: true
+          type: string
+          default: Netherlands
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding municipalities.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MunicipalitiesPerCountry'
+  /geo.NameToMunicipality;name={name};smsKey={smsKey}:
+    get:
+      summary: given a municipality name, returns the related details.
+      parameters:
+        - name: name
+          in: path
+          description: municipality name
+          required: true
+          type: string
+          default: Amstelveen
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/NameToMunicipality'
+  /geo.Municipality;code={code};smsKey={smsKey}:
+    get:
+      summary: given a municipality code, returns the related details.
+      parameters:
+        - name: code
+          in: path
+          description: municipality code
+          required: true
+          type: string
+          default: NL270362
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Municipality'
+  /geo.BoundaryToOECDFUA;name={name};country={country};smsKey={smsKey}:
+    get:
+      summary: given a boundary name and its country, returns the corresponding OECD FUA and Municipality.
+      parameters:
+        - name: name
+          in: path
+          description: boundary name
+          required: true
+          type: string
+          default: Amstelveen
+        - name: country
+          in: path
+          description: Optional country name, better be in ISO3
+          required: true
+          type: string
+          default: NLD
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Municipality'
+  /geo.OECDFUAList;country={country};smsKey={smsKey}:
+    get:
+      summary: given a country, returns the list of all OECDF functional urban areas.
+      parameters:
+        - name: country
+          in: path
+          description: country name, better be in ISO3
+          required: true
+          type: string
+          default: NLD
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GADM28Admin'
+  /geo.OECDFUA;id={id};smsKey={smsKey}:
+    get:
+      summary: given the id of a functional urban area, returns its detailed properties.
+      parameters:
+        - name: id
+          in: path
+          description: id of the functional urban area
+          required: true
+          type: string
+          default: NL002
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GADM28Admin'
+  /geo.OECDFUAToPolygon;id={id};smsKey={smsKey}:
+    get:
+      summary: given the id of a functional urban area, returns the polygon shape.
+      parameters:
+        - name: id
+          in: path
+          description: id of the functional urban area
+          required: true
+          type: string
+          default: NL002
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MunicipalitytoPolygon'
+  /geo.PointToOECDFUA;lat={latitude};long={longitude};country={country};smsKey={smsKey}:
+    get:
+      summary: given a point, returns the OECD FUAs.
+      description: |
+        Receives Longitude and Latitude of a point and returns its OECD FUA.
+      parameters:
+        - name: latitude
+          in: path
+          description: Latitude of the given point.
+          required: true
+          type: number
+          format: double
+          default: 52.3338
+        - name: longitude
+          in: path
+          description: Longitude of the given point.
+          required: true
+          type: number
+          format: double
+          default: 4.899431
+        - name: country
+          in: path
+          description: Optional 2 digit, 3 digit ISO code or the name of the country.
+          required: true
+          type: string
+          default: NLD
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding admin boundary details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/pointToADMIN'
+  /geo.GADM28Admin;id={id};smsKey={smsKey}:
+    get:
+      summary: given a admin boundary uri, returns its detailed properties.
+      parameters:
+        - name: id
+          in: path
+          description: id of the administrative boundary
+          required: true
+          type: string
+          default: 158-9-266
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GADM28Admin'
+  /geo.GADM28AdminToPolygon;id={id};smsKey={smsKey}:
+    get:
+      summary: given a admin boundary uri, returns the polygon shape.
+      parameters:
+        - name: id
+          in: path
+          description: id of the administrative boundary
+          required: true
+          type: string
+          default: 158-9-266
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MunicipalitytoPolygon'
+  /geo.PointToGADM28Admin;lat={latitude};long={longitude};country={country};level={level};smsKey={smsKey}:
+    get:
+      summary: given a point, returns the GADM 2.8 administrative boundaries.
+      description: |
+        Receives Longitude and Latitude of a point and returns its administrative boundaries in different levels.
+      parameters:
+        - name: latitude
+          in: path
+          description: Latitude of the given point.
+          required: true
+          type: number
+          format: double
+          default: 52.3338
+        - name: longitude
+          in: path
+          description: Longitude of the given point.
+          required: true
+          type: number
+          format: double
+          default: 4.899431
+        - name: country
+          in: path
+          description: Optional 2 digit, 3 digit ISO code or the name of the country.
+          required: true
+          type: string
+          default: NLD
+        - name: level
+          in: path
+          description: Optional level of admin boundary (0=country level)
+          required: true
+          type: number
+          format: integer
+          default: 1
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding admin boundary details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/pointToADMIN'
+  /geo.PointToOSMAdmin;lat={latitude};long={longitude};country={country};level={level};smsKey={smsKey}:
+    get:
+      summary: given a point, returns the OpneStreetMap administrative boundaries.
+      description: |
+        Receives Longitude and Latitude of a point and returns its administrative boundaries in different levels.
+      parameters:
+        - name: latitude
+          in: path
+          description: Latitude of the given point.
+          required: true
+          type: number
+          format: double
+          default: 52.3338
+        - name: longitude
+          in: path
+          description: Longitude of the given point.
+          required: true
+          type: number
+          format: double
+          default: 4.899431
+        - name: country
+          in: path
+          description: Optional 2 digit, 3 digit ISO code or the name of the country.
+          required: true
+          type: string
+          default: NLD
+        - name: level
+          in: path
+          description: Optional level of admin boundary (0=country level)
+          required: true
+          type: number
+          format: integer
+          default: 1
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding admin boundary details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/pointToADMIN'
+  /geo.OSMAdmin;id={id};smsKey={smsKey}:
+    get:
+      summary: given a admin boundary id, returns its detailed properties.
+      parameters:
+        - name: id
+          in: path
+          description: id of the administrative boundary
+          required: true
+          type: string
+          default: relation_157954
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GADM28Admin'
+  /geo.OSMAdminMetadata;country={country};level={level};smsKey={smsKey}:
+    get:
+      summary: given a country, returns the metadata about its OSM admin levels.
+      parameters:
+        - name: country
+          in: path
+          description: country name, better be in ISO3
+          required: true
+          type: string
+          default: NLD
+        - name: level
+          in: path
+          description: Optional level name between 1 to 11
+          required: true
+          type: integer
+          default: 2
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GADM28Admin'
+  /geo.OSMAdminToPolygon;id={id};smsKey={smsKey}:
+    get:
+      summary: given a admin boundary id, returns the polygon shape.
+      parameters:
+        - name: id
+          in: path
+          description: id of the administrative boundary
+          required: true
+          type: string
+          default: relation_157954
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MunicipalitytoPolygon'
+  /geo.PointToFlickrAdmin;lat={latitude};long={longitude};country={country};level={level};smsKey={smsKey}:
+    get:
+      summary: given a point, returns the Flickr administrative boundaries.
+      description: |
+        Receives Longitude and Latitude of a point and returns its administrative boundaries in different levels.
+      parameters:
+        - name: latitude
+          in: path
+          description: Latitude of the given point.
+          required: true
+          type: number
+          format: double
+          default: 52.3338
+        - name: longitude
+          in: path
+          description: Longitude of the given point.
+          required: true
+          type: number
+          format: double
+          default: 4.899431
+        - name: country
+          in: path
+          description: Optional 2 digit, 3 digit ISO code or the name of the country.
+          required: true
+          type: string
+          default: NLD
+        - name: level
+          in: path
+          description: Optional level of admin boundary (1=country level)
+          required: true
+          type: number
+          format: integer
+          default: 1
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding admin boundary details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/pointToADMIN'
+  /geo.FlickrAdmin;id={id};smsKey={smsKey}:
+    get:
+      summary: given a admin boundary id, returns its detailed properties.
+      parameters:
+        - name: id
+          in: path
+          description: id of the administrative boundary
+          required: true
+          type: string
+          default: '727232'
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GADM28Admin'
+  /geo.FlickrAdminToPolygon;id={id};smsKey={smsKey}:
+    get:
+      summary: given a admin boundary id, returns the polygon shape.
+      parameters:
+        - name: id
+          in: path
+          description: id of the administrative boundary
+          required: true
+          type: string
+          default: '727232'
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MunicipalitytoPolygon'
+  /geo.AdminsByLevel;level={level};country={country};source={source};offset={offset};limit={limit};smsKey={smsKey}:
+    get:
+      summary: given a admin boundary id, returns its detailed properties.
+      parameters:
+        - name: level
+          in: path
+          description: level of interest based on the provided source
+          required: true
+          type: string
+          default: '2'
+        - name: country
+          in: path
+          description: country of interest
+          required: true
+          type: string
+          default: 'NLD'
+        - name: source
+          in: path
+          description: source of data e.g. osm, flickr or gadm
+          required: true
+          type: string
+          default: 'gadm'
+        - name: offset
+          in: path
+          description: Optional offset of data to be returned
+          required: true
+          type: integer
+          default: 0
+        - name: limit
+          in: path
+          description: Optional maximum size of data to be returned
+          required: true
+          type: integer
+          default: 100
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GADM28Admin'
+  /geo.PointToMunicipality;lat={latitude};long={longitude};smsKey={smsKey}:
+    get:
+      summary: given a point, returns the related municipality.
+      description: |
+        Receives Longitude and Latitude of a point and returns its municipality details.
+      parameters:
+        - name: latitude
+          in: path
+          description: Latitude of the given point.
+          required: true
+          type: number
+          format: double
+          default: 48.210033
+        - name: longitude
+          in: path
+          description: Longitude of the given point.
+          required: true
+          type: number
+          format: double
+          default: 16.363449
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PointToMunicipality'
+  /geo.MunicipalityToPolygon;code={code};smsKey={smsKey}:
+    get:
+      summary: given a municipality code, returns the polygon shape.
+      parameters:
+        - name: code
+          in: path
+          description: municipality code
+          required: true
+          type: string
+          default: AT31726
+        - name: smsKey
+          in: path
+          description: SMS API Key.
+          required: true
+          type: string
+          default: wefHWDFWF$$235EFGWFGle
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: An array of object with corresponding details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MunicipalitytoPolygon'
+  /geo.googleGeocode;addr={addr};apiKey={apiKey}:
+    get:
+      summary: gecodes the given address by using the Google geocoding API
+      parameters:
+        - name: addr
+          in: path
+          description: addrress
+          required: true
+          type: string
+          default: De Boelelaan 1105, 1081 HV Amsterdam
+        - name: apiKey
+          in: path
+          description: api key for google services
+          required: true
+          type: string
+          default: insert your API key
+      tags:
+        - Geo-Services
+      responses:
+        200:
+          description: list of candidate coordinates for this address
+          schema:
+            type: object
+  /metadata.dataset;name={name}:
+    get:
+      summary: given a dataset's name, returns the related metadata properties.
+      description: |
+        Returns all the metadata properties of a given dataset
+      parameters:
+        - name: name
+          in: path
+          description: Name of the dataset.
+          required: true
+          type: string
+          default: eter
+      tags:
+        - Metadata-Services
+      responses:
+        200:
+          description: An array of object with property details.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DatasetProperties'
+  /metadata.datasetsList:
+    get:
+      summary: gives a list of RISIS datasets.
+      description: |
+        Returns a list of all available RISIS datasets.
+      tags:
+        - Metadata-Services
+      responses:
+        200:
+          description: An array of object with datasets names and urls.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DatasetsList'
+definitions:
+  pointToNUTS:
+    type: object
+    properties:
+      longitude:
+        type: number
+        format: double
+      latitude:
+        type: number
+        format: double
+      resources:
+        type: array
+        description: List of NUTS region.
+        items:
+           $ref: '#/definitions/NUTS'
+  pointToADMIN:
+     type: object
+     properties:
+      longitude:
+        type: number
+        format: double
+      latitude:
+        type: number
+        format: double
+      resources:
+        type: array
+        description: List of admin boundaries.
+        items:
+           $ref: '#/definitions/ADMIN28'
+  NameToNUTS:
+    type: object
+    properties:
+      resources:
+        type: array
+        description: List of NUTS region.
+        items:
+           $ref: '#/definitions/NUTS'
+  NUTStoName:
+    type: object
+    properties:
+      resources:
+        type: array
+        description: List of NUTS region.
+        items:
+           $ref: '#/definitions/NUTS'
+  NUTStoPolygon:
+    type: object
+    properties:
+      resources:
+        type: array
+        description: List of NUTS region containg the their corresponding polygons.
+        items:
+           $ref: '#/definitions/NUTSP'
+  MunicipalitytoPolygon:
+    type: object
+    properties:
+      resources:
+        type: array
+        description: List of corresponding polygons.
+        items:
+           $ref: '#/definitions/MCPP'
+  GADM28Admin:
+     type: object
+     properties:
+      resources:
+        type: object
+        description: List of properties.
+        items:
+           $ref: '#/definitions/Admin28'
+  Admin28:
+    type: object
+  NUTS:
+    type: object
+    properties:
+      uri:
+        type: string
+      name:
+        type: string
+      code:
+        type: string
+      level:
+        type: integer
+  ADMIN28:
+    type: object
+    properties:
+      uri:
+        type: string
+      title:
+        type: string
+      country:
+        type: string
+      level:
+        type: integer
+  NUTSP:
+    type: object
+    properties:
+      uri:
+        type: string
+      name:
+        type: string
+      code:
+        type: string
+      level:
+        type: integer
+      polygon:
+        type: string
+  MCPP:
+    type: object
+    properties:
+      name:
+        type: string
+      polygon:
+        type: string
+  MunicipalitiesPerCountry:
+    type: object
+    properties:
+      country:
+        type: string
+      resources:
+        type: array
+        description: List of municipalities.
+        items:
+           $ref: '#/definitions/MCP'
+  NameToMunicipality:
+    type: object
+    properties:
+      resources:
+        type: object
+        description: details.
+  Municipality:
+    type: object
+    properties:
+      resources:
+        type: object
+        description: details.
+  PointToMunicipality:
+    type: object
+    properties:
+      longitude:
+        type: number
+        format: double
+      latitude:
+        type: number
+        format: double
+      resources:
+        type: array
+        description: details.
+        items:
+           $ref: '#/definitions/MCPPol'
+  MCPPol:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      country:
+        type: string
+  MCP:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+  DatasetsList:
+    type: object
+    properties:
+      resources:
+        type: array
+        description: List of Datasets.
+        items:
+           $ref: '#/definitions/DatasetBrief'
+  DatasetBrief:
+    type: object
+    properties:
+      title:
+        type: string
+      name:
+        type: string
+      URL:
+        type: string
+      resourceURI:
+        type: string
+      resourceGraphName:
+        type: string
+  DatasetProperties:
+    type: object

@@ -1,8 +1,13 @@
 node_modules
+bower_components
 build
 *.log
 logs/*.log
+geojsonDump/*.geojson
 tmp.js
 configs/server.js
 plugins/email/config.js
+plugins/demos/config.js
+*.rdb
+.DS_Store
 *.lock

@@ -180,5 +180,29 @@ export default {
         action: (context, payload, done) => {
             context.executeAction(loadUsersList, {}, done);
         }
-    }
+    },
+    demos: {
+        path: '/demos',
+        method: 'get',
+        handler: require('../components/Demos'),
+        label: 'Demos',
+        action: (context, payload, done) => {
+            context.dispatch('UPDATE_PAGE_TITLE', {
+                pageTitle: appFullTitle + ' | Demos'
+            });
+            done();
+        }
+    },
+    boundariesMap: {
+        path: '/boundariesMap',
+        method: 'get',
+        handler: require('../components/BoundariesMap'),
+        label: 'boundariesMap',
+        action: (context, payload, done) => {
+            context.dispatch('UPDATE_PAGE_TITLE', {
+                pageTitle: appFullTitle + ' | Example Boundaries Map'
+            });
+            done();
+        }
+    },
 };

@@ -18,16 +18,16 @@ export default {
     useGoogleRecaptcha: 0,
 
     //the domain name under which basic dynamic resources and user resources will be defined
-    baseResourceDomain: ['http://ld-r.org'],
+    baseResourceDomain: ['http://sms.risis.eu'],
 
     //will enable email notifications
-    enableEmailNotifications: 0,
+    enableEmailNotifications: 1,
 
     //will put all update actions in log folder
-    enableLogs: 0,
+    enableLogs: 1,
 
     //if provided will track the users on your LD-R instance
-    googleAnalyticsID: '',
+    googleAnalyticsID: 'UA-82326535-1',
 
     //if set, will use the configs stored in a triple store
     enableDynamicServerConfiguration: 1,

@@ -21,6 +21,8 @@ import favicon from 'serve-favicon';
 import handleAuthentication from './plugins/authentication/handleAuth';
 //required for export resources
 import handleExport from './plugins/export/handleExport';
+//required for geo demos
+import handleDemos from './plugins/demos/handleDemos';
 //required for generating docs
 import handleDocumentation from './plugins/documentation/handleDocumentation';
 import {enableAuthentication} from './configs/general';
@@ -34,7 +36,7 @@ import { createElementWithContext } from 'fluxible-addons-react';
 const env = process.env.NODE_ENV;
 const htmlComponent = React.createFactory(HtmlComponent);
 const debug = debugLib('linked-data-reactor');
-const publicRoutes = ['/', '/about', '/contact'];
+const publicRoutes = ['/', '/about', '/contact', '/demos', '/boundariesMap'];
 
 const host = process.env.HOST ? process.env.HOST : 'localhost';
 let port = 3000 ;
@@ -50,14 +52,16 @@ server.use(cookieParser());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(cookieSession({
-    name: 'LDR',
-    keys: ['u1waegf234ss', 'u2wef23ed5325']
+    name: 'SMS',
+    keys: ['u1waegf234ss', 'u2wef43ed5325']
 }));
 // server.use(csrf({cookie: true}));
 //for authentication: this part is external to the flux architecture
 if(enableAuthentication){
     handleAuthentication(server);
 }
+//for demo applications
+handleDemos(server);
 //handling content export
 handleExport(server);
 //handling docs
@@ -95,6 +99,9 @@ fetchrPlugin.registerService(require('./services/dataset'));
 fetchrPlugin.registerService(require('./services/resource'));
 fetchrPlugin.registerService(require('./services/facet'));
 fetchrPlugin.registerService(require('./services/admin'));
+fetchrPlugin.registerService(require('./services/geo'));
+fetchrPlugin.registerService(require('./services/metadata'));
+fetchrPlugin.registerService(require('./services/data'));
 // Set up the fetchr middleware
 server.use(fetchrPlugin.getXhrPath(), fetchrPlugin.getMiddleware());
 server.use(compression());
