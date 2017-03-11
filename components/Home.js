@@ -33,11 +33,17 @@ class Home extends React.Component {
                         </div>
                       </div>
                       <div className="blue card">
-                          <div className="content center aligned">
-                            <a className="header">Use Cases</a>
-                          </div>
+                        <div className="content center aligned">
+                          <a className="header">Demos</a>
+                        </div>
                         <div className="image">
-                          <img/>
+                          <img src="/assets/img/docs/demos.jpg"/>
+                        </div>
+                        <div className="content center aligned">
+                          <a className="header">Use Cases</a>
+                        </div>
+                        <div className="image">
+                          <img src="/assets/img/docs/usecases.jpg"/>
                         </div>
                       </div>
                     </div>
