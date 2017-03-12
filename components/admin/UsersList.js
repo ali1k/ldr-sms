@@ -6,96 +6,103 @@ import {connectToStores} from 'fluxible-addons-react';
 import {NavLink} from 'fluxible-router';
 
 class UsersList extends React.Component {
-    activateUser(uri, email) {
+    activateUser(uri, email){
         this.context.executeAction(activateUser, {
             resourceURI: uri,
             email: email
         });
     }
     render() {
-        let actBtn,
-            emailHint = 0,
-            list,
-            dbClass = 'yellow user icon',
-            user = this.context.getUser();
+        let actBtn, emailHint = 0, list, dbClass = 'yellow user icon', user = this.context.getUser();
         let currentComponent = this;
-        if (!user || !parseInt(user.isSuperUser)) {
+        if((!user || (user.member.indexOf('http://rdf.risis.eu/user/PRB') === -1 && user.member.indexOf('http://rdf.risis.eu/user/FCB') === -1)) && !parseInt(user.isSuperUser)){
             return (
-                <div className="ui page grid">
-                    <div className="row">
-                        <div className="column">
-                            <h1 className="ui header">Permission denied!</h1>
-                            <div className="ui segment">
-                                <div className="ui warning message">
-                                    <div className="header">Sorry! You do not have enough permission to access this page!</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+              <div className="ui page grid">
+                <div className="row">
+                  <div className="column">
+                    <h1 className="ui header">Permission denied!</h1>
+                      <div className="ui segment">
+                          <div className="ui warning message"><div className="header">Sorry! You do not have enough permission to access this page!</div></div>
+                      </div>
+                  </div>
                 </div>
+              </div>
             )
         }
         let i = 0;
-        if (this.props.UserStore.users) {
+        let membership = [];
+        let DSODIV, PRBDIV, FCBDIV, SMSTEAMDIV, SMSVISITOR;
+        if(this.props.UserStore.users){
             list = this.props.UserStore.users.map(function(node, index) {
-                if (parseInt(node.isActive)) {
-                    dbClass = 'green large user icon';
-                    actBtn = '';
-                } else {
-                    dbClass = 'yellow large user icon';
-                    actBtn = <div className="item">
-                        <button onClick={currentComponent.activateUser.bind(currentComponent, node.v, node.mbox)} className="ui mini button">
-                            Activate
-                        </button>
-                    </div>;
+                membership = node.membership.split(',');
+                if(membership.indexOf('http://rdf.risis.eu/user/DatasetCoordinators') !== -1){
+                    DSODIV = <span className="ui mini brown tag label" title="Dataset Coordinator">DSO</span>;
+                }else{
+                    DSODIV = '';
+                }
+                if(membership.indexOf('http://rdf.risis.eu/user/PRB') !== -1){
+                    PRBDIV = <span className="ui mini violet tag label" title="Project Review Board">PRB</span>;
+                }else{
+                    PRBDIV = '';
+                }
+                if(membership.indexOf('http://rdf.risis.eu/user/FCB') !== -1){
+                    FCBDIV = <span className="ui mini purple tag label" title="Facility Coordination Board">FCB</span>;
+                }else{
+                    FCBDIV = '';
+                }
+                if(membership.indexOf('http://rdf.risis.eu/user/SMSTeam') !== -1){
+                    SMSTEAMDIV = <span className="ui mini teal tag label" title="SMS Team">SMS Team</span>;
+                }else{
+                    SMSTEAMDIV = '';
+                }
+                if(membership.indexOf('http://rdf.risis.eu/user/SMSVisitor') !== -1){
+                    SMSVISITOR = <span className="ui mini blue tag label" title="SMS Team">SMS Visitor</span>;
+                }else{
+                    SMSVISITOR = '';
+                }
+                if(parseInt(node.isActive)){
+                    dbClass='green large user icon';
+                    actBtn ='';
+                }else{
+                    dbClass='yellow large user icon';
+                    if(parseInt(user.isSuperUser)){
+                        actBtn = <div className="item"><button onClick={currentComponent.activateUser.bind(currentComponent, node.v, node.mbox)} className="ui mini red button"> Activate </button></div>;
+                    }
                     // put the flag
                     emailHint = 1;
                 }
                 //do not show current super user to edit himself
-                if (node.v !== user.id && !parseInt(node.isSuperUser)) {
+                if(node.v !== user.id && !parseInt(node.isSuperUser)){
                     i++;
                     return (
-                        <div className="item animated fadeIn" key={index}>
-                            <div className="ui horizontal list">
-                                <NavLink className="item" routeName="resource" href={'/dataset/' + encodeURIComponent(currentComponent.props.UserStore.datasetURI) + '/resource/' + encodeURIComponent(node.v)}>
-                                    <div className="content">
-                                        <span className="ui blue circular label">{i}</span>
-                                        <i className={dbClass}></i>
-                                        {node.title}
-                                    </div>
-                                </NavLink>
-                                {actBtn}
-                            </div>
-                        </div>
+                      <div className="item fadeIn" key={index}>
+                          <div className="ui horizontal list">
+                              <NavLink className="item" routeName="resource" href={'/dataset/'+ encodeURIComponent(currentComponent.props.UserStore.graphName) +'/resource/' + encodeURIComponent(node.v)} >
+                              <div className="content"> <span className="ui black circular label">{i}</span> <i className={dbClass}></i> {node.firstName} {node.lastName} ({node.username}) {DSODIV} {PRBDIV} {FCBDIV} {SMSTEAMDIV} {SMSVISITOR} </div>
+                              </NavLink>
+                               {actBtn}
+                          </div>
+                      </div>
                     )
                 }
             });
-        } else {
-            list = <div className="ui warning message">
-                <div className="header">
-                    Sorry! No user found!</div>
-            </div>
+        }else{
+            list=<div className="ui warning message"><div className="header"> Sorry! No user found!</div></div>
         }
         return (
-            <div className="ui page grid">
-                <div className="row">
-                    <div className="column">
-                        <h1 className="ui header">
-                            <a target="_blank" href={'/export/NTriples/' + encodeURIComponent(currentComponent.props.UserStore.datasetURI)}>
-                                <span className="ui big black circular label">{i}</span>
-                            </a>
-                            Registered Users</h1>
-                        <div className="ui segment">
-                            <div className="ui huge divided animated list">
-                                {list}
-                            </div>
-                            {emailHint
-                                ? <div>* A notification email will be sent to the user after activation.</div>
-                                : ''}
-                        </div>
+          <div className="ui page grid">
+            <div className="row">
+              <div className="column">
+                <h1 className="ui header"><a target="_blank" href={'/export/NTriples/' + encodeURIComponent(currentComponent.props.UserStore.graphName)}><span className="ui big black circular label">{i}</span></a> Registered Users</h1>
+                  <div className="ui segment">
+                    <div className="ui huge divided animated list">
+                      {list}
                     </div>
-                </div>
+                    {emailHint ? <div>* A notification email will be sent to the user after activation.</div> : ''}
+                  </div>
+              </div>
             </div>
+          </div>
         );
     }
 }
@@ -104,7 +111,9 @@ UsersList.contextTypes = {
     getUser: React.PropTypes.func
 };
 
-UsersList = connectToStores(UsersList, [UserStore], function(context, props) {
-    return {UserStore: context.getStore(UserStore).getState()};
+UsersList = connectToStores(UsersList, [UserStore], function (context, props) {
+    return {
+        UserStore: context.getStore(UserStore).getState()
+    };
 });
 export default UsersList;
