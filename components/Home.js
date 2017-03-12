@@ -3,6 +3,12 @@ import React from 'react';
 import {NavLink} from 'fluxible-router';
 
 class Home extends React.Component {
+    handleOverPics(obj, effect) {
+        $('.img-' + obj).addClass('animated ' + effect);
+    }
+    handleOutPics(obj, effect) {
+        $('.img-' + obj).removeClass('animated ' + effect);
+    }
     render() {
         return (
             <div className="ui page grid" ref="home">
@@ -17,44 +23,49 @@ class Home extends React.Component {
                       </p>
                     </div>
                     <div className="ui four cards">
-                      <div className="green card slideInUp animated">
+                      <div className="green card slideInUp animated" onMouseOver={this.handleOverPics.bind(this, 'conceptualModel', 'bounce')} onMouseOut={this.handleOutPics.bind(this, 'conceptualModel', 'bounce')}>
                           <div className="content center aligned">
-                            <NavLink routeName="dataIngestion" className="header" href="/dataIngestion">Conceptual Model & Data Workflow</NavLink>
+                            <NavLink routeName="conceptualModel" className="header" href="/conceptualModel">Conceptual Model & Data Workflow</NavLink>
                           </div>
-                        <NavLink className="image" routeName="conceptualModel" href="/conceptualModel">
+                        <NavLink className="img-conceptualModel image" routeName="conceptualModel" href="/conceptualModel">
                             <img src="/assets/img/docs/conceptualModel.jpg"/>
                         </NavLink>
                       </div>
-                      <div className="green card slideInUp animated">
+
+                      <div className="green card slideInUp animated" onMouseOver={this.handleOverPics.bind(this, 'dataIngestion', 'bounce')} onMouseOut={this.handleOutPics.bind(this, 'dataIngestion', 'bounce')}>
                           <div className="content center aligned">
                             <NavLink routeName="dataIngestion" className="header" href="/dataIngestion">Data Ingestion, Conversion & Linking</NavLink>
                           </div>
                         <NavLink className="image" routeName="dataIngestion" href="/dataIngestion">
-                            <img src="/assets/img/docs/ingestion.png"/>
+                            <img className="img-dataIngestion" src="/assets/img/docs/ingestion.png"/>
                         </NavLink>
                       </div>
-                      <div className="green card slideInUp animated">
+
+                      <div className="green card slideInUp animated" onMouseOver={this.handleOverPics.bind(this, 'ldServices', 'bounce')} onMouseOut={this.handleOutPics.bind(this, 'ldServices', 'bounce')}>
                           <div className="content center aligned">
-                            <a className="header">Linked Data Services & Applications</a>
+                            <NavLink routeName="ldServices" className="header" href="/ldServices">Linked Data Services & Applications</NavLink>
                           </div>
-                        <div className="image">
-                          <img src="/assets/img/docs/sa.png"/>
-                        </div>
+                        <NavLink className="image" routeName="ldServices" href="/ldServices">
+                          <img className="img-ldServices" src="/assets/img/docs/sa.png"/>
+                        </NavLink>
                       </div>
+
                       <div className="blue card slideInUp animated">
-                        <div className="content center aligned">
-                          <a className="header">Demos</a>
+                        <div className="content center aligned" onMouseOver={this.handleOverPics.bind(this, 'demos', 'pulse')} onMouseOut={this.handleOutPics.bind(this, 'demos', 'pulse')}>
+                          <NavLink routeName="demos" className="header" href="/demos">Demos</NavLink>
                         </div>
-                        <div className="image">
-                          <img src="/assets/img/docs/demos.jpg"/>
+                        <NavLink className="image" routeName="demos" href="/demos">
+                          <img className="img-demos" src="/assets/img/docs/demos.jpg"/>
+                        </NavLink>
+                        <div className="ui horizontal divider"></div>
+                        <div className="content center aligned" onMouseOver={this.handleOverPics.bind(this, 'usecases', 'pulse')} onMouseOut={this.handleOutPics.bind(this, 'usecases', 'pulse')}>
+                          <NavLink routeName="usecases" className="header" href="/usecases">Use Cases</NavLink>
                         </div>
-                        <div className="content center aligned">
-                          <a className="header">Use Cases</a>
-                        </div>
-                        <div className="image">
-                          <img src="/assets/img/docs/usecases.jpg"/>
-                        </div>
+                        <NavLink className="image" routeName="usecases" href="/usecases">
+                          <img className="img-usecases" src="/assets/img/docs/usecases.jpg"/>
+                        </NavLink>
                       </div>
+
                     </div>
                     <div className="ui segment">
                         <h2>Quick Links:</h2>
