@@ -38,6 +38,16 @@ export default {
             done();
         }
     },
+    dataIngestion: {
+        path: '/dataIngestion',
+        method: 'get',
+        handler: require('../components/DataIngestion'),
+        label: 'Data Ingestion',
+        action: (context, payload, done) => {
+            context.dispatch('UPDATE_PAGE_TITLE', { pageTitle: appFullTitle + ' | Data Ingestion'});
+            done();
+        }
+    },
     newDataset: {
         path: '/newDataset',
         method: 'get',

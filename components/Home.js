@@ -1,5 +1,6 @@
 'use strict';
-var React = require('react');
+import React from 'react';
+import {NavLink} from 'fluxible-router';
 
 class Home extends React.Component {
     render() {
@@ -18,11 +19,11 @@ class Home extends React.Component {
                     <div className="ui three cards">
                       <div className="green card slideInUp animated">
                           <div className="content center aligned">
-                            <a className="header">Data Ingestion</a>
+                            <NavLink routeName="dataIngestion" className="header" href="/dataIngestion">Data Ingestion</NavLink>
                           </div>
-                        <div className="image">
-                          <img src="/assets/img/docs/ingestion.png"/>
-                        </div>
+                        <NavLink className="image" routeName="resource" href="/dataIngestion">
+                            <img src="/assets/img/docs/ingestion.png"/>
+                        </NavLink>
                       </div>
                       <div className="green card slideInUp animated">
                           <div className="content center aligned">
