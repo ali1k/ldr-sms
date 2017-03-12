@@ -48,6 +48,36 @@ export default {
             done();
         }
     },
+    conceptualModel: {
+        path: '/conceptualModel',
+        method: 'get',
+        handler: require('../components/conceptualModel'),
+        label: 'Conceptual Model',
+        action: (context, payload, done) => {
+            context.dispatch('UPDATE_PAGE_TITLE', { pageTitle: appFullTitle + ' | Conceptual Model & Technical Architecture'});
+            done();
+        }
+    },
+    ldServices: {
+        path: '/ldServices',
+        method: 'get',
+        handler: require('../components/ldServices'),
+        label: 'Linked Data Services',
+        action: (context, payload, done) => {
+            context.dispatch('UPDATE_PAGE_TITLE', { pageTitle: appFullTitle + ' | Linked Data Services & Applications'});
+            done();
+        }
+    },
+    usecases: {
+        path: '/usecases',
+        method: 'get',
+        handler: require('../components/usecases'),
+        label: 'Use Cases',
+        action: (context, payload, done) => {
+            context.dispatch('UPDATE_PAGE_TITLE', { pageTitle: appFullTitle + ' | Use Cases'});
+            done();
+        }
+    },
     newDataset: {
         path: '/newDataset',
         method: 'get',

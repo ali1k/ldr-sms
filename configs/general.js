@@ -15,7 +15,7 @@ export default {
     enableUserConfirmation: 1,
     //if enabled will allow a recaptcha box in the registration form
     //note: if it is enabled, you need to set the key parameteres for recaptcha in the  server.js file
-    useGoogleRecaptcha: 0,
+    useGoogleRecaptcha: 1,
 
     //the domain name under which basic dynamic resources and user resources will be defined
     baseResourceDomain: ['http://sms.risis.eu'],

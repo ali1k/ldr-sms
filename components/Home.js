@@ -25,7 +25,7 @@ class Home extends React.Component {
                     <div className="ui stackable four cards">
                       <div className="green card slideInUp animated" onMouseOver={this.handleOverPics.bind(this, 'conceptualModel', 'bounce')} onMouseOut={this.handleOutPics.bind(this, 'conceptualModel', 'bounce')}>
                           <div className="content center aligned">
-                            <NavLink routeName="conceptualModel" className="header" href="/conceptualModel">Conceptual Model & Data Workflow</NavLink>
+                            <NavLink routeName="conceptualModel" className="header" href="/conceptualModel">Conceptual Model & Technical Architecture</NavLink>
                           </div>
                         <NavLink className="img-conceptualModel image" routeName="conceptualModel" href="/conceptualModel">
                             <img src="/assets/img/docs/conceptualModel.jpg"/>
