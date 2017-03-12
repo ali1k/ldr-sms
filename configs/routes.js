@@ -44,7 +44,7 @@ export default {
         handler: require('../components/DataIngestion'),
         label: 'Data Ingestion',
         action: (context, payload, done) => {
-            context.dispatch('UPDATE_PAGE_TITLE', { pageTitle: appFullTitle + ' | Data Ingestion'});
+            context.dispatch('UPDATE_PAGE_TITLE', { pageTitle: appFullTitle + ' | Data Ingestion, Conversion & Linking'});
             done();
         }
     },
