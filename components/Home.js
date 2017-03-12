@@ -11,7 +11,7 @@ class Home extends React.Component {
     }
     render() {
         return (
-            <div className="ui page grid" ref="home">
+            <div className="ui stackable page grid" ref="home">
               <div className="ui row">
                 <div className="column">
                     <h1>Welcome to SMS Platform.</h1>
@@ -22,7 +22,7 @@ class Home extends React.Component {
                           &nbsp;<a className="" href="/assets/pdf/sms_documentation.pdf">Read more...</a>
                       </p>
                     </div>
-                    <div className="ui four cards">
+                    <div className="ui stackable four cards">
                       <div className="green card slideInUp animated" onMouseOver={this.handleOverPics.bind(this, 'conceptualModel', 'bounce')} onMouseOut={this.handleOutPics.bind(this, 'conceptualModel', 'bounce')}>
                           <div className="content center aligned">
                             <NavLink routeName="conceptualModel" className="header" href="/conceptualModel">Conceptual Model & Data Workflow</NavLink>
