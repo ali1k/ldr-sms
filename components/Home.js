@@ -16,12 +16,20 @@ class Home extends React.Component {
                           &nbsp;<a className="" href="/assets/pdf/sms_documentation.pdf">Read more...</a>
                       </p>
                     </div>
-                    <div className="ui three cards">
+                    <div className="ui four cards">
                       <div className="green card slideInUp animated">
                           <div className="content center aligned">
-                            <NavLink routeName="dataIngestion" className="header" href="/dataIngestion">Data Ingestion</NavLink>
+                            <NavLink routeName="dataIngestion" className="header" href="/dataIngestion">Conceptual Model & Data Workflow</NavLink>
                           </div>
-                        <NavLink className="image" routeName="resource" href="/dataIngestion">
+                        <NavLink className="image" routeName="conceptualModel" href="/conceptualModel">
+                            <img src="/assets/img/docs/conceptualModel.jpg"/>
+                        </NavLink>
+                      </div>
+                      <div className="green card slideInUp animated">
+                          <div className="content center aligned">
+                            <NavLink routeName="dataIngestion" className="header" href="/dataIngestion">Data Ingestion, Conversion & Linking</NavLink>
+                          </div>
+                        <NavLink className="image" routeName="dataIngestion" href="/dataIngestion">
                             <img src="/assets/img/docs/ingestion.png"/>
                         </NavLink>
                       </div>
